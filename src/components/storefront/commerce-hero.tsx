@@ -100,7 +100,7 @@ export function CommerceHero() {
         <div className="hidden md:flex items-center justify-between gap-4 px-6 py-2 text-[11px] text-foreground/70 border-b border-border/40 bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-5">
             <a href="https://wa.me/5511999999999" className="inline-flex items-center gap-1.5 hover:text-[#25D366] transition-colors" target="_blank" rel="noreferrer">
-              <WhatsAppIcon className="h-3.5 w-3.5" />
+              <Image src="/branding/whatsapp.png" alt="" width={512} height={512} className="h-4 w-4 object-contain" />
               WhatsApp
             </a>
             <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 hover:text-[#0061F9] transition-colors">
