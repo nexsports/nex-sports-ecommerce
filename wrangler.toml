@@ -1,0 +1,25 @@
+# Cloudflare Pages config — NEX SPORTS
+# Used by `wrangler pages deploy` and by CF Pages CI/CD dashboard.
+# Docs: https://developers.cloudflare.com/pages/
+
+name = "nex-sports-ecommerce"
+compatibility_date = "2026-06-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# Env vars are managed in the CF dashboard (Settings → Environment variables)
+# or via `wrangler pages secret put <NAME>`.
+# Required at runtime:
+#   NEXT_PUBLIC_SITE_URL
+#   NEXT_PUBLIC_SUPABASE_URL
+#   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY
+#   SUPABASE_SERVICE_ROLE_KEY    (secret)
+#   SUPABASE_SECRET_KEY          (secret)
+#   RESEND_API_KEY               (secret)
+#   EMAIL_FROM
+#   MP_ACCESS_TOKEN              (secret, optional until checkout enabled)
+#   MP_PUBLIC_KEY                (optional)
+#   MP_WEBHOOK_SECRET            (secret, optional)
+#   MELHORENVIO_TOKEN            (secret, optional)
+#   MELHORENVIO_SANDBOX          (optional)

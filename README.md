@@ -75,4 +75,6 @@ Ver [`docs/PLANO-NEX-ECOMMERCE.md`](docs/PLANO-NEX-ECOMMERCE.md) — 14 capítul
 
 ## Deploy
 
-Cloudflare Pages (front) + Supabase (DB+auth+storage). Staging: `nex-staging.codigozero.app`. Prod: `nexsportts.com.br`.
+Cloudflare Pages (front) + Supabase (DB+auth+storage) + domínio mantido na Hostinger (DNS aponta pra CF). Passo a passo completo em [`docs/DEPLOY.md`](docs/DEPLOY.md). Config em [`wrangler.toml`](wrangler.toml).
+
+Alternativas documentadas: Vercel (DX premium) e VPS Hostinger + Coolify (self-host).
