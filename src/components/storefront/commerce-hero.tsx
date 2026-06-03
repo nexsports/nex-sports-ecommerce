@@ -99,15 +99,21 @@ export function CommerceHero() {
         {/* ===== TOP CONTACT BAR ===== */}
         <div className="hidden md:flex items-center justify-between gap-4 px-6 py-2 text-[11px] text-foreground/70 border-b border-border/40 bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-5">
-            <a href="https://wa.me/5511999999999" className="inline-flex items-center gap-1.5 hover:text-[#25D366] transition-colors" target="_blank" rel="noreferrer">
-              <Image src="/branding/whatsapp.png" alt="" width={512} height={512} className="h-4 w-4 object-contain" />
+            <a href="https://wa.me/5511999999999" className="inline-flex items-center gap-1.5 transition-colors" target="_blank" rel="noreferrer">
+              <Image
+                src="/branding/whatsapp.png"
+                alt=""
+                width={512}
+                height={512}
+                className="h-4 w-4 object-contain [filter:brightness(0)_invert(1)]"
+              />
               WhatsApp
             </a>
-            <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 hover:text-[#0061F9] transition-colors">
+            <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 transition-colors">
               <Phone className="h-3.5 w-3.5" />
               (11) 99999-9999
             </a>
-            <a href="mailto:contato@nexsportts.com.br" className="inline-flex items-center gap-1.5 hover:text-[#0061F9] transition-colors">
+            <a href="mailto:contato@nexsportts.com.br" className="inline-flex items-center gap-1.5 transition-colors">
               <Mail className="h-3.5 w-3.5" />
               contato@nexsportts.com.br
             </a>
