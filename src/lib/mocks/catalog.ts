@@ -1,0 +1,677 @@
+import type { Category, Product, Partner } from "./types"
+
+export const categories: Category[] = [
+  {
+    id: "cat-nex-fut",
+    slug: "nex-fut",
+    name: "NEX FUT",
+    description: "Chuteiras, bolas, uniformes e tudo para o campo",
+    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+    productCount: 86,
+  },
+  {
+    id: "cat-nex-fit",
+    slug: "nex-fit",
+    name: "NEX FIT",
+    description: "Roupas e equipamentos para treino e academia",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80",
+    productCount: 124,
+  },
+  {
+    id: "cat-nex-beach",
+    slug: "nex-beach",
+    name: "NEX BEACH",
+    description: "Surf, beach tennis, biquínis e estilo de praia",
+    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+    productCount: 58,
+  },
+  {
+    id: "cat-nex-padel",
+    slug: "nex-padel",
+    name: "NEX PADEL",
+    description: "Raquetes, tênis e roupas para padel",
+    imageUrl: "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=600&q=80",
+    productCount: 42,
+  },
+  {
+    id: "cat-nex-run",
+    slug: "nex-run",
+    name: "NEX RUN",
+    description: "Tênis de corrida, roupas e acessórios",
+    imageUrl: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&q=80",
+    productCount: 97,
+  },
+  {
+    id: "cat-nex-court",
+    slug: "nex-court",
+    name: "NEX COURT",
+    description: "Basquete, tênis e esportes de quadra",
+    imageUrl: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&q=80",
+    productCount: 63,
+  },
+  {
+    id: "cat-nex-style",
+    slug: "nex-style",
+    name: "NEX STYLE",
+    description: "Lifestyle, streetwear e moda esportiva",
+    imageUrl: "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=600&q=80",
+    productCount: 108,
+  },
+  {
+    id: "cat-nex-tech",
+    slug: "nex-tech",
+    name: "NEX TECH",
+    description: "Wearables, fones, smartwatches e eletrônicos",
+    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+    productCount: 45,
+  },
+]
+
+export const products: Product[] = [
+  // NEX FUT (3)
+  {
+    id: "prod-001",
+    slug: "chuteira-nike-mercurial-vapor",
+    title: "Chuteira Nike Mercurial Vapor",
+    brand: "Nike",
+    category: "nex-fut",
+    priceCents: 89990,
+    salePriceCents: 74990,
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.8,
+    reviewCount: 234,
+    badge: "HOT",
+    sizes: ["38", "39", "40", "41", "42", "43"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Branco", hex: "#FFFFFF" },
+    ],
+    description: "Chuteira Nike Mercurial Vapor com tecnologia Air Zoom para explosão máxima em campo. Cabedal sintético ultraleve com textura Flyknit.",
+    stock: 42,
+  },
+  {
+    id: "prod-002",
+    slug: "camisa-brasil-2026-nike",
+    title: "Camisa Brasil 2026 Nike",
+    brand: "Nike",
+    category: "nex-fut",
+    priceCents: 34990,
+    images: [
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+    ],
+    rating: 4.9,
+    reviewCount: 567,
+    badge: "NOVO",
+    sizes: ["P", "M", "G", "GG", "XG"],
+    colors: [
+      { name: "Amarelo", hex: "#FFD700" },
+      { name: "Azul", hex: "#003DA5" },
+    ],
+    description: "Camisa oficial da Seleção Brasileira 2026 pela Nike. Tecido Dri-FIT para manter a secura e conforto.",
+    stock: 120,
+  },
+  {
+    id: "prod-003",
+    slug: "bola-adidas-fifa-pro",
+    title: "Bola Adidas FIFA Pro",
+    brand: "Adidas",
+    category: "nex-fut",
+    priceCents: 24990,
+    salePriceCents: 19990,
+    images: [
+      "https://images.unsplash.com/photo-1614632537190-23e4146777db?w=800&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.7,
+    reviewCount: 189,
+    sizes: ["5"],
+    colors: [{ name: "Branco", hex: "#FFFFFF" }],
+    description: "Bola oficial Adidas FIFA Pro com tecnologia Thermal Bonding para toque preciso e durabilidade superior.",
+    stock: 65,
+  },
+  // NEX FIT (3)
+  {
+    id: "prod-004",
+    slug: "camiseta-dry-fit-adidas",
+    title: "Camiseta Dry-Fit Adidas Training",
+    brand: "Adidas",
+    category: "nex-fit",
+    priceCents: 14990,
+    images: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.6,
+    reviewCount: 312,
+    sizes: ["P", "M", "G", "GG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Cinza", hex: "#808080" },
+      { name: "Azul", hex: "#1E3A5F" },
+    ],
+    description: "Camiseta de treino Adidas com tecido Aeroready que absorve suor. Corte athletic para máximo conforto durante o treino.",
+    stock: 88,
+  },
+  {
+    id: "prod-005",
+    slug: "legging-nike-pro",
+    title: "Legging Nike Pro 365",
+    brand: "Nike",
+    category: "nex-fit",
+    priceCents: 19990,
+    salePriceCents: 15990,
+    badge: "-20%",
+    images: [
+      "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+    ],
+    rating: 4.8,
+    reviewCount: 445,
+    sizes: ["PP", "P", "M", "G", "GG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Rosa", hex: "#FF69B4" },
+    ],
+    description: "Legging Nike Pro 365 com cintura alta e tecido Infina Lock que não transparece. Perfeita para treinos intensos.",
+    stock: 56,
+  },
+  {
+    id: "prod-006",
+    slug: "short-under-armour-tech",
+    title: "Short Under Armour Tech",
+    brand: "Under Armour",
+    category: "nex-fit",
+    priceCents: 12990,
+    images: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.5,
+    reviewCount: 198,
+    sizes: ["P", "M", "G", "GG", "XG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Cinza", hex: "#4A4A4A" },
+    ],
+    description: "Short Under Armour Tech com tecido leve e transpirável. Secagem ultra-rápida e tecnologia anti-odor.",
+    stock: 74,
+  },
+  // NEX BEACH (3)
+  {
+    id: "prod-007",
+    slug: "prancha-surf-7s-eco",
+    title: "Prancha Surf 7S Eco",
+    brand: "Mizuno",
+    category: "nex-beach",
+    priceCents: 129900,
+    images: [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+      "https://images.unsplash.com/photo-1499678329028-101435549a4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=800&q=80",
+    ],
+    rating: 4.9,
+    reviewCount: 87,
+    badge: "TOP 1",
+    sizes: ["6'0\"", "6'4\"", "6'8\"", "7'0\""],
+    colors: [
+      { name: "Azul", hex: "#006994" },
+      { name: "Verde", hex: "#2E8B57" },
+    ],
+    description: "Prancha de surf 7S Eco com construção sustentável em EPS e fibra de vidro. Shape versátil para ondas brasileiras.",
+    stock: 12,
+  },
+  {
+    id: "prod-008",
+    slug: "biquini-adidas-beach",
+    title: "Biquíni Adidas Beach",
+    brand: "Adidas",
+    category: "nex-beach",
+    priceCents: 18990,
+    images: [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+    ],
+    rating: 4.4,
+    reviewCount: 156,
+    sizes: ["PP", "P", "M", "G"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Azul", hex: "#006994" },
+      { name: "Coral", hex: "#FF6F61" },
+    ],
+    description: "Biquíni Adidas Beach com proteção UV 50+ e tecido resistente ao cloro. Design moderno com sustentabilidade.",
+    stock: 34,
+  },
+  {
+    id: "prod-009",
+    slug: "raquete-beach-tennis-wilson",
+    title: "Raquete Beach Tennis Wilson",
+    brand: "Wilson",
+    category: "nex-beach",
+    priceCents: 39990,
+    salePriceCents: 33990,
+    badge: "HOT",
+    images: [
+      "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=800&q=80",
+      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
+      "https://images.unsplash.com/photo-1461896836934-bd45ba8bab6e?w=800&q=80",
+    ],
+    rating: 4.7,
+    reviewCount: 98,
+    sizes: ["Único"],
+    colors: [
+      { name: "Vermelho", hex: "#CC0000" },
+      { name: "Azul", hex: "#003DA5" },
+    ],
+    description: "Raquete de Beach Tennis Wilson com estrutura em fibra de carbono e superfície EVA de alta densidade.",
+    stock: 23,
+  },
+  // NEX PADEL (3)
+  {
+    id: "prod-010",
+    slug: "raquete-padel-bullpadel",
+    title: "Raquete Padel Bullpadel Elite",
+    brand: "Puma",
+    category: "nex-padel",
+    priceCents: 59990,
+    images: [
+      "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=800&q=80",
+      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
+      "https://images.unsplash.com/photo-1461896836934-bd45ba8bab6e?w=800&q=80",
+    ],
+    rating: 4.8,
+    reviewCount: 145,
+    badge: "NOVO",
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Dourado", hex: "#FFD700" },
+    ],
+    description: "Raquete Padel Bullpadel Elite com frame de carbono 12K e núcleo de EVA Soft. Potência e controle de alto nível.",
+    stock: 18,
+  },
+  {
+    id: "prod-011",
+    slug: "tenis-padel-asics-gel",
+    title: "Tênis Padel Asics Gel-Padel",
+    brand: "Asics",
+    category: "nex-padel",
+    priceCents: 44990,
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.6,
+    reviewCount: 89,
+    sizes: ["39", "40", "41", "42", "43", "44"],
+    colors: [
+      { name: "Branco", hex: "#FFFFFF" },
+      { name: "Azul", hex: "#003DA5" },
+    ],
+    description: "Tênis Asics Gel-Padel com tecnologia Gel no calcanhar para absorção de impacto. Solado específico para quadra.",
+    stock: 31,
+  },
+  {
+    id: "prod-012",
+    slug: "camiseta-padel-puma",
+    title: "Camiseta Padel Puma Court",
+    brand: "Puma",
+    category: "nex-padel",
+    priceCents: 15990,
+    images: [
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.3,
+    reviewCount: 67,
+    sizes: ["P", "M", "G", "GG"],
+    colors: [
+      { name: "Branco", hex: "#FFFFFF" },
+      { name: "Verde", hex: "#00A86B" },
+    ],
+    description: "Camiseta Puma Court para padel com dryCELL para gestão de umidade. Design clean para quadra e lifestyle.",
+    stock: 45,
+  },
+  // NEX RUN (3)
+  {
+    id: "prod-013",
+    slug: "tenis-asics-gel-nimbus",
+    title: "Tênis Asics Gel-Nimbus 26",
+    brand: "Asics",
+    category: "nex-run",
+    priceCents: 109990,
+    salePriceCents: 89990,
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.9,
+    reviewCount: 678,
+    badge: "TOP 1",
+    sizes: ["38", "39", "40", "41", "42", "43", "44"],
+    colors: [
+      { name: "Azul", hex: "#003DA5" },
+      { name: "Preto", hex: "#000000" },
+      { name: "Laranja", hex: "#FF6600" },
+    ],
+    description: "Tênis Asics Gel-Nimbus 26 com tecnologia PureGEL para amortecimento superior. Ideal para longas distâncias.",
+    stock: 52,
+  },
+  {
+    id: "prod-014",
+    slug: "camiseta-corrida-nike-dri-fit",
+    title: "Camiseta Corrida Nike Dri-FIT ADV",
+    brand: "Nike",
+    category: "nex-run",
+    priceCents: 17990,
+    images: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.7,
+    reviewCount: 234,
+    sizes: ["P", "M", "G", "GG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Verde", hex: "#00A86B" },
+    ],
+    description: "Camiseta Nike Dri-FIT ADV para corrida com ventilação estratégica e tecido que seca 2x mais rápido.",
+    stock: 67,
+  },
+  {
+    id: "prod-015",
+    slug: "bermuda-running-new-balance",
+    title: "Bermuda Running New Balance",
+    brand: "New Balance",
+    category: "nex-run",
+    priceCents: 13990,
+    images: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.5,
+    reviewCount: 156,
+    sizes: ["P", "M", "G", "GG", "XG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Azul", hex: "#1E3A5F" },
+    ],
+    description: "Bermuda Running New Balance com tecido NB DRY para secagem rápida. Bolso interno para chave e refletividade.",
+    stock: 89,
+  },
+  // NEX COURT (3)
+  {
+    id: "prod-016",
+    slug: "tenis-nike-air-max-basketball",
+    title: "Tênis Nike Air Max Impact 4",
+    brand: "Nike",
+    category: "nex-court",
+    priceCents: 69990,
+    images: [
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.7,
+    reviewCount: 312,
+    badge: "HOT",
+    sizes: ["39", "40", "41", "42", "43", "44"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Branco", hex: "#FFFFFF" },
+    ],
+    description: "Tênis Nike Air Max Impact 4 com unidade Air Max visível para amortecimento máximo. Tração multidirecional para quadra.",
+    stock: 38,
+  },
+  {
+    id: "prod-017",
+    slug: "camiseta-basquete-jordan",
+    title: "Camiseta Basquete Jordan Flight",
+    brand: "Nike",
+    category: "nex-court",
+    priceCents: 19990,
+    images: [
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.6,
+    reviewCount: 178,
+    sizes: ["P", "M", "G", "GG", "XG"],
+    colors: [
+      { name: "Vermelho", hex: "#CC0000" },
+      { name: "Preto", hex: "#000000" },
+    ],
+    description: "Camiseta Jordan Flight com corte amplo para liberdade de movimento. Tecido macio com logo Jordan bordado.",
+    stock: 54,
+  },
+  {
+    id: "prod-018",
+    slug: "mochila-esportiva-adidas",
+    title: "Mochila Esportiva Adidas",
+    brand: "Adidas",
+    category: "nex-court",
+    priceCents: 22990,
+    salePriceCents: 17990,
+    images: [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.4,
+    reviewCount: 201,
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Azul", hex: "#003DA5" },
+    ],
+    description: "Mochila Adidas com compartimento para notebook 15\", bolso para tênis e material resistente à água.",
+    stock: 41,
+  },
+  // NEX STYLE (3)
+  {
+    id: "prod-019",
+    slug: "jaqueta-puma-sportswear",
+    title: "Jaqueta Puma Sportswear T7",
+    brand: "Puma",
+    category: "nex-style",
+    priceCents: 39990,
+    images: [
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.5,
+    reviewCount: 234,
+    sizes: ["P", "M", "G", "GG"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Azul Marinho", hex: "#1E3A5F" },
+    ],
+    description: "Jaqueta Puma Sportswear T7 com icônicas listras laterais. Tecido tricotado com forro de malha para conforto.",
+    stock: 29,
+  },
+  {
+    id: "prod-020",
+    slug: "tenis-new-balance-550",
+    title: "Tênis New Balance 550",
+    brand: "New Balance",
+    category: "nex-style",
+    priceCents: 69990,
+    images: [
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    ],
+    rating: 4.9,
+    reviewCount: 890,
+    badge: "TOP 1",
+    sizes: ["38", "39", "40", "41", "42", "43"],
+    colors: [
+      { name: "Branco", hex: "#FFFFFF" },
+      { name: "Verde", hex: "#2E8B57" },
+    ],
+    description: "Tênis New Balance 550 — clássico retrô que voltou com tudo. Cabedal em couro premium com sola de borracha.",
+    stock: 15,
+  },
+  {
+    id: "prod-021",
+    slug: "bone-nike-sportswear",
+    title: "Boné Nike Sportswear Heritage",
+    brand: "Nike",
+    category: "nex-style",
+    priceCents: 12990,
+    images: [
+      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    rating: 4.3,
+    reviewCount: 345,
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Bege", hex: "#D2B48C" },
+      { name: "Azul", hex: "#1E3A5F" },
+    ],
+    description: "Boné Nike Sportswear Heritage com aba curva e ajuste snapback. Bordado Swoosh frontal.",
+    stock: 120,
+  },
+  // NEX TECH (3)
+  {
+    id: "prod-022",
+    slug: "smartwatch-garmin-forerunner",
+    title: "Smartwatch Garmin Forerunner 265",
+    brand: "Under Armour",
+    category: "nex-tech",
+    priceCents: 249990,
+    salePriceCents: 219990,
+    badge: "NOVO",
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=800&q=80",
+    ],
+    rating: 4.9,
+    reviewCount: 567,
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Branco", hex: "#FFFFFF" },
+    ],
+    description: "Smartwatch Garmin Forerunner 265 com AMOLED, GPS multi-banda, métricas de corrida avançadas e 13 dias de bateria.",
+    stock: 25,
+  },
+  {
+    id: "prod-023",
+    slug: "fone-beats-studio-pro",
+    title: "Fone Beats Studio Pro",
+    brand: "Under Armour",
+    category: "nex-tech",
+    priceCents: 189990,
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+      "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=800&q=80",
+    ],
+    rating: 4.7,
+    reviewCount: 234,
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Azul", hex: "#003DA5" },
+      { name: "Vermelho", hex: "#CC0000" },
+    ],
+    description: "Fone Beats Studio Pro com cancelamento de ruído ativo, áudio espacial personalizado e 40h de bateria.",
+    stock: 33,
+  },
+  {
+    id: "prod-024",
+    slug: "pulseira-xiaomi-smart-band",
+    title: "Pulseira Xiaomi Smart Band 9",
+    brand: "Under Armour",
+    category: "nex-tech",
+    priceCents: 24990,
+    badge: "-30%",
+    salePriceCents: 17490,
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=800&q=80",
+    ],
+    rating: 4.5,
+    reviewCount: 789,
+    sizes: ["Único"],
+    colors: [
+      { name: "Preto", hex: "#000000" },
+      { name: "Rosa", hex: "#FF69B4" },
+      { name: "Azul", hex: "#006994" },
+    ],
+    description: "Pulseira Xiaomi Smart Band 9 com AMOLED 1.62\", monitor cardíaco SpO2, 21 dias de bateria e resistência à água 5ATM.",
+    stock: 150,
+  },
+]
+
+export const partners: Partner[] = [
+  { name: "Nike", logoUrl: "nike" },
+  { name: "Adidas", logoUrl: "adidas" },
+  { name: "Puma", logoUrl: "puma" },
+  { name: "Asics", logoUrl: "asics" },
+  { name: "New Balance", logoUrl: "new-balance" },
+  { name: "Under Armour", logoUrl: "under-armour" },
+  { name: "Mizuno", logoUrl: "mizuno" },
+  { name: "Wilson", logoUrl: "wilson" },
+]
+
+// --- Helpers ---
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((p) => p.slug === slug)
+}
+
+export function getProductsByCategory(categorySlug: string): Product[] {
+  return products.filter((p) => p.category === categorySlug)
+}
+
+export function getFeatured(): Product[] {
+  return products.filter((p) => p.badge === "HOT" || p.badge === "TOP 1").slice(0, 8)
+}
+
+export function getBestSellers(): Product[] {
+  return [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 8)
+}
+
+export function getWeeklyFinds(): Product[] {
+  return products.filter((p) => p.salePriceCents).slice(0, 8)
+}
+
+export function getCategoryBySlug(slug: string): Category | undefined {
+  return categories.find((c) => c.slug === slug)
+}
+
+export function searchProducts(query: string): Product[] {
+  const q = query.toLowerCase()
+  return products.filter(
+    (p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+  )
+}
