@@ -55,7 +55,7 @@ export function SiteHeader() {
       >
         {/* Mobile menu */}
         <Sheet>
-          <SheetTrigger asChild className="md:hidden">
+          <SheetTrigger asChild className="lg:hidden">
             <Button variant="ghost" size="icon" aria-label="Abrir menu">
               <Menu className="h-5 w-5" />
             </Button>
@@ -121,13 +121,13 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-1 mx-2">
+        <ul className="hidden lg:flex items-center gap-2 mx-2">
           {navigation.map((item) => (
             <li key={item.name}>
               <Link
                 href={item.href}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-md transition-colors relative",
+                  "px-3 py-2 text-sm font-medium rounded-md transition-colors relative whitespace-nowrap",
                   "after:absolute after:left-3 after:right-3 after:bottom-1 after:h-px after:bg-primary after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform",
                   pathname === item.href
                     ? "text-foreground"
@@ -141,7 +141,7 @@ export function SiteHeader() {
         </ul>
 
         {/* Right actions */}
-        <div className="flex items-center gap-1 ml-auto md:ml-0">
+        <div className="flex items-center gap-1 ml-auto lg:ml-0">
           <Button variant="ghost" size="icon" asChild className="text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label="Buscar">
             <Link href="/busca">
               <Search className="w-5 h-5" />
@@ -160,7 +160,7 @@ export function SiteHeader() {
           <Button
             asChild
             variant="secondary"
-            className="hidden md:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10 ml-2"
+            className="hidden lg:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10 ml-2"
           >
             <Link href="/login">
               <span className="pl-3 py-2 text-sm font-medium">Entrar</span>

@@ -39,10 +39,10 @@ export function CommerceHero() {
     }))
 
   return (
-    <div className="w-full relative container px-2 mx-auto max-w-7xl">
+    <div className="w-full relative mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
       <div className="mt-6 bg-card rounded-2xl relative overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
-        <header className="relative md:absolute md:inset-x-0 md:top-0 z-30 flex items-center">
-          <div className="w-full md:w-2/3 lg:w-1/2 bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4">
+        <header className="relative lg:absolute lg:inset-x-0 lg:top-0 z-30 flex items-center">
+          <div className="w-full lg:w-3/5 xl:w-1/2 bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4">
             <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
               <Image
                 src="/branding/nex-logo.png"
@@ -55,12 +55,12 @@ export function CommerceHero() {
             </Link>
 
             <nav className="hidden lg:flex items-center justify-between w-full ml-4">
-              <ul className="flex items-center gap-1">
+              <ul className="flex items-center gap-2">
                 {navigation.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground rounded-md transition-colors relative after:absolute after:left-3 after:right-3 after:bottom-1 after:h-px after:bg-accent after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
+                      className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground rounded-md transition-colors relative whitespace-nowrap after:absolute after:left-3 after:right-3 after:bottom-1 after:h-px after:bg-accent after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
                     >
                       {item.name}
                     </Link>
@@ -154,7 +154,7 @@ export function CommerceHero() {
             </Sheet>
           </div>
 
-          <div className="hidden md:flex w-1/2 justify-end items-center pr-4 gap-4 ml-auto">
+          <div className="hidden lg:flex w-2/5 xl:w-1/2 justify-end items-center pr-4 gap-4 ml-auto">
             <Button
               variant="secondary"
               asChild
