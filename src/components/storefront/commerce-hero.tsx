@@ -47,14 +47,14 @@ export function CommerceHero() {
               <Image
                 src="/branding/nex-logo.png"
                 alt="NEX SPORTS"
-                width={140}
-                height={40}
+                width={1200}
+                height={430}
                 priority
-                className="h-10 w-auto object-contain"
+                className="h-12 md:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(59,130,246,0.35)]"
               />
             </Link>
 
-            <nav className="hidden lg:flex items-center justify-between w-full ml-2">
+            <nav className="hidden lg:flex items-center justify-between w-full ml-4">
               <ul className="flex items-center gap-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
