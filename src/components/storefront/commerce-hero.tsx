@@ -49,7 +49,7 @@ export function CommerceHero() {
           <div
             className={cn(
               "w-full bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4 transition-[width] duration-300 ease-out",
-              searchOpen ? "lg:w-3/4 xl:w-2/3" : "lg:w-3/5 xl:w-1/2",
+              searchOpen ? "lg:w-full xl:w-full lg:rounded-br-none" : "lg:w-3/5 xl:w-1/2",
             )}
           >
             <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
@@ -161,8 +161,8 @@ export function CommerceHero() {
 
           <div
             className={cn(
-              "hidden lg:flex justify-end items-center pr-4 gap-4 ml-auto transition-[width] duration-300 ease-out",
-              searchOpen ? "lg:w-1/4 xl:w-1/3" : "lg:w-2/5 xl:w-1/2",
+              "hidden lg:flex justify-end items-center pr-4 gap-4 ml-auto transition-all duration-300 ease-out overflow-hidden",
+              searchOpen ? "lg:w-0 opacity-0 pointer-events-none" : "lg:w-2/5 xl:w-1/2 opacity-100",
             )}
           >
             <Button
