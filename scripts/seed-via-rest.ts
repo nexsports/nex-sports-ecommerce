@@ -5,8 +5,13 @@
  *
  *   npx tsx scripts/seed-via-rest.ts
  */
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
+config({ path: ".env" });
+import ws from "ws";
 import { createClient } from "@supabase/supabase-js";
+// shim WebSocket for Node 20 (supabase-js realtime peer dep)
+(globalThis as any).WebSocket ??= ws;
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
