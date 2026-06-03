@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, Search, ShoppingBag, User, X, ChevronRight } from "lucide-react"
+import { Menu, Search, ShoppingBag, User, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -27,8 +28,11 @@ export function SiteHeader() {
   const { count } = useCart()
   const pathname = usePathname()
 
+  const isHome = pathname === "/"
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 200)
+    onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
@@ -37,11 +41,17 @@ export function SiteHeader() {
     setMegaOpen(false)
   }, [pathname])
 
+  // Hidden on home until user scrolls past hero; always visible on inner pages
+  const hidden = isHome && !scrolled
+
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full transition-all duration-300",
-        scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-sm" : "bg-transparent"
+        "fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300",
+        hidden ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
+        scrolled || !isHome
+          ? "bg-background/85 backdrop-blur-xl border-b border-border shadow-sm"
+          : "bg-transparent"
       )}
     >
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
@@ -56,9 +66,13 @@ export function SiteHeader() {
             <SheetContent side="left" className="w-80 p-0">
               <SheetHeader className="p-6 pb-4">
                 <SheetTitle className="text-left">
-                  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-black text-xl">
-                    NEX SPORTS
-                  </span>
+                  <Image
+                    src="/branding/nex-logo.png"
+                    alt="NEX SPORTS"
+                    width={1200}
+                    height={430}
+                    className="h-10 w-auto object-contain"
+                  />
                 </SheetTitle>
               </SheetHeader>
               <Separator />
@@ -108,11 +122,15 @@ export function SiteHeader() {
           </Sheet>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-black text-xl tracking-tight">
-              NEX
-            </span>
-            <span className="text-foreground font-bold text-lg hidden sm:inline">SPORTS</span>
+          <Link href="/" className="flex items-center shrink-0" aria-label="NEX SPORTS">
+            <Image
+              src="/branding/nex-logo.png"
+              alt="NEX SPORTS"
+              width={1200}
+              height={430}
+              priority
+              className="h-10 w-auto object-contain drop-shadow-[0_2px_12px_rgba(59,130,246,0.3)]"
+            />
           </Link>
 
           {/* Desktop nav */}
