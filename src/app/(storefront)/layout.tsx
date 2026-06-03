@@ -18,7 +18,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         className="text-white text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase shadow-md"
         rainbowColors={["#0048D8", "#0063FA", "#0048D8", "#0063FA"]}
       >
-        💸 Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
+        Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
       </Banner>
       {showHeader && <SiteHeader />}
       <main className="flex-1">{children}</main>
