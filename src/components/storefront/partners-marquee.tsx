@@ -1,6 +1,6 @@
 "use client"
 
-import { partners } from "@/lib/mocks/catalog"
+import { partners } from "@/lib/data/catalog"
 
 const brandLogos: Record<string, string> = {
   Nike: "NIKE",

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { TrendingUp } from "lucide-react"
 import { ProductGrid } from "./product-grid"
-import { getBestSellers } from "@/lib/mocks/catalog"
+import { getBestSellers } from "@/lib/data/catalog"
 
 export function BestsellersSection() {
   const products = getBestSellers()

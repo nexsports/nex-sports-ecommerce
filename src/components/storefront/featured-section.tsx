@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Flame } from "lucide-react"
 import { ProductGrid } from "./product-grid"
-import { getFeatured } from "@/lib/mocks/catalog"
+import { getFeatured } from "@/lib/data/catalog"
 
 export function FeaturedSection() {
   const products = getFeatured()

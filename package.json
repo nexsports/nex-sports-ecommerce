@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/generate-catalog.ts || true",
     "build": "next build",
+    "data:refresh": "tsx scripts/generate-catalog.ts",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",

@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useCart } from "@/lib/cart/cart-context"
-import { categories } from "@/lib/mocks/catalog"
+import { categories } from "@/lib/data/catalog"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
@@ -168,8 +168,10 @@ export function SiteHeader() {
                 <Search className="h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Conta">
-              <User className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="hidden sm:inline-flex" asChild aria-label="Minha conta">
+              <Link href="/conta">
+                <User className="h-5 w-5" />
+              </Link>
             </Button>
             <Link href="/carrinho">
               <Button variant="ghost" size="icon" className="relative" aria-label={`Carrinho (${count} itens)`}>

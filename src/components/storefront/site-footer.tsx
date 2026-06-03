@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
-import { categories } from "@/lib/mocks/catalog"
+import { categories } from "@/lib/data/catalog"
 
 const supportLinks = [
   { label: "Central de Ajuda", href: "#" },

@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { Clock, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { formatBRL } from "@/lib/utils"
-import { getWeeklyFinds } from "@/lib/mocks/catalog"
+import { getWeeklyFinds } from "@/lib/data/catalog"
 
 function getNextSunday2359(): Date {
   const now = new Date()

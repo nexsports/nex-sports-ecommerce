@@ -5,7 +5,7 @@ import { useParams } from "next/navigation"
 import { Breadcrumb } from "@/components/storefront/breadcrumb"
 import { ProductCard } from "@/components/storefront/product-card"
 import { PlpFiltersSidebar, PlpFiltersTrigger, type FilterState } from "@/components/storefront/plp-filters"
-import { getProductsByCategory, getCategoryBySlug } from "@/lib/mocks/catalog"
+import { getProductsByCategory, getCategoryBySlug } from "@/lib/data/catalog"
 import { motion } from "framer-motion"
 
 export default function CategoryPage() {

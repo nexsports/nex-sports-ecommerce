@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Percent } from "lucide-react"
 import { ProductGrid } from "./product-grid"
-import { getWeeklyFinds } from "@/lib/mocks/catalog"
+import { getWeeklyFinds } from "@/lib/data/catalog"
 
 export function WeeklyFindsSection() {
   const products = getWeeklyFinds()

@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
-import { categories } from "@/lib/mocks/catalog"
+import { categories } from "@/lib/data/catalog"
 
 export function CategoryTiles() {
   return (

@@ -14,7 +14,7 @@ import { PdpGallery } from "@/components/storefront/pdp-gallery"
 import { PdpVariantSelector } from "@/components/storefront/pdp-variant-selector"
 import { MobileBottomBar } from "@/components/storefront/mobile-bottom-bar"
 import { useCart } from "@/lib/cart/cart-context"
-import { getProductBySlug, getCategoryBySlug } from "@/lib/mocks/catalog"
+import { getProductBySlug, getCategoryBySlug } from "@/lib/data/catalog"
 import { formatBRL } from "@/lib/utils"
 
 export default function ProductPage() {

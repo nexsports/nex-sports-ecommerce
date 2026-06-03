@@ -6,7 +6,7 @@ import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Breadcrumb } from "@/components/storefront/breadcrumb"
 import { ProductGrid } from "@/components/storefront/product-grid"
-import { searchProducts } from "@/lib/mocks/catalog"
+import { searchProducts } from "@/lib/data/catalog"
 import { useRouter } from "next/navigation"
 
 function SearchContent() {
