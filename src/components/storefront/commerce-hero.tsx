@@ -40,42 +40,50 @@ export function CommerceHero() {
 
   return (
     <div className="w-full relative container px-2 mx-auto max-w-7xl">
-      <div className="mt-6 bg-background rounded-2xl relative overflow-hidden border border-border/50">
+      <div className="mt-6 bg-card rounded-2xl relative overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
         <header className="flex items-center">
-          <div className="w-full md:w-2/3 lg:w-1/2 bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-2">
-            <Link
-              href="/"
-              className="text-xl font-black bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent shrink-0"
-            >
-              NEX SPORTS
+          <div className="w-full md:w-2/3 lg:w-1/2 bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4">
+            <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
+              <Image
+                src="/branding/nex-logo.png"
+                alt="NEX SPORTS"
+                width={140}
+                height={40}
+                priority
+                className="h-10 w-auto object-contain"
+              />
             </Link>
 
-            <nav className="hidden lg:flex items-center justify-between w-full ml-4">
-              {navigation.map((item) => (
-                <Button
-                  key={item.name}
-                  variant="link"
-                  asChild
-                  className="cursor-pointer relative group hover:text-primary transition-colors"
-                >
-                  <Link href={item.href}>{item.name}</Link>
+            <nav className="hidden lg:flex items-center justify-between w-full ml-2">
+              <ul className="flex items-center gap-1">
+                {navigation.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground rounded-md transition-colors relative after:absolute after:left-3 after:right-3 after:bottom-1 after:h-px after:bg-primary after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center gap-1 ml-auto">
+                <Button variant="ghost" size="icon" asChild className="text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label="Buscar">
+                  <Link href="/busca">
+                    <Search className="w-5 h-5" />
+                  </Link>
                 </Button>
-              ))}
-              <Button variant="ghost" size="icon" asChild className="hover:text-primary transition-colors" aria-label="Buscar">
-                <Link href="/busca">
-                  <Search className="w-5 h-5" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="icon" asChild className="relative hover:text-primary transition-colors" aria-label={`Carrinho (${cartCount})`}>
-                <Link href="/carrinho">
-                  <ShoppingBasket className="w-5 h-5" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] rounded-full flex items-center justify-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-              </Button>
+                <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
+                  <Link href="/carrinho">
+                    <ShoppingBasket className="w-5 h-5" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
+              </div>
             </nav>
 
             <Sheet>
@@ -90,8 +98,14 @@ export function CommerceHero() {
               >
                 <SheetHeader className="p-6 text-left border-b border-border/50">
                   <SheetTitle className="flex items-center justify-between">
-                    <Link href="/" className="text-xl font-black bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                      NEX SPORTS
+                    <Link href="/" aria-label="NEX SPORTS">
+                      <Image
+                        src="/branding/nex-logo.png"
+                        alt="NEX SPORTS"
+                        width={140}
+                        height={40}
+                        className="h-10 w-auto object-contain"
+                      />
                     </Link>
                   </SheetTitle>
                 </SheetHeader>
