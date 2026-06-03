@@ -223,12 +223,12 @@ export function CommerceHero() {
         </div>
 
         {/* ===== SUBNAV — categorias ===== */}
-        <nav className="hidden lg:flex items-center gap-1 px-6 py-2.5 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/15 border-b border-border/40">
+        <nav className="hidden lg:flex items-center justify-center gap-1 px-6 py-2.5 bg-[#0061F9]">
           {subnavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-4 py-2 text-sm font-semibold uppercase tracking-wider text-foreground/90 hover:text-white rounded-md transition-colors relative whitespace-nowrap after:absolute after:left-4 after:right-4 after:bottom-1 after:h-0.5 after:bg-accent after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
+              className="px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors relative whitespace-nowrap after:absolute after:left-4 after:right-4 after:bottom-1 after:h-0.5 after:bg-white after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
             >
               {link.name}
             </Link>
@@ -236,12 +236,12 @@ export function CommerceHero() {
           <div className="relative group ml-1">
             <button
               type="button"
-              className="inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold uppercase tracking-wider text-foreground/90 hover:text-white rounded-md transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors whitespace-nowrap"
             >
               Todas Categorias
               <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </button>
-            <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-full left-0 mt-1 w-[640px] grid grid-cols-2 gap-1 p-3 rounded-2xl bg-background border border-border shadow-2xl shadow-primary/5 transition-opacity z-50">
+            <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[640px] grid grid-cols-2 gap-1 p-3 rounded-2xl bg-background border border-border shadow-2xl shadow-primary/5 transition-opacity z-50">
               {allCategories.map((cat) => (
                 <Link
                   key={cat.slug}
@@ -249,25 +249,13 @@ export function CommerceHero() {
                   className="group/item flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 hover:bg-secondary/50 transition-colors"
                 >
                   <div className="flex flex-col">
-                    <span className="text-sm font-semibold">{cat.name}</span>
+                    <span className="text-sm font-semibold text-foreground">{cat.name}</span>
                     <span className="text-xs text-muted-foreground">{cat.productCount} produtos</span>
                   </div>
                   <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" />
                 </Link>
               ))}
             </div>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <span className="text-xs text-foreground/60 uppercase tracking-widest">Siga</span>
-            <a href="#" aria-label="Instagram" className="text-foreground/70 hover:text-accent transition-colors">
-              <InstagramIcon className="h-4 w-4" />
-            </a>
-            <a href="#" aria-label="Facebook" className="text-foreground/70 hover:text-accent transition-colors">
-              <FacebookIcon className="h-4 w-4" />
-            </a>
-            <a href="#" aria-label="TikTok" className="text-foreground/70 hover:text-accent transition-colors">
-              <TikTokIcon className="h-4 w-4" />
-            </a>
           </div>
         </nav>
 
