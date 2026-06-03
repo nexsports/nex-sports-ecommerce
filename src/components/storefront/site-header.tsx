@@ -47,9 +47,9 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed left-0 right-0 z-50 mx-auto w-full max-w-6xl px-3 transition-all duration-300 ease-out",
+        "fixed left-0 right-0 z-50 mx-auto w-full transition-all duration-300 ease-out",
         hidden ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
-        scrolled ? "top-3 md:top-4" : "top-0 md:top-0",
+        scrolled ? "top-3 md:top-4 max-w-6xl px-3" : "top-0 max-w-none px-0",
       )}
     >
       <nav
@@ -57,7 +57,7 @@ export function SiteHeader() {
           "flex items-center gap-2 sm:gap-3 px-3 md:px-4 h-14 md:h-16 transition-all duration-300 ease-out",
           scrolled
             ? "rounded-2xl border border-border bg-background/85 backdrop-blur-xl shadow-2xl shadow-primary/5"
-            : "rounded-none bg-background/85 backdrop-blur-xl border-b border-border",
+            : "rounded-none bg-background/85 backdrop-blur-xl border-b border-border w-full",
         )}
       >
         {/* Logo */}
