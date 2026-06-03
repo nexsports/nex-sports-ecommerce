@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react"
 import { ArrowUpRight, Menu, Search, ShoppingBasket } from "lucide-react"
 import {
   Sheet,
@@ -16,6 +17,7 @@ import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock"
 import { motion } from "framer-motion"
 import { useCart } from "@/lib/cart/cart-context"
 import { categories as allCategories } from "@/lib/data/catalog"
+import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Início", href: "/" },
@@ -29,6 +31,7 @@ const featuredSlugs = ["nex-fut", "nex-run", "nex-padel", "nex-tech"]
 export function CommerceHero() {
   const cart = useCart()
   const cartCount = cart?.count ?? 0
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const featured = featuredSlugs
     .map((s) => allCategories.find((c) => c.slug === s))
@@ -43,7 +46,12 @@ export function CommerceHero() {
     <div className="w-full relative mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
       <div className="mt-6 bg-card rounded-2xl relative overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
         <header className="relative lg:absolute lg:inset-x-0 lg:top-0 z-30 flex items-center">
-          <div className="w-full lg:w-3/5 xl:w-1/2 bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4">
+          <div
+            className={cn(
+              "w-full bg-background/95 backdrop-blur-sm p-4 rounded-br-2xl flex items-center gap-4 transition-[width] duration-300 ease-out",
+              searchOpen ? "lg:w-3/4 xl:w-2/3" : "lg:w-3/5 xl:w-1/2",
+            )}
+          >
             <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
               <Image
                 src="/branding/nex-logo.png"
@@ -69,7 +77,7 @@ export function CommerceHero() {
                 ))}
               </ul>
               <div className="flex items-center gap-1 ml-auto">
-                <ExpandingSearchDock expandedWidth={260} />
+                <ExpandingSearchDock expandedWidth={260} onOpenChange={setSearchOpen} />
                 <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
                   <Link href="/carrinho">
                     <ShoppingBasket className="w-5 h-5" />
@@ -151,7 +159,12 @@ export function CommerceHero() {
             </Sheet>
           </div>
 
-          <div className="hidden lg:flex w-2/5 xl:w-1/2 justify-end items-center pr-4 gap-4 ml-auto">
+          <div
+            className={cn(
+              "hidden lg:flex justify-end items-center pr-4 gap-4 ml-auto transition-[width] duration-300 ease-out",
+              searchOpen ? "lg:w-1/4 xl:w-1/3" : "lg:w-2/5 xl:w-1/2",
+            )}
+          >
             <Button
               variant="secondary"
               asChild

@@ -13,6 +13,8 @@ type Props = {
   expandedWidth?: number
   /** start already expanded */
   defaultOpen?: boolean
+  /** Notify parent so it can adjust its layout when the dock expands/collapses */
+  onOpenChange?: (open: boolean) => void
 }
 
 export function ExpandingSearchDock({
@@ -21,10 +23,16 @@ export function ExpandingSearchDock({
   className,
   expandedWidth = 320,
   defaultOpen = false,
+  onOpenChange,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(defaultOpen)
   const [query, setQuery] = useState("")
   const router = useRouter()
+
+  const setExpanded = (next: boolean) => {
+    setIsExpanded(next)
+    onOpenChange?.(next)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,7 +52,7 @@ export function ExpandingSearchDock({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.6, opacity: 0 }}
             transition={{ duration: 0.18 }}
-            onClick={() => setIsExpanded(true)}
+            onClick={() => setExpanded(true)}
             aria-label="Abrir busca"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
           >
@@ -75,7 +83,7 @@ export function ExpandingSearchDock({
               <motion.button
                 type="button"
                 onClick={() => {
-                  setIsExpanded(defaultOpen ? true : false)
+                  setExpanded(defaultOpen ? true : false)
                   setQuery("")
                 }}
                 whileHover={{ scale: 1.05 }}
