@@ -9,12 +9,18 @@ import {
   ChevronDown,
   Mail,
   Menu,
-  MessageCircle,
   Phone,
   Search,
   ShoppingBasket,
-  User,
 } from "lucide-react"
+
+function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M20.52 3.48A12 12 0 0 0 2.05 17.18L1 23l5.94-1.04A12 12 0 1 0 20.52 3.48zm-8.5 18.32A9.94 9.94 0 0 1 6.9 20.4l-.36-.21-3.52.62.63-3.43-.23-.36A9.95 9.95 0 1 1 22.02 12a9.93 9.93 0 0 1-10 9.8zm5.46-7.42c-.3-.15-1.76-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07c-.3-.15-1.27-.47-2.42-1.5a9.06 9.06 0 0 1-1.68-2.08c-.18-.3-.02-.47.13-.62.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01a1.1 1.1 0 0 0-.8.37 3.34 3.34 0 0 0-1.04 2.48c0 1.46 1.07 2.87 1.22 3.07s2.1 3.21 5.1 4.5c.71.31 1.27.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.7.25-1.3.18-1.42-.07-.13-.27-.2-.57-.35z" />
+    </svg>
+  )
+}
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -93,8 +99,8 @@ export function CommerceHero() {
         {/* ===== TOP CONTACT BAR ===== */}
         <div className="hidden md:flex items-center justify-between gap-4 px-6 py-2 text-[11px] text-foreground/70 border-b border-border/40 bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-5">
-            <a href="https://wa.me/5511999999999" className="inline-flex items-center gap-1.5 hover:text-accent transition-colors" target="_blank" rel="noreferrer">
-              <MessageCircle className="h-3.5 w-3.5" />
+            <a href="https://wa.me/5511999999999" className="inline-flex items-center gap-1.5 hover:text-[#25D366] transition-colors" target="_blank" rel="noreferrer">
+              <WhatsAppIcon className="h-3.5 w-3.5" />
               WhatsApp
             </a>
             <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 hover:text-accent transition-colors">
@@ -199,16 +205,7 @@ export function CommerceHero() {
           </form>
 
           {/* Right actions */}
-          <div className="flex items-center gap-1 shrink-0">
-            <Link href="/login" className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/70 hover:text-foreground transition-colors px-2">
-              <User className="h-4 w-4" />
-              <span className="hidden lg:inline">
-                <span className="font-medium">Entrar</span>
-                <span className="text-foreground/50"> · </span>
-                <span className="text-foreground/70">Cadastrar</span>
-              </span>
-              <span className="lg:hidden font-medium">Entrar</span>
-            </Link>
+          <div className="flex items-center gap-2 shrink-0">
             <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
               <Link href="/carrinho">
                 <ShoppingBasket className="w-5 h-5" />
@@ -217,6 +214,18 @@ export function CommerceHero() {
                     {cartCount}
                   </span>
                 )}
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="secondary"
+              className="hidden sm:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10"
+            >
+              <Link href="/login">
+                <span className="pl-3 py-2 text-sm font-medium">Entrar</span>
+                <div className="rounded-full flex items-center justify-center bg-primary text-primary-foreground w-8 h-8 ml-2 group-hover:scale-110 transition-transform duration-300">
+                  <ArrowUpRight className="w-4 h-4" />
+                </div>
               </Link>
             </Button>
           </div>
