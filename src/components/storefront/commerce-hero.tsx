@@ -125,88 +125,57 @@ export function CommerceHero() {
           </div>
         </div>
 
-        {/* ===== MAIN BAR — logo + search + actions ===== */}
-        <div className="relative z-30 flex items-center gap-4 md:gap-6 px-4 md:px-6 py-3 md:py-4 bg-background/95 backdrop-blur-sm border-b border-border/40">
-          {/* Mobile hamburger */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden shrink-0" aria-label="Menu">
-                <Menu className="w-5 h-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-background/95 backdrop-blur-md border-r border-border/50">
-              <SheetHeader className="p-6 text-left border-b border-border/50">
-                <SheetTitle>
-                  <Link href="/" aria-label="NEX SPORTS">
-                    <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
-                  </Link>
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col p-6 space-y-1">
-                {subnavLinks.map((item) => (
-                  <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
-                    {item.name}
-                  </Link>
-                ))}
-              </nav>
-              <Separator className="mx-6" />
-              <div className="p-6 space-y-1">
-                <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
-                {allCategories.map((cat) => (
-                  <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors">
-                    {cat.name}
-                  </Link>
-                ))}
-              </div>
-              <Separator className="mx-6" />
-              <div className="p-6">
-                <Button asChild className="w-full h-12 rounded-full bg-gradient-to-r from-primary to-accent">
-                  <Link href="/login">
-                    Entrar
-                    <ArrowUpRight className="w-4 h-4 ml-2" />
-                  </Link>
+        {/* ===== MAIN BAR ===== */}
+        <div className="relative z-30 bg-background/95 backdrop-blur-sm border-b border-border/40">
+          {/* MOBILE — row 1: hamburger | logo centralizada | cart */}
+          <div className="flex lg:hidden items-center justify-between gap-2 px-4 pt-3 pb-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="shrink-0" aria-label="Menu">
+                  <Menu className="w-5 h-5" />
                 </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-background/95 backdrop-blur-md border-r border-border/50">
+                <SheetHeader className="p-6 text-left border-b border-border/50">
+                  <SheetTitle>
+                    <Link href="/" aria-label="NEX SPORTS">
+                      <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col p-6 space-y-1">
+                  {subnavLinks.map((item) => (
+                    <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+                <Separator className="mx-6" />
+                <div className="p-6 space-y-1">
+                  <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
+                  {allCategories.map((cat) => (
+                    <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors">
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+                <Separator className="mx-6" />
+                <div className="p-6">
+                  <Button asChild className="w-full h-12 rounded-full bg-gradient-to-r from-primary to-accent">
+                    <Link href="/login">
+                      Entrar
+                      <ArrowUpRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
 
-          {/* Logo */}
-          <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
-            <Image
-              src="/branding/nex-logo.png"
-              alt="NEX SPORTS"
-              width={1200}
-              height={430}
-              priority
-              className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(59,130,246,0.35)]"
-            />
-          </Link>
+            <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
+              <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-10 w-auto object-contain drop-shadow-[0_4px_20px_rgba(59,130,246,0.35)]" />
+            </Link>
 
-          {/* Big centered search */}
-          <form onSubmit={submitSearch} role="search" className="flex-1 min-w-0 max-w-2xl mx-auto">
-            <label className="relative flex items-center w-full">
-              <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar produtos, marcas, esportes..."
-                aria-label="Buscar"
-                className="h-11 md:h-12 w-full rounded-full border border-border bg-card/60 pl-11 pr-12 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-              />
-              <button
-                type="submit"
-                aria-label="Buscar"
-                className="absolute right-1.5 inline-flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                <Search className="h-4 w-4" />
-              </button>
-            </label>
-          </form>
-
-          {/* Right actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
+            <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50 shrink-0" aria-label={`Carrinho (${cartCount})`}>
               <Link href="/carrinho">
                 <ShoppingBasket className="w-5 h-5" />
                 {cartCount > 0 && (
@@ -216,18 +185,83 @@ export function CommerceHero() {
                 )}
               </Link>
             </Button>
-            <Button
-              asChild
-              variant="secondary"
-              className="hidden sm:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10"
-            >
-              <Link href="/login">
-                <span className="pl-3 py-2 text-sm font-medium">Entrar</span>
-                <div className="rounded-full flex items-center justify-center bg-primary text-primary-foreground w-8 h-8 ml-2 group-hover:scale-110 transition-transform duration-300">
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-              </Link>
-            </Button>
+          </div>
+
+          {/* MOBILE — row 2: search full width */}
+          <div className="lg:hidden px-4 pb-3">
+            <form onSubmit={submitSearch} role="search" className="w-full">
+              <label className="relative flex items-center w-full">
+                <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar..."
+                  aria-label="Buscar"
+                  className="h-10 w-full rounded-full border border-border bg-card/60 pl-11 pr-11 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+                <button
+                  type="submit"
+                  aria-label="Buscar"
+                  className="absolute right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  <Search className="h-4 w-4" />
+                </button>
+              </label>
+            </form>
+          </div>
+
+          {/* DESKTOP — single row */}
+          <div className="hidden lg:flex items-center gap-6 px-6 py-4">
+            <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
+              <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-12 lg:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(59,130,246,0.35)]" />
+            </Link>
+
+            <form onSubmit={submitSearch} role="search" className="flex-1 min-w-0 max-w-2xl mx-auto">
+              <label className="relative flex items-center w-full">
+                <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar produtos, marcas, esportes..."
+                  aria-label="Buscar"
+                  className="h-12 w-full rounded-full border border-border bg-card/60 pl-11 pr-12 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+                <button
+                  type="submit"
+                  aria-label="Buscar"
+                  className="absolute right-1.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  <Search className="h-4 w-4" />
+                </button>
+              </label>
+            </form>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
+                <Link href="/carrinho">
+                  <ShoppingBasket className="w-5 h-5" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="secondary"
+                className="bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10"
+              >
+                <Link href="/login">
+                  <span className="pl-3 py-2 text-sm font-medium">Entrar</span>
+                  <div className="rounded-full flex items-center justify-center bg-primary text-primary-foreground w-8 h-8 ml-2 group-hover:scale-110 transition-transform duration-300">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
