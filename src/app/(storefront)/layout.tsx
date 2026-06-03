@@ -13,21 +13,12 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
   return (
     <CartProvider>
       <Banner
-        id="pix-5off"
         variant="rainbow"
-        height="2.5rem"
-        className="text-white"
-        rainbowColors={[
-          "rgba(59, 130, 246, 0.7)",
-          "rgba(34, 211, 238, 0.85)",
-          "transparent",
-          "rgba(59, 130, 246, 0.7)",
-          "transparent",
-          "rgba(34, 211, 238, 0.85)",
-          "transparent",
-        ]}
+        height="2.25rem"
+        className="text-white text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase shadow-md"
+        rainbowColors={["#0048D8", "#0063FA", "#0048D8", "#0063FA"]}
       >
-        💸 PAGUE NO PIX E GANHE 5% OFF NA SUA COMPRA
+        💸 Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
       </Banner>
       {showHeader && <SiteHeader />}
       <main className="flex-1">{children}</main>

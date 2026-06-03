@@ -93,9 +93,6 @@ export function Banner({
   )
 }
 
-const maskImage =
-  "linear-gradient(to bottom,white,transparent), radial-gradient(circle at top center, white, transparent)"
-
 function Flow({ colors }: { colors: string[] }) {
   return (
     <>
@@ -103,14 +100,11 @@ function Flow({ colors }: { colors: string[] }) {
         className="absolute inset-0 z-[-1]"
         style={
           {
-            maskImage,
-            maskComposite: "intersect",
-            animation: "fd-moving-banner 20s linear infinite",
-            backgroundImage: `repeating-linear-gradient(70deg, ${[...colors, colors[0]]
-              .map((color, i) => `${color} ${(i * 50) / colors.length}%`)
+            animation: "fd-moving-banner 12s linear infinite",
+            backgroundImage: `linear-gradient(90deg, ${[...colors, colors[0]]
+              .map((color, i) => `${color} ${(i * 100) / colors.length}%`)
               .join(", ")})`,
             backgroundSize: "200% 100%",
-            filter: "saturate(1.6)",
           } as object
         }
       />
