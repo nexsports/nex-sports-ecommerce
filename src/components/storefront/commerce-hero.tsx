@@ -174,7 +174,7 @@ export function CommerceHero() {
           initial={false}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full aspect-[21/9] md:aspect-[16/6] lg:aspect-[21/8] overflow-hidden"
+          className="relative w-full aspect-[1672/941] overflow-hidden"
         >
           <Image
             src="/banners/hero-1.png"
@@ -182,7 +182,7 @@ export function CommerceHero() {
             fill
             priority
             sizes="(max-width: 1280px) 100vw, 1280px"
-            className="object-cover"
+            className="object-contain"
           />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
         </motion.div>
