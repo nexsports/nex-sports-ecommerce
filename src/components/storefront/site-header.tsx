@@ -21,9 +21,9 @@ import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Início", href: "/" },
-  { name: "Loja", href: "/busca" },
-  { name: "Coleções", href: "/colecao/destaques" },
-  { name: "Blog", href: "#" },
+  { name: "Mais Vendidos", href: "/colecao/destaques" },
+  { name: "Produtos", href: "/busca" },
+  { name: "Outlet", href: "/colecao/outlet" },
 ]
 
 export function SiteHeader() {

@@ -18,9 +18,9 @@ import { categories as allCategories } from "@/lib/data/catalog"
 
 const navigation = [
   { name: "Início", href: "/" },
-  { name: "Loja", href: "/busca" },
-  { name: "Coleções", href: "/categoria/nex-fut" },
-  { name: "Blog", href: "#" },
+  { name: "Mais Vendidos", href: "/colecao/destaques" },
+  { name: "Produtos", href: "/busca" },
+  { name: "Outlet", href: "/colecao/outlet" },
 ]
 
 const featuredSlugs = ["nex-fut", "nex-run", "nex-padel", "nex-tech"]
