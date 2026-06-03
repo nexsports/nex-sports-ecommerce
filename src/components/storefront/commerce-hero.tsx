@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock"
 import { motion } from "framer-motion"
 import { useCart } from "@/lib/cart/cart-context"
 import { categories as allCategories } from "@/lib/data/catalog"
@@ -68,11 +69,7 @@ export function CommerceHero() {
                 ))}
               </ul>
               <div className="flex items-center gap-1 ml-auto">
-                <Button variant="ghost" size="icon" asChild className="text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label="Buscar">
-                  <Link href="/busca">
-                    <Search className="w-5 h-5" />
-                  </Link>
-                </Button>
+                <ExpandingSearchDock expandedWidth={260} />
                 <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
                   <Link href="/carrinho">
                     <ShoppingBasket className="w-5 h-5" />

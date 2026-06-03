@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { useState } from "react"
 import { ArrowUpRight, Menu, Search, ShoppingBasket } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -28,14 +28,21 @@ const navigation = [
 
 export function SiteHeader() {
   const pathname = usePathname()
+  const router = useRouter()
   const isHome = pathname === "/"
   const scrolled = useScroll(80)
   const cart = useCart()
   const count = cart?.count ?? 0
+  const [query, setQuery] = useState("")
 
-  // Home: hidden until scrolled (hero owns the look up top)
-  // Non-home: always visible from the start
   const hidden = isHome && !scrolled
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    const q = query.trim()
+    if (!q) return
+    router.push(`/busca?q=${encodeURIComponent(q)}`)
+  }
 
   return (
     <header
@@ -47,16 +54,28 @@ export function SiteHeader() {
     >
       <nav
         className={cn(
-          "flex items-center justify-between gap-3 px-3 md:px-4 h-14 md:h-14 transition-all duration-300 ease-out",
+          "flex items-center gap-2 sm:gap-3 px-3 md:px-4 h-14 md:h-16 transition-all duration-300 ease-out",
           scrolled
             ? "rounded-2xl border border-border bg-background/85 backdrop-blur-xl shadow-2xl shadow-primary/5"
             : "rounded-none bg-background/85 backdrop-blur-xl border-b border-border",
         )}
       >
-        {/* Mobile menu */}
+        {/* Logo */}
+        <Link href="/" className="flex items-center shrink-0" aria-label="NEX SPORTS">
+          <Image
+            src="/branding/nex-logo.png"
+            alt="NEX SPORTS"
+            width={1200}
+            height={430}
+            priority
+            className="h-9 md:h-10 w-auto object-contain drop-shadow-[0_2px_10px_rgba(59,130,246,0.3)]"
+          />
+        </Link>
+
+        {/* Hamburger — opens nav + categories sheet */}
         <Sheet>
-          <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="icon" aria-label="Abrir menu">
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label="Abrir menu" className="shrink-0">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
@@ -77,7 +96,12 @@ export function SiteHeader() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors"
+                  className={cn(
+                    "block px-3 py-3 rounded-lg text-base font-medium transition-colors",
+                    pathname === item.href
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
+                  )}
                 >
                   {item.name}
                 </Link>
@@ -108,45 +132,27 @@ export function SiteHeader() {
           </SheetContent>
         </Sheet>
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center shrink-0" aria-label="NEX SPORTS">
-          <Image
-            src="/branding/nex-logo.png"
-            alt="NEX SPORTS"
-            width={1200}
-            height={430}
-            priority
-            className="h-9 md:h-10 w-auto object-contain drop-shadow-[0_2px_10px_rgba(59,130,246,0.3)]"
-          />
-        </Link>
-
-        {/* Desktop nav */}
-        <ul className="hidden lg:flex items-center gap-2 mx-2">
-          {navigation.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-md transition-colors relative whitespace-nowrap",
-                  "after:absolute after:left-3 after:right-3 after:bottom-1 after:h-px after:bg-primary after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform",
-                  pathname === item.href
-                    ? "text-foreground"
-                    : "text-foreground/70 hover:text-foreground",
-                )}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Search bar — large, centered, always expanded */}
+        <form
+          onSubmit={submitSearch}
+          role="search"
+          className="flex-1 min-w-0 max-w-2xl mx-auto"
+        >
+          <label className="relative flex items-center w-full">
+            <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar produtos, marcas, esportes..."
+              aria-label="Buscar"
+              className="h-10 w-full rounded-full border border-border bg-card/60 pl-11 pr-4 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            />
+          </label>
+        </form>
 
         {/* Right actions */}
-        <div className="flex items-center gap-1 ml-auto lg:ml-0">
-          <Button variant="ghost" size="icon" asChild className="text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label="Buscar">
-            <Link href="/busca">
-              <Search className="w-5 h-5" />
-            </Link>
-          </Button>
+        <div className="flex items-center gap-1 shrink-0">
           <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${count})`}>
             <Link href="/carrinho">
               <ShoppingBasket className="w-5 h-5" />
@@ -160,7 +166,7 @@ export function SiteHeader() {
           <Button
             asChild
             variant="secondary"
-            className="hidden lg:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10 ml-2"
+            className="hidden sm:inline-flex bg-background border border-border p-0 pr-1 rounded-full hover:bg-muted/50 transition-all duration-300 group h-10 ml-1"
           >
             <Link href="/login">
               <span className="pl-3 py-2 text-sm font-medium">Entrar</span>
