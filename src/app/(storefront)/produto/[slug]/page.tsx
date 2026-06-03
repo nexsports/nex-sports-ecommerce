@@ -68,7 +68,7 @@ export default function ProductPage() {
         <div className="grid md:grid-cols-2 gap-8 mt-6">
           {/* Gallery */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
           >
@@ -77,7 +77,7 @@ export default function ProductPage() {
 
           {/* Info */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="flex flex-col"

@@ -112,7 +112,7 @@ export default function CategoryPage() {
               {filtered.map((p, i) => (
                 <motion.div
                   key={p.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.05 }}
                 >
