@@ -103,23 +103,23 @@ export function CommerceHero() {
               <WhatsAppIcon className="h-3.5 w-3.5" />
               WhatsApp
             </a>
-            <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+551199999999" className="inline-flex items-center gap-1.5 hover:text-[#0061F9] transition-colors">
               <Phone className="h-3.5 w-3.5" />
               (11) 99999-9999
             </a>
-            <a href="mailto:contato@nexsportts.com.br" className="inline-flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="mailto:contato@nexsportts.com.br" className="inline-flex items-center gap-1.5 hover:text-[#0061F9] transition-colors">
               <Mail className="h-3.5 w-3.5" />
               contato@nexsportts.com.br
             </a>
           </div>
           <div className="flex items-center gap-3 text-foreground/80">
-            <a href="#" aria-label="Instagram" className="hover:text-accent transition-colors">
+            <a href="#" aria-label="Instagram" className="hover:text-[#0061F9] transition-colors">
               <InstagramIcon className="h-3.5 w-3.5" />
             </a>
-            <a href="#" aria-label="Facebook" className="hover:text-accent transition-colors">
+            <a href="#" aria-label="Facebook" className="hover:text-[#0061F9] transition-colors">
               <FacebookIcon className="h-3.5 w-3.5" />
             </a>
-            <a href="#" aria-label="TikTok" className="hover:text-accent transition-colors">
+            <a href="#" aria-label="TikTok" className="hover:text-[#0061F9] transition-colors">
               <TikTokIcon className="h-3.5 w-3.5" />
             </a>
           </div>
