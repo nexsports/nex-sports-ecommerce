@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ArrowUpRight, Menu, Search, ShoppingBasket } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -34,8 +34,29 @@ export function SiteHeader() {
   const cart = useCart()
   const count = cart?.count ?? 0
   const [query, setQuery] = useState("")
+  const [pastHero, setPastHero] = useState(false)
 
-  const hidden = isHome && !scrolled
+  // On home, pill nav only appears after the embedded hero subnav scrolls past the top.
+  useEffect(() => {
+    if (!isHome) {
+      setPastHero(false)
+      return
+    }
+    const update = () => {
+      const sentinel = document.getElementById("hero-end-sentinel")
+      if (!sentinel) return
+      setPastHero(sentinel.getBoundingClientRect().top <= 0)
+    }
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    window.addEventListener("resize", update)
+    return () => {
+      window.removeEventListener("scroll", update)
+      window.removeEventListener("resize", update)
+    }
+  }, [isHome])
+
+  const hidden = isHome && !pastHero
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,9 +67,10 @@ export function SiteHeader() {
 
   return (
     <header
+      aria-hidden={hidden}
       className={cn(
-        "fixed left-0 right-0 z-50 mx-auto w-full transition-all duration-300 ease-out",
-        hidden ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
+        "fixed left-0 right-0 z-50 mx-auto w-full",
+        hidden ? "hidden" : "block",
         scrolled ? "top-3 md:top-4 max-w-6xl px-3" : "top-0 max-w-none px-0",
       )}
     >
@@ -153,15 +175,19 @@ export function SiteHeader() {
 
         {/* Right actions */}
         <div className="flex items-center gap-1 shrink-0">
-          <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${count})`}>
-            <Link href="/carrinho">
-              <ShoppingBasket className="w-5 h-5" />
-              {count > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {count}
-                </span>
-              )}
-            </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => cart?.toggle?.()}
+            className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50"
+            aria-label={`Carrinho (${count})`}
+          >
+            <ShoppingBasket className="w-5 h-5" />
+            {count > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                {count}
+              </span>
+            )}
           </Button>
           <Button
             asChild

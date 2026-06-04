@@ -316,6 +316,9 @@ export function CommerceHero() {
           </div>
         </nav>
 
+        {/* Sentinel: pill nav from SiteHeader appears only when this passes top of viewport */}
+        <div id="hero-end-sentinel" aria-hidden className="h-0 w-full" />
+
         {/* ===== BANNER ===== */}
         <motion.div
           initial={false}
