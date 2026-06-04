@@ -99,7 +99,8 @@ export function CommerceHero() {
   const scrollCarousel = (dir: "l" | "r") => {
     const el = scrollerRef.current
     if (!el) return
-    const step = Math.max(260, el.clientWidth * 0.5)
+    // Scroll one full page (4 tiles on desktop)
+    const step = el.clientWidth
     el.scrollBy({ left: dir === "l" ? -step : step, behavior: "smooth" })
   }
 
@@ -364,7 +365,7 @@ export function CommerceHero() {
       </div>
 
       {/* ===== Category carousel ===== */}
-      <div className="mt-8 md:mt-14">
+      <div className="mt-8 md:mt-14 pb-12 md:pb-16">
         <div className="flex items-center gap-2 md:gap-4">
           {/* Left arrow — outside carousel, desktop only */}
           <button
@@ -384,21 +385,21 @@ export function CommerceHero() {
           {/* Scrollable track */}
           <div
             ref={scrollerRef}
-            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 py-2 -my-2 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 py-6 -my-6 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: "none" }}
           >
             {categoryDisplay.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/categoria/${cat.slug}`}
-                className="group snap-start shrink-0 relative overflow-hidden rounded-2xl w-[210px] md:w-[240px] lg:w-[250px] aspect-[4/5] border border-border/60 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/25"
+                className="group snap-start shrink-0 relative overflow-hidden rounded-2xl w-[210px] md:w-auto md:basis-[calc((100%-3rem)/4)] aspect-[4/5] border border-border/60 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/25"
               >
                 {/* Background image */}
                 <Image
                   src={cat.image}
                   alt={cat.theme}
                   fill
-                  sizes="(max-width: 768px) 210px, 250px"
+                  sizes="(max-width: 768px) 210px, 280px"
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                 />
 
