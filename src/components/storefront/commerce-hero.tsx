@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import {
   ArrowUpRight,
   ChevronDown,
@@ -79,29 +79,21 @@ export function CommerceHero() {
   const cartCount = cart?.count ?? 0
   const [query, setQuery] = useState("")
 
-  // Carousel state
+  // Carousel ref
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const [atStart, setAtStart] = useState(true)
-  const [atEnd, setAtEnd] = useState(false)
-
-  useEffect(() => {
-    const el = scrollerRef.current
-    if (!el) return
-    const update = () => {
-      setAtStart(el.scrollLeft < 4)
-      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4)
-    }
-    update()
-    el.addEventListener("scroll", update, { passive: true })
-    return () => el.removeEventListener("scroll", update)
-  }, [])
 
   const scrollCarousel = (dir: "l" | "r") => {
     const el = scrollerRef.current
     if (!el) return
-    // Scroll one full page (4 tiles on desktop)
     const step = el.clientWidth
-    el.scrollBy({ left: dir === "l" ? -step : step, behavior: "smooth" })
+    const maxLeft = el.scrollWidth - el.clientWidth
+    if (dir === "r") {
+      if (el.scrollLeft + 4 >= maxLeft) el.scrollTo({ left: 0, behavior: "smooth" })
+      else el.scrollBy({ left: step, behavior: "smooth" })
+    } else {
+      if (el.scrollLeft <= 4) el.scrollTo({ left: maxLeft, behavior: "smooth" })
+      else el.scrollBy({ left: -step, behavior: "smooth" })
+    }
   }
 
   const submitSearch = (e: React.FormEvent) => {
@@ -370,14 +362,8 @@ export function CommerceHero() {
           {/* Left arrow — outside carousel, desktop only */}
           <button
             onClick={() => scrollCarousel("l")}
-            disabled={atStart}
             aria-label="Categorias anteriores"
-            className={cn(
-              "hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all",
-              atStart
-                ? "opacity-30 pointer-events-none"
-                : "hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg",
-            )}
+            className="hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -430,14 +416,8 @@ export function CommerceHero() {
           {/* Right arrow — outside carousel, desktop only */}
           <button
             onClick={() => scrollCarousel("r")}
-            disabled={atEnd}
             aria-label="Próximas categorias"
-            className={cn(
-              "hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all",
-              atEnd
-                ? "opacity-30 pointer-events-none"
-                : "hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg",
-            )}
+            className="hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
