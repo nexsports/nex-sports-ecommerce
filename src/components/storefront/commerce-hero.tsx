@@ -366,36 +366,40 @@ export function CommerceHero() {
 
           {/* Embla viewport */}
           <div ref={emblaRef} className="flex-1 min-w-0 overflow-hidden">
-            <div className="flex gap-3 md:gap-4">
+            <div className="flex -ml-3 md:-ml-4">
               {categoryDisplay.map((cat) => (
-                <Link
+                <div
                   key={cat.slug}
-                  href={`/categoria/${cat.slug}`}
-                  className="group relative overflow-hidden rounded-2xl shrink-0 grow-0 basis-[210px] md:basis-[calc((100%-3rem)/4)] aspect-[4/5] border border-border/60 bg-card transition-colors duration-300 hover:border-primary/60"
+                  className="shrink-0 grow-0 basis-1/2 sm:basis-1/3 md:basis-1/4 pl-3 md:pl-4"
                 >
-                  <Image
-                    src={cat.image}
-                    alt={cat.theme}
-                    fill
-                    sizes="(max-width: 768px) 210px, 280px"
-                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
-                  <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
-                    <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                    <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
-                      {cat.nexLabel}
-                    </p>
-                    <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
-                      {cat.theme}
-                    </h3>
-                    <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
-                      {cat.subs.join(" · ")}
-                    </p>
-                  </div>
-                </Link>
+                  <Link
+                    href={`/categoria/${cat.slug}`}
+                    className="group relative block overflow-hidden rounded-2xl aspect-[4/5] border border-border/60 bg-card transition-colors duration-300 hover:border-primary/60"
+                  >
+                    <Image
+                      src={cat.image}
+                      alt={cat.theme}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
+                    <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
+                      <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
+                    </div>
+                    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                      <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
+                        {cat.nexLabel}
+                      </p>
+                      <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
+                        {cat.theme}
+                      </h3>
+                      <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
+                        {cat.subs.join(" · ")}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>
