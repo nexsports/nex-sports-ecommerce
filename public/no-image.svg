@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" fill="#0f172a"/>
+  <rect x="80" y="100" width="240" height="180" rx="12" stroke="#334155" stroke-width="3" stroke-dasharray="8 8"/>
+  <circle cx="150" cy="170" r="14" stroke="#334155" stroke-width="3"/>
+  <path d="M110 250 L170 200 L210 230 L290 170 L290 280 L110 280 Z" stroke="#334155" stroke-width="3" fill="none" stroke-linejoin="round"/>
+  <text x="200" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="#64748b" text-anchor="middle">SEM IMAGEM</text>
+</svg>

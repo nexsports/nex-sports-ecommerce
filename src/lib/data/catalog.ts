@@ -4,38 +4,6 @@ import type { Category, Product, Partner } from "@/lib/mocks/types";
 
 export const categories: Category[] = [
   {
-    "id": "c0000001-0000-4000-8000-000000000001",
-    "slug": "raquetes",
-    "name": "Raquetes",
-    "description": "Raquetes de Padel — controle, equilibradas, ataque, fullcarbon, femininas e junior.",
-    "imageUrl": "https://images.unsplash.com/photo-1622279457486-28f993f78bce?w=800&q=80",
-    "productCount": 0
-  },
-  {
-    "id": "c0000002-0000-4000-8000-000000000002",
-    "slug": "bolas",
-    "name": "Bolas",
-    "description": "Bolas de Padel oficiais — treino e competição.",
-    "imageUrl": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&q=80",
-    "productCount": 0
-  },
-  {
-    "id": "c0000003-0000-4000-8000-000000000003",
-    "slug": "raqueteiras",
-    "name": "Raqueteiras",
-    "description": "Raqueteiras e mochilas para transporte de raquetes e equipamento.",
-    "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
-    "productCount": 0
-  },
-  {
-    "id": "c0000004-0000-4000-8000-000000000004",
-    "slug": "acessorios",
-    "name": "Acessórios",
-    "description": "Overgrips, grips, protetores de raquete, cordas e mais.",
-    "imageUrl": "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=80",
-    "productCount": 0
-  },
-  {
     "id": "dffd2dc0-70c5-4b48-ae27-7b8022b08426",
     "slug": "nex-fut",
     "name": "NEX FUT",
@@ -103,765 +71,158 @@ export const categories: Category[] = [
 
 export const products: Product[] = [
   {
-    "id": "06c2db1d-552a-45d8-80e7-890139aa0391",
-    "slug": "fone-tws-run-air",
-    "title": "Fone TWS Run Air",
-    "brand": "JBL",
-    "category": "nex-tech",
-    "priceCents": 29900,
+    "id": "00000000-0000-4000-8000-000000000001",
+    "slug": "produto-teste-padel",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-padel",
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=800&q=80",
-      "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=800&q=80",
-      "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "badge": "HOT",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "Earbud true wireless, IPX7, encaixe esportivo seguro.",
-    "stock": 60
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "d3949cb1-f55d-405d-8367-4366845b0213",
-    "slug": "headphones-sport-bt",
-    "title": "Headphones Sport BT Pro",
-    "brand": "Sony",
-    "category": "nex-tech",
-    "priceCents": 54900,
-    "salePriceCents": 39900,
+    "id": "00000000-0000-4000-8000-000000000002",
+    "slug": "produto-teste-beach",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-beach",
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "badge": "-27%",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      }
-    ],
-    "description": "Bluetooth 5.3, ANC, IPX5, 30h de bateria.",
-    "stock": 34
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "9abf66e9-709a-4878-8a53-4a1ba9e12301",
-    "slug": "smartwatch-sport-gps",
-    "title": "Smartwatch Sport GPS",
-    "brand": "Garmin",
-    "category": "nex-tech",
-    "priceCents": 99900,
-    "salePriceCents": 79900,
-    "images": [
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-20%",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Prata",
-        "hex": "#CBD5E1"
-      }
-    ],
-    "description": "Tela AMOLED 1.4\", GPS, 50+ esportes, bateria 14 dias.",
-    "stock": 24
-  },
-  {
-    "id": "2f74e570-5852-49a0-a20a-a72129dca774",
-    "slug": "bone-fit-aba-curva",
-    "title": "Boné Fit Aba Curva",
-    "brand": "Puma",
-    "category": "nex-style",
-    "priceCents": 8900,
-    "images": [
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      },
-      {
-        "name": "Azul",
-        "hex": "#3B82F6"
-      }
-    ],
-    "description": "Boné estruturado, ajuste por velcro, dry-touch.",
-    "stock": 99
-  },
-  {
-    "id": "db7cdd28-8914-41d4-beb7-9fd2a902a67c",
-    "slug": "mochila-urban-pro-30l",
-    "title": "Mochila Urban Pro 30L",
-    "brand": "Under Armour",
-    "category": "nex-style",
-    "priceCents": 27900,
-    "images": [
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "30L, compartimento notebook 15.6\".",
-    "stock": 30
-  },
-  {
-    "id": "7a7935b5-555d-415d-9c2d-82403f944f5c",
-    "slug": "oversized-tech-hoodie",
-    "title": "Oversized Tech Hoodie",
-    "brand": "Nike",
-    "category": "nex-style",
-    "priceCents": 37900,
-    "salePriceCents": 25900,
-    "images": [
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-32%",
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Cinza",
-        "hex": "#64748B"
-      },
-      {
-        "name": "Bege",
-        "hex": "#D6CFC2"
-      }
-    ],
-    "description": "Moletom oversized com tecido Tech Fleece.",
-    "stock": 36
-  },
-  {
-    "id": "b2ec8602-bdb1-4d49-8298-739dccf8b7cd",
-    "slug": "raquete-tenis-blade-x",
-    "title": "Raquete Tênis Blade X",
-    "brand": "Wilson",
-    "category": "nex-court",
-    "priceCents": 89900,
-    "salePriceCents": 74900,
-    "images": [
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-17%",
-    "sizes": [
-      "L2",
-      "L3",
-      "L4"
-    ],
-    "colors": [
-      {
-        "name": "Preto/Verde",
-        "hex": "#10B981"
-      }
-    ],
-    "description": "Tecnologia FortyFive°, 295g.",
-    "stock": 18
-  },
-  {
-    "id": "40c50ca8-2baa-4bc7-97c6-c44e8c52ac2d",
-    "slug": "bola-basquete-nba-game",
-    "title": "Bola Basquete NBA Game",
-    "brand": "Wilson",
-    "category": "nex-court",
-    "priceCents": 39900,
-    "images": [
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Oficial 7"
-    ],
-    "colors": [
-      {
-        "name": "Laranja",
-        "hex": "#F97316"
-      }
-    ],
-    "description": "Bola oficial NBA, couro composto.",
-    "stock": 50
-  },
-  {
-    "id": "6c8f7aef-48b7-41f0-a882-682644788853",
-    "slug": "tenis-court-grip",
-    "title": "Tênis Court Grip Pro",
-    "brand": "Nike",
-    "category": "nex-court",
-    "priceCents": 64900,
-    "images": [
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43"
-    ],
-    "colors": [
-      {
-        "name": "Branco/Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "Solado de borracha XDR pra quadras hard.",
-    "stock": 36
-  },
-  {
-    "id": "de0f53ab-1b8a-44ac-90d4-7386fda2024f",
-    "slug": "relogio-run-gps",
-    "title": "Relógio Run GPS Pro",
-    "brand": "Garmin",
-    "category": "nex-run",
-    "priceCents": 159900,
-    "salePriceCents": 129900,
-    "images": [
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-19%",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "GPS multi-banda, autonomia 28h.",
-    "stock": 15
-  },
-  {
-    "id": "ae99bbe1-f857-46f4-82c8-d8b9546fe429",
-    "slug": "regata-run-light",
-    "title": "Regata Run Light",
-    "brand": "Asics",
+    "id": "00000000-0000-4000-8000-000000000003",
+    "slug": "produto-teste-run",
+    "title": "Produto Teste",
+    "brand": "NEX",
     "category": "nex-run",
     "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
-    ],
-    "colors": [
-      {
-        "name": "Cinza",
-        "hex": "#64748B"
-      },
-      {
-        "name": "Amarelo neon",
-        "hex": "#FACC15"
-      }
-    ],
-    "description": "Regata ultra leve com Cool Touch.",
-    "stock": 64
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "d0ee3ec7-417d-4a3c-a4b3-0bbb96010962",
-    "slug": "tenis-ultra-boost-run",
-    "title": "Tênis Ultra Boost Run",
-    "brand": "Adidas",
-    "category": "nex-run",
-    "priceCents": 74900,
-    "salePriceCents": 58900,
+    "id": "00000000-0000-4000-8000-000000000004",
+    "slug": "produto-teste-court",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-court",
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "badge": "-21%",
-    "sizes": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      }
-    ],
-    "description": "Cabedal Primeknit+, entressola Boost com responsividade total.",
-    "stock": 56
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "9861a0e0-97ab-42bf-928f-fc9a4ef98880",
-    "slug": "bola-padel-pro-cano",
-    "title": "Bolas Padel Pro (cano c/ 3)",
-    "brand": "Wilson",
-    "category": "nex-padel",
-    "priceCents": 4900,
-    "images": [
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
-      "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Amarelo",
-        "hex": "#F59E0B"
-      }
-    ],
-    "description": "Bolas oficiais aprovadas FIP, pressão constante.",
-    "stock": 200
-  },
-  {
-    "id": "13a69e14-5777-4d56-8259-d2ed9243c4a7",
-    "slug": "bolsa-padel-tour",
-    "title": "Bolsa Padel Tour 6",
-    "brand": "Adidas",
-    "category": "nex-padel",
-    "priceCents": 39900,
-    "images": [
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "Bolsa térmica pra 6 raquetes, compartimento isolado pra calçados.",
-    "stock": 30
-  },
-  {
-    "id": "0639a702-23fb-49a5-ba47-39f539df5a33",
-    "slug": "raquete-padel-pro-diamond",
-    "title": "Raquete Padel Pro Diamond",
-    "brand": "Wilson",
-    "category": "nex-padel",
-    "priceCents": 69900,
-    "salePriceCents": 52000,
-    "images": [
-      "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=800&q=80",
-      "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=800&q=80",
-      "https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-26%",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto/Azul",
-        "hex": "#1E40AF"
-      }
-    ],
-    "description": "Formato diamante, EVA Hard, fibra de carbono.",
-    "stock": 20
-  },
-  {
-    "id": "6d4d2600-45b4-4cb4-a18e-e245f8283e9b",
-    "slug": "oculos-solar-sport-uv",
-    "title": "Óculos Solar Sport UV400",
-    "brand": "Mizuno",
-    "category": "nex-beach",
-    "priceCents": 24900,
-    "images": [
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Azul espelhado",
-        "hex": "#1E3A8A"
-      }
-    ],
-    "description": "Lente polarizada, proteção UV400, armação TR90 leve.",
-    "stock": 50
-  },
-  {
-    "id": "5f57f925-9a5a-407f-ad58-e2a5837b5596",
-    "slug": "sunga-pro-swim",
-    "title": "Sunga Pro Swim Slim",
-    "brand": "Adidas",
-    "category": "nex-beach",
-    "priceCents": 12900,
-    "images": [
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80",
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80",
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Azul",
-        "hex": "#3B82F6"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      }
-    ],
-    "description": "Sunga slim com cordão interno e tecnologia Infinitex.",
-    "stock": 72
-  },
-  {
-    "id": "8e91bf39-a9bc-42fa-a132-186a24540556",
-    "slug": "raquete-beach-tennis-elite",
-    "title": "Raquete Beach Tennis Elite",
-    "brand": "Wilson",
-    "category": "nex-beach",
-    "priceCents": 89900,
-    "salePriceCents": 64900,
-    "images": [
-      "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80",
-      "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80",
-      "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-28%",
-    "sizes": [
-      "Único"
-    ],
-    "colors": [
-      {
-        "name": "Azul/Cyan",
-        "hex": "#22D3EE"
-      }
-    ],
-    "description": "Carbono 18K, frame eva soft, balanço médio.",
-    "stock": 25
-  },
-  {
-    "id": "072ebaa2-fd78-480e-ac88-735280b7c373",
-    "slug": "luva-grip-pro",
-    "title": "Luva Grip Pro Crossfit",
-    "brand": "Mizuno",
-    "category": "nex-fit",
-    "priceCents": 7900,
-    "images": [
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80",
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80",
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "P",
-      "M",
-      "G"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "Luva com palma antiderrapante e proteção em punho.",
-    "stock": 39
-  },
-  {
-    "id": "1404dfcf-331e-4314-bb3c-33e5156cc168",
-    "slug": "shorts-train-flex",
-    "title": "Shorts Train Flex 7\"",
-    "brand": "Nike",
-    "category": "nex-fit",
-    "priceCents": 14900,
-    "images": [
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80",
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80",
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Verde militar",
-        "hex": "#3F5235"
-      }
-    ],
-    "description": "Shorts de treino com bolso traseiro com zíper.",
-    "stock": 56
-  },
-  {
-    "id": "e9f0d9af-0138-441e-acaf-049075b64d34",
-    "slug": "dry-fit-compression-x",
-    "title": "Dry Fit Compression X",
-    "brand": "Under Armour",
-    "category": "nex-fit",
-    "priceCents": 11900,
-    "salePriceCents": 8900,
-    "images": [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
-    ],
-    "rating": 0,
-    "reviewCount": 0,
-    "badge": "-25%",
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Cinza",
-        "hex": "#64748B"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      }
-    ],
-    "description": "Camiseta de compressão com tecnologia HeatGear.",
-    "stock": 72
-  },
-  {
-    "id": "99fcd0fb-3f4d-41cc-af76-6e50ec98880a",
-    "slug": "meiao-pro-stripe",
-    "title": "Meião Pro Stripe",
-    "brand": "Puma",
+    "id": "00000000-0000-4000-8000-000000000005",
+    "slug": "produto-teste-fut",
+    "title": "Produto Teste",
+    "brand": "NEX",
     "category": "nex-fut",
-    "priceCents": 5900,
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "sizes": [
-      "35-38",
-      "39-42",
-      "43-46"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      },
-      {
-        "name": "Azul",
-        "hex": "#3B82F6"
-      }
-    ],
-    "description": "Meião profissional com compressão na panturrilha.",
-    "stock": 198
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "0fe39cf5-3d43-4c57-809a-fe0a7e2ba172",
-    "slug": "chuteira-speed-carbon",
-    "title": "Chuteira Speed Carbon FG",
-    "brand": "Adidas",
-    "category": "nex-fut",
-    "priceCents": 49900,
-    "salePriceCents": 34900,
+    "id": "00000000-0000-4000-8000-000000000006",
+    "slug": "produto-teste-fit",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-fit",
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "badge": "-30%",
-    "sizes": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43"
-    ],
-    "colors": [
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      },
-      {
-        "name": "Branco",
-        "hex": "#FFFFFF"
-      }
-    ],
-    "description": "Cabedal Primeknit, placa de carbono pra trava firme, peso 195g.",
-    "stock": 24
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   },
   {
-    "id": "d8da3957-0478-4cff-bdfe-be9769ffeb76",
-    "slug": "camisa-pro-match-elite",
-    "title": "Camisa Pro Match Elite",
-    "brand": "Nike",
-    "category": "nex-fut",
-    "priceCents": 24900,
-    "salePriceCents": 18900,
+    "id": "00000000-0000-4000-8000-000000000007",
+    "slug": "produto-teste-style",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-style",
+    "priceCents": 9900,
     "images": [
-      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
-      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80",
-      "https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=800&q=80"
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
     "rating": 0,
     "reviewCount": 0,
-    "badge": "-24%",
-    "sizes": [
-      "P",
-      "M",
-      "G",
-      "GG"
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000008",
+    "slug": "produto-teste-tech",
+    "title": "Produto Teste",
+    "brand": "NEX",
+    "category": "nex-tech",
+    "priceCents": 9900,
+    "images": [
+      "/no-image.svg",
+      "/no-image.svg",
+      "/no-image.svg"
     ],
-    "colors": [
-      {
-        "name": "Azul",
-        "hex": "#3B82F6"
-      },
-      {
-        "name": "Preto",
-        "hex": "#0F172A"
-      }
-    ],
-    "description": "Camisa de jogo com tecnologia Dri-FIT ADV, gola V em rib, tecido com 92% poliéster reciclado.",
-    "stock": 48
+    "rating": 0,
+    "reviewCount": 0,
+    "sizes": ["Único"],
+    "colors": [{ "name": "Padrão", "hex": "#334155" }],
+    "description": "Produto de teste para visualização.",
+    "stock": 10
   }
-];
+]
 
 export const partners: Partner[] = [
   {
@@ -915,7 +276,7 @@ export function getFeatured(): Product[] {
 }
 
 export function getBestSellers(): Product[] {
-  return [...products].sort(() => 0).slice(0, 6);
+  return products.slice(0, 4);
 }
 
 export function getWeeklyFinds(): Product[] {
