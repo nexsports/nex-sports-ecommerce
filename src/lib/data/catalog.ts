@@ -225,38 +225,8 @@ export const products: Product[] = [
 ]
 
 export const partners: Partner[] = [
-  {
-    "name": "NIKE",
-    "logoUrl": ""
-  },
-  {
-    "name": "ADIDAS",
-    "logoUrl": ""
-  },
-  {
-    "name": "PUMA",
-    "logoUrl": ""
-  },
-  {
-    "name": "ASICS",
-    "logoUrl": ""
-  },
-  {
-    "name": "NEW BALANCE",
-    "logoUrl": ""
-  },
-  {
-    "name": "UNDER ARMOUR",
-    "logoUrl": ""
-  },
-  {
-    "name": "MIZUNO",
-    "logoUrl": ""
-  },
-  {
-    "name": "WILSON",
-    "logoUrl": ""
-  }
+  { "name": "Raqueteria", "logoUrl": "/partners/raqueteria.png" },
+  { "name": "Minimalist", "logoUrl": "/partners/minimalist.png" }
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
