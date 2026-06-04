@@ -12,7 +12,7 @@ export const categoryDisplay: CategoryDisplay[] = [
     theme: 'Futebol',
     nexLabel: 'NEX FUT',
     subs: ['Chuteiras', 'Camisas', 'Meias'],
-    image: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80',
+    image: '/categories/nex-fut.png',
   },
   {
     slug: 'nex-fit',
