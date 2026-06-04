@@ -86,13 +86,26 @@ export function CommerceHero() {
     const el = scrollerRef.current
     if (!el) return
     const step = el.clientWidth
-    const maxLeft = el.scrollWidth - el.clientWidth
+    const half = el.scrollWidth / 2
     if (dir === "r") {
-      if (el.scrollLeft + 4 >= maxLeft) el.scrollTo({ left: 0, behavior: "smooth" })
-      else el.scrollBy({ left: step, behavior: "smooth" })
+      el.scrollBy({ left: step, behavior: "smooth" })
+      // After smooth scroll, if into duplicate set, snap back by one set width.
+      // Snap is invisible because the duplicate frame is identical.
+      window.setTimeout(() => {
+        if (el.scrollLeft >= half - 1) {
+          el.scrollLeft = el.scrollLeft - half
+        }
+      }, 500)
     } else {
-      if (el.scrollLeft <= 4) el.scrollTo({ left: maxLeft, behavior: "smooth" })
-      else el.scrollBy({ left: -step, behavior: "smooth" })
+      if (el.scrollLeft <= 1) {
+        // Jump instantly to mirror position then animate left from there
+        el.scrollLeft = half
+        requestAnimationFrame(() => {
+          el.scrollBy({ left: -step, behavior: "smooth" })
+        })
+      } else {
+        el.scrollBy({ left: -step, behavior: "smooth" })
+      }
     }
   }
 
@@ -374,9 +387,9 @@ export function CommerceHero() {
             className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: "none" }}
           >
-            {categoryDisplay.map((cat) => (
+            {[...categoryDisplay, ...categoryDisplay].map((cat, idx) => (
               <Link
-                key={cat.slug}
+                key={`${cat.slug}-${idx}`}
                 href={`/categoria/${cat.slug}`}
                 className="group snap-start shrink-0 relative overflow-hidden rounded-2xl w-[210px] md:w-auto md:basis-[calc((100%-3rem)/4)] aspect-[4/5] border border-border/60 bg-card transition-colors duration-300 hover:border-primary/60"
               >
