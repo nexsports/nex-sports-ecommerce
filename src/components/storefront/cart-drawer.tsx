@@ -1,17 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  Minus,
-  Plus,
-  ShoppingBag,
-  Trash2,
-  X,
-  ChevronDown,
-  Truck,
-} from "lucide-react"
+import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -19,18 +10,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useCart } from "@/lib/cart/cart-context"
 import { formatBRL } from "@/lib/utils"
 
-const FREE_SHIPPING_THRESHOLD = 20000
-
 export function CartDrawer() {
-  const { items, remove, updateQty, total, count, isOpen, close } = useCart()
-  const [shippingOpen, setShippingOpen] = useState(false)
-
-  const remaining = FREE_SHIPPING_THRESHOLD - total
+  const { items, remove, updateQty, total, isOpen, close } = useCart()
 
   return (
     <Sheet open={isOpen} onOpenChange={(v) => { if (!v) close() }}>
@@ -152,54 +137,7 @@ export function CartDrawer() {
 
             {/* ── Footer ── */}
             <div className="border-t border-border shrink-0">
-              {/* Free shipping banner */}
-              <div
-                className={`mx-5 mt-4 rounded-lg px-3.5 py-2.5 flex items-center gap-2.5 text-sm ${
-                  remaining <= 0
-                    ? "bg-emerald-500/10 text-emerald-400"
-                    : "bg-primary/10 text-primary"
-                }`}
-              >
-                <Truck className="h-4 w-4 shrink-0" />
-                <span>
-                  {remaining <= 0
-                    ? "Você ganhou frete grátis 🎉"
-                    : `Faltam ${formatBRL(remaining)} pra frete grátis`}
-                </span>
-              </div>
-
               <div className="px-5 py-4 space-y-3">
-                {/* Subtotal */}
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    Subtotal (sem frete)
-                  </span>
-                  <span className="font-medium tabular-nums">
-                    {formatBRL(total)}
-                  </span>
-                </div>
-
-                {/* Shipping accordion */}
-                <button
-                  onClick={() => setShippingOpen((o) => !o)}
-                  aria-expanded={shippingOpen}
-                  className="flex items-center justify-between w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <span>Meios de envio</span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform ${
-                      shippingOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {shippingOpen && (
-                  <p className="text-xs text-muted-foreground pl-0.5 pb-1">
-                    Selecione o frete no checkout
-                  </p>
-                )}
-
-                <Separator />
-
                 {/* Total */}
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-semibold">Total</span>
