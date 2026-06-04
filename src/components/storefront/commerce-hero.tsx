@@ -3,7 +3,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useRef } from "react"
+import { useCallback, useState } from "react"
+import useEmblaCarousel from "embla-carousel-react"
 import {
   ArrowUpRight,
   ChevronDown,
@@ -79,24 +80,17 @@ export function CommerceHero() {
   const cartCount = cart?.count ?? 0
   const [query, setQuery] = useState("")
 
-  // Carousel ref
-  const scrollerRef = useRef<HTMLDivElement>(null)
-
-  const scrollCarousel = (dir: "l" | "r") => {
-    const el = scrollerRef.current
-    if (!el) return
-    const step = el.clientWidth
-    const half = el.scrollWidth / 2
-    // Snap BEFORE animating. Because the list is duplicated, snapping by ±half
-    // moves to a visually identical frame — the user sees nothing. Then the
-    // smooth scrollBy runs from the new position, always in the clicked direction.
-    if (dir === "r" && el.scrollLeft + step >= half) {
-      el.scrollLeft = el.scrollLeft - half
-    } else if (dir === "l" && el.scrollLeft - step < 0) {
-      el.scrollLeft = el.scrollLeft + half
-    }
-    el.scrollBy({ left: dir === "r" ? step : -step, behavior: "smooth" })
-  }
+  // Embla infinite carousel (real loop, touch swipe, GPU-accelerated)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+    duration: 28,
+    dragFree: false,
+    containScroll: false,
+  })
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -358,66 +352,57 @@ export function CommerceHero() {
         </motion.div>
       </div>
 
-      {/* ===== Category carousel ===== */}
+      {/* ===== Category carousel — Embla, real infinite loop ===== */}
       <div className="mt-8 md:mt-12">
         <div className="flex items-center gap-2 md:gap-4">
-          {/* Left arrow — outside carousel, desktop only */}
+          {/* Left arrow — desktop only */}
           <button
-            onClick={() => scrollCarousel("l")}
+            onClick={scrollPrev}
             aria-label="Categorias anteriores"
             className="hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
 
-          {/* Scrollable track */}
-          <div
-            ref={scrollerRef}
-            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {[...categoryDisplay, ...categoryDisplay].map((cat, idx) => (
-              <Link
-                key={`${cat.slug}-${idx}`}
-                href={`/categoria/${cat.slug}`}
-                className="group snap-start shrink-0 relative overflow-hidden rounded-2xl w-[210px] md:w-auto md:basis-[calc((100%-3rem)/4)] aspect-[4/5] border border-border/60 bg-card transition-colors duration-300 hover:border-primary/60"
-              >
-                {/* Background image */}
-                <Image
-                  src={cat.image}
-                  alt={cat.theme}
-                  fill
-                  sizes="(max-width: 768px) 210px, 280px"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                />
-
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
-
-                {/* Arrow chip top-right */}
-                <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
-                  <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
-                </div>
-
-                {/* Content bottom */}
-                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                  <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
-                    {cat.nexLabel}
-                  </p>
-                  <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
-                    {cat.theme}
-                  </h3>
-                  <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
-                    {cat.subs.join(" · ")}
-                  </p>
-                </div>
-              </Link>
-            ))}
+          {/* Embla viewport */}
+          <div ref={emblaRef} className="flex-1 min-w-0 overflow-hidden">
+            <div className="flex gap-3 md:gap-4">
+              {categoryDisplay.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/categoria/${cat.slug}`}
+                  className="group relative overflow-hidden rounded-2xl shrink-0 grow-0 basis-[210px] md:basis-[calc((100%-3rem)/4)] aspect-[4/5] border border-border/60 bg-card transition-colors duration-300 hover:border-primary/60"
+                >
+                  <Image
+                    src={cat.image}
+                    alt={cat.theme}
+                    fill
+                    sizes="(max-width: 768px) 210px, 280px"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
+                  <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
+                    <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                    <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
+                      {cat.nexLabel}
+                    </p>
+                    <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
+                      {cat.theme}
+                    </h3>
+                    <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
+                      {cat.subs.join(" · ")}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Right arrow — outside carousel, desktop only */}
+          {/* Right arrow — desktop only */}
           <button
-            onClick={() => scrollCarousel("r")}
+            onClick={scrollNext}
             aria-label="Próximas categorias"
             className="hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg"
           >
