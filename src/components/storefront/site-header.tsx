@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ArrowUpRight, Menu, Search, ShoppingBasket } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart/cart-context"
-import { useScroll } from "@/lib/hooks/use-scroll"
 import { categoryDisplay } from "@/lib/data/category-display"
 import { cn } from "@/lib/utils"
 
@@ -30,22 +29,54 @@ export function SiteHeader() {
   const pathname = usePathname()
   const router = useRouter()
   const isHome = pathname === "/"
-  const scrolled = useScroll(80)
   const cart = useCart()
   const count = cart?.count ?? 0
   const [query, setQuery] = useState("")
   const [pastHero, setPastHero] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const lastYRef = useRef(0)
+  const prevPastHeroRef = useRef(false)
 
-  // On home, pill nav only appears after the embedded hero subnav scrolls past the top.
+  // Combined scroll handler: tracks (1) home sentinel pass + (2) scroll direction
+  // for auto-hide on scroll-down / show on scroll-up.
+  // - Home: hidden until hero subnav scrolls past top, then appears.
+  // - Any page: at top → visible (unless still on home hero).
+  // - Scroll up → show; scroll down → hide.
   useEffect(() => {
-    if (!isHome) {
-      setPastHero(false)
-      return
-    }
+    const TOP_THRESHOLD = 8
+    const DELTA = 6
+
     const update = () => {
-      const sentinel = document.getElementById("hero-end-sentinel")
-      if (!sentinel) return
-      setPastHero(sentinel.getBoundingClientRect().top <= 0)
+      const y = window.scrollY
+      const last = lastYRef.current
+      const delta = y - last
+
+      let passed = true
+      if (isHome) {
+        const sentinel = document.getElementById("hero-end-sentinel")
+        passed = sentinel ? sentinel.getBoundingClientRect().top <= 0 : false
+        setPastHero(passed)
+      }
+
+      // Sentinel just crossed → force-show so user sees the nav appear
+      if (passed && !prevPastHeroRef.current) {
+        setVisible(true)
+        prevPastHeroRef.current = passed
+        lastYRef.current = y
+        return
+      }
+      prevPastHeroRef.current = passed
+
+      if (y <= TOP_THRESHOLD) {
+        setVisible(!isHome) // inner page top → show; home top → hide (hero owns)
+      } else if (Math.abs(delta) < DELTA) {
+        // ignore micro scroll
+      } else if (delta < 0) {
+        setVisible(true) // scrolling up → show
+      } else {
+        setVisible(false) // scrolling down → hide
+      }
+      lastYRef.current = y
     }
     update()
     window.addEventListener("scroll", update, { passive: true })
@@ -56,7 +87,8 @@ export function SiteHeader() {
     }
   }, [isHome])
 
-  const hidden = isHome && !pastHero
+  // Header is shown if: (gate passed) AND (auto-hide state visible)
+  const shown = (isHome ? pastHero : true) && visible
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,20 +99,14 @@ export function SiteHeader() {
 
   return (
     <header
-      aria-hidden={hidden}
+      aria-hidden={!shown}
       className={cn(
-        "fixed left-0 right-0 z-50 mx-auto w-full transition-all duration-300 ease-out",
-        hidden ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
-        scrolled ? "top-3 md:top-4 max-w-6xl px-3" : "top-0 max-w-none px-0",
+        "fixed left-0 right-0 z-40 w-full top-0 transition-transform duration-300 ease-out",
+        shown ? "translate-y-0" : "-translate-y-full",
       )}
     >
       <nav
-        className={cn(
-          "flex items-center gap-2 sm:gap-3 px-3 md:px-4 h-14 md:h-16 transition-all duration-300 ease-out",
-          scrolled
-            ? "rounded-2xl border border-border bg-background/85 backdrop-blur-xl shadow-2xl shadow-primary/5"
-            : "rounded-none bg-background/85 backdrop-blur-xl border-b border-border w-full",
-        )}
+        className="flex items-center gap-2 sm:gap-3 px-3 md:px-6 h-14 md:h-16 bg-background/95 backdrop-blur-xl border-b border-border w-full"
       >
         {/* Logo */}
         <Link href="/" className="flex items-center shrink-0" aria-label="NEX SPORTS">

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { SiteHeader } from "@/components/storefront/site-header"
 import { SiteFooter } from "@/components/storefront/site-footer"
 import { CartProvider } from "@/lib/cart/cart-context"
+import { CartDrawer } from "@/components/storefront/cart-drawer"
 import { Toaster } from "@/components/ui/sonner"
 import { Banner } from "@/components/ui/banner"
 import { cn } from "@/lib/utils"
@@ -13,17 +14,19 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
   const isHome = pathname === "/"
   return (
     <CartProvider>
+      {/* Pix banner — in-flow at the top, scrolls away with the page */}
       <Banner
         variant="rainbow"
         height="2.25rem"
-        className="relative text-white text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase shadow-md"
+        className="relative z-50 text-white text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase shadow-md"
         rainbowColors={["#0048D8", "#0063FA", "#0048D8", "#0063FA"]}
       >
         Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
       </Banner>
       <SiteHeader />
-      <main className={cn("flex-1", !isHome && "pt-16")}>{children}</main>
+      <main className={cn("flex-1", isHome ? "pt-0" : "pt-16")}>{children}</main>
       <SiteFooter />
+      <CartDrawer />
       <Toaster position="top-right" richColors />
     </CartProvider>
   )
