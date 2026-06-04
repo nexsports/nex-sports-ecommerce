@@ -20,18 +20,18 @@ export function PartnersMarquee() {
           {reel.map((p, i) => (
             <div
               key={`${p.name}-${i}`}
-              className="relative flex items-center justify-center h-14 md:h-16 w-32 md:w-44 shrink-0 opacity-60 hover:opacity-100 transition-opacity"
+              className="relative flex items-center justify-center h-16 md:h-20 w-36 md:w-48 shrink-0 rounded-xl bg-white px-4 py-3"
             >
               {p.logoUrl ? (
                 <Image
                   src={p.logoUrl}
                   alt={p.name}
                   fill
-                  sizes="(max-width: 768px) 128px, 176px"
-                  className="object-contain"
+                  sizes="(max-width: 768px) 144px, 192px"
+                  className={`object-contain p-2 ${p.invertOnLight ? "[filter:invert(1)]" : ""}`}
                 />
               ) : (
-                <span className="text-lg md:text-xl font-bold tracking-widest text-muted-foreground">
+                <span className="text-lg md:text-xl font-bold tracking-widest text-foreground">
                   {p.name}
                 </span>
               )}

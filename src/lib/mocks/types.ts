@@ -23,11 +23,14 @@ export interface Product {
   colors: { name: string; hex: string }[]
   description: string
   stock: number
+  gender?: 'masculino' | 'feminino' | 'unissex'
 }
 
 export interface Partner {
   name: string
   logoUrl: string
+  /** Apply CSS invert when rendered on a light card (use for white-only logos) */
+  invertOnLight?: boolean
 }
 
 export interface CartItem {
