@@ -16,7 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart/cart-context"
 import { useScroll } from "@/lib/hooks/use-scroll"
-import { categories } from "@/lib/data/catalog"
+import { categoryDisplay } from "@/lib/data/category-display"
 import { cn } from "@/lib/utils"
 
 const navigation = [
@@ -69,8 +69,8 @@ export function SiteHeader() {
     <header
       aria-hidden={hidden}
       className={cn(
-        "fixed left-0 right-0 z-50 mx-auto w-full",
-        hidden ? "hidden" : "block",
+        "fixed left-0 right-0 z-50 mx-auto w-full transition-all duration-300 ease-out",
+        hidden ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
         scrolled ? "top-3 md:top-4 max-w-6xl px-3" : "top-0 max-w-none px-0",
       )}
     >
@@ -132,13 +132,17 @@ export function SiteHeader() {
             <Separator className="mx-6" />
             <div className="p-6 space-y-1">
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
-              {categories.map((cat) => (
+              {categoryDisplay.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/categoria/${cat.slug}`}
-                  className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+                  className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group"
                 >
-                  {cat.name}
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
+                    <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               ))}
             </div>

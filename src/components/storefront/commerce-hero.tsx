@@ -87,26 +87,15 @@ export function CommerceHero() {
     if (!el) return
     const step = el.clientWidth
     const half = el.scrollWidth / 2
-    if (dir === "r") {
-      el.scrollBy({ left: step, behavior: "smooth" })
-      // After smooth scroll, if into duplicate set, snap back by one set width.
-      // Snap is invisible because the duplicate frame is identical.
-      window.setTimeout(() => {
-        if (el.scrollLeft >= half - 1) {
-          el.scrollLeft = el.scrollLeft - half
-        }
-      }, 500)
-    } else {
-      if (el.scrollLeft <= 1) {
-        // Jump instantly to mirror position then animate left from there
-        el.scrollLeft = half
-        requestAnimationFrame(() => {
-          el.scrollBy({ left: -step, behavior: "smooth" })
-        })
-      } else {
-        el.scrollBy({ left: -step, behavior: "smooth" })
-      }
+    // Snap BEFORE animating. Because the list is duplicated, snapping by ±half
+    // moves to a visually identical frame — the user sees nothing. Then the
+    // smooth scrollBy runs from the new position, always in the clicked direction.
+    if (dir === "r" && el.scrollLeft + step >= half) {
+      el.scrollLeft = el.scrollLeft - half
+    } else if (dir === "l" && el.scrollLeft - step < 0) {
+      el.scrollLeft = el.scrollLeft + half
     }
+    el.scrollBy({ left: dir === "r" ? step : -step, behavior: "smooth" })
   }
 
   const submitSearch = (e: React.FormEvent) => {

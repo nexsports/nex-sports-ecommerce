@@ -21,7 +21,7 @@ export function CartDrawer() {
     <Sheet open={isOpen} onOpenChange={(v) => { if (!v) close() }}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-md flex flex-col p-0 [&>button]:hidden"
+        className="w-full sm:max-w-md flex flex-col p-0 [&>button]:hidden data-[state=open]:duration-700 data-[state=closed]:duration-500 ease-out"
       >
         {/* Accessible title (sr-only) */}
         <SheetHeader className="p-0">
