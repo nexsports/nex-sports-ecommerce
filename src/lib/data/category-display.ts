@@ -19,7 +19,7 @@ export const categoryDisplay: CategoryDisplay[] = [
     theme: 'Academia',
     nexLabel: 'NEX FIT',
     subs: ['Dry Fit', 'Shorts', 'Acessórios'],
-    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80',
+    image: '/categories/nex-fit.png',
   },
   {
     slug: 'nex-beach',
