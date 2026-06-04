@@ -4,6 +4,38 @@ import type { Category, Product, Partner } from "@/lib/mocks/types";
 
 export const categories: Category[] = [
   {
+    "id": "c0000001-0000-4000-8000-000000000001",
+    "slug": "raquetes",
+    "name": "Raquetes",
+    "description": "Raquetes de Padel — controle, equilibradas, ataque, fullcarbon, femininas e junior.",
+    "imageUrl": "https://images.unsplash.com/photo-1622279457486-28f993f78bce?w=800&q=80",
+    "productCount": 0
+  },
+  {
+    "id": "c0000002-0000-4000-8000-000000000002",
+    "slug": "bolas",
+    "name": "Bolas",
+    "description": "Bolas de Padel oficiais — treino e competição.",
+    "imageUrl": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&q=80",
+    "productCount": 0
+  },
+  {
+    "id": "c0000003-0000-4000-8000-000000000003",
+    "slug": "raqueteiras",
+    "name": "Raqueteiras",
+    "description": "Raqueteiras e mochilas para transporte de raquetes e equipamento.",
+    "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
+    "productCount": 0
+  },
+  {
+    "id": "c0000004-0000-4000-8000-000000000004",
+    "slug": "acessorios",
+    "name": "Acessórios",
+    "description": "Overgrips, grips, protetores de raquete, cordas e mais.",
+    "imageUrl": "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=80",
+    "productCount": 0
+  },
+  {
     "id": "dffd2dc0-70c5-4b48-ae27-7b8022b08426",
     "slug": "nex-fut",
     "name": "NEX FUT",

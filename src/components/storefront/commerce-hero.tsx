@@ -52,7 +52,7 @@ const subnavLinks = [
   { name: "Outlet", href: "/colecao/outlet" },
 ]
 
-const featuredSlugs = ["nex-fut", "nex-run", "nex-padel", "nex-tech"]
+const featuredSlugs = ["raquetes", "bolas", "raqueteiras", "acessorios"]
 
 // TikTok glyph (não tem no lucide-react)
 function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -181,15 +181,19 @@ export function CommerceHero() {
               <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-10 w-auto object-contain drop-shadow-[0_4px_20px_rgba(59,130,246,0.35)]" />
             </Link>
 
-            <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50 shrink-0" aria-label={`Carrinho (${cartCount})`}>
-              <Link href="/carrinho">
-                <ShoppingBasket className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => cart?.toggle?.()}
+              className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50 shrink-0"
+              aria-label={`Carrinho (${cartCount})`}
+            >
+              <ShoppingBasket className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Button>
           </div>
 
@@ -245,15 +249,19 @@ export function CommerceHero() {
             </form>
 
             <div className="flex items-center gap-2 shrink-0">
-              <Button variant="ghost" size="icon" asChild className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50" aria-label={`Carrinho (${cartCount})`}>
-                <Link href="/carrinho">
-                  <ShoppingBasket className="w-5 h-5" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => cart?.toggle?.()}
+                className="relative text-foreground/80 hover:text-foreground hover:bg-muted/50"
+                aria-label={`Carrinho (${cartCount})`}
+              >
+                <ShoppingBasket className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Button>
               <Button
                 asChild
