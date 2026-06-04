@@ -3,10 +3,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import {
   ArrowUpRight,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Mail,
   Menu,
   Phone,
@@ -43,6 +45,7 @@ import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
 import { useCart } from "@/lib/cart/cart-context"
 import { categories as allCategories } from "@/lib/data/catalog"
+import { categoryDisplay } from "@/lib/data/category-display"
 import { cn } from "@/lib/utils"
 
 const subnavLinks = [
@@ -52,7 +55,6 @@ const subnavLinks = [
   { name: "Outlet", href: "/colecao/outlet" },
 ]
 
-const featuredSlugs = ["raquetes", "bolas", "raqueteiras", "acessorios"]
 
 // TikTok glyph (não tem no lucide-react)
 function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -77,14 +79,29 @@ export function CommerceHero() {
   const cartCount = cart?.count ?? 0
   const [query, setQuery] = useState("")
 
-  const featured = featuredSlugs
-    .map((s) => allCategories.find((c) => c.slug === s))
-    .filter(Boolean)
-    .map((c) => ({
-      title: c!.name.replace(/^NEX /, ""),
-      image: c!.imageUrl,
-      href: `/categoria/${c!.slug}`,
-    }))
+  // Carousel state
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(false)
+
+  useEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+    const update = () => {
+      setAtStart(el.scrollLeft < 4)
+      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4)
+    }
+    update()
+    el.addEventListener("scroll", update, { passive: true })
+    return () => el.removeEventListener("scroll", update)
+  }, [])
+
+  const scrollCarousel = (dir: "l" | "r") => {
+    const el = scrollerRef.current
+    if (!el) return
+    const step = Math.max(260, el.clientWidth * 0.5)
+    el.scrollBy({ left: dir === "l" ? -step : step, behavior: "smooth" })
+  }
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -346,35 +363,84 @@ export function CommerceHero() {
         </motion.div>
       </div>
 
-      {/* ===== Featured category tiles ===== */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto mt-8 md:mt-12">
-        {featured.map((category, index) => (
-          <motion.div
-            key={category.title}
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
-            className="group relative bg-muted/50 backdrop-blur-sm rounded-3xl p-4 sm:p-6 min-h-[250px] sm:min-h-[300px] w-full overflow-hidden border border-border/50 transition-all duration-500 hover:border-primary/50"
+      {/* ===== Category carousel ===== */}
+      <div className="mt-8 md:mt-14">
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* Left arrow — outside carousel, desktop only */}
+          <button
+            onClick={() => scrollCarousel("l")}
+            disabled={atStart}
+            aria-label="Categorias anteriores"
+            className={cn(
+              "hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all",
+              atStart
+                ? "opacity-30 pointer-events-none"
+                : "hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg",
+            )}
           >
-            <Link href={category.href} className="absolute inset-0 z-20">
-              <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-black relative z-10 text-foreground my-2 sm:my-4 group-hover:text-primary transition-colors duration-300 uppercase tracking-tight">
-                {category.title}
-              </h2>
-              <div className="absolute inset-0 flex items-center justify-center p-4">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="w-full max-w-[min(60vw,260px)] sm:max-w-[min(40vw,220px)] md:max-w-[min(28vw,200px)] lg:max-w-[min(24vw,180px)] h-auto object-contain opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-500"
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          {/* Scrollable track */}
+          <div
+            ref={scrollerRef}
+            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 py-2 -my-2 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {categoryDisplay.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/categoria/${cat.slug}`}
+                className="group snap-start shrink-0 relative overflow-hidden rounded-2xl w-[210px] md:w-[240px] lg:w-[250px] aspect-[4/5] border border-border/60 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/25"
+              >
+                {/* Background image */}
+                <Image
+                  src={cat.image}
+                  alt={cat.theme}
+                  fill
+                  sizes="(max-width: 768px) 210px, 250px"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                 />
-              </div>
-              <div className="absolute bottom-0 right-0 w-16 h-16 md:w-20 md:h-20 bg-background/95 backdrop-blur-sm rounded-tl-xl flex items-center justify-center z-10 border-l border-t border-border/50">
-                <div className="absolute bottom-2 right-2 md:bottom-3 md:right-3 w-10 h-10 md:w-12 md:h-12 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <ArrowUpRight className="w-5 h-5" />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
+
+                {/* Arrow chip top-right */}
+                <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
+                  <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
                 </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+
+                {/* Content bottom */}
+                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                  <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
+                    {cat.nexLabel}
+                  </p>
+                  <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
+                    {cat.theme}
+                  </h3>
+                  <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
+                    {cat.subs.join(" · ")}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right arrow — outside carousel, desktop only */}
+          <button
+            onClick={() => scrollCarousel("r")}
+            disabled={atEnd}
+            aria-label="Próximas categorias"
+            className={cn(
+              "hidden md:flex shrink-0 h-11 w-11 items-center justify-center rounded-full bg-card border border-border shadow-md transition-all",
+              atEnd
+                ? "opacity-30 pointer-events-none"
+                : "hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-primary/20 hover:shadow-lg",
+            )}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
       </div>
     </div>
   )
