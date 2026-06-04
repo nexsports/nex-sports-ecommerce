@@ -31,6 +31,8 @@ export interface Partner {
   logoUrl: string
   /** Apply CSS invert when rendered on a light card (use for white-only logos) */
   invertOnLight?: boolean
+  /** Skip the white card and render the logo directly (use when the file already has a dark background) */
+  noCard?: boolean
 }
 
 export interface CartItem {
