@@ -8,7 +8,7 @@ export function PartnersMarquee() {
   const reel = [...partners, ...partners, ...partners, ...partners, ...partners, ...partners]
 
   return (
-    <section className="py-10 md:py-14 border-y border-border overflow-hidden">
+    <section className="py-10 md:py-14 border-y border-border overflow-hidden bg-black">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 mb-8">
         <p className="text-center text-sm text-muted-foreground uppercase tracking-widest">
           Marcas parceiras
