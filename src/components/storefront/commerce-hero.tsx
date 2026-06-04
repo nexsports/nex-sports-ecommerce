@@ -365,7 +365,7 @@ export function CommerceHero() {
       </div>
 
       {/* ===== Category carousel ===== */}
-      <div className="mt-8 md:mt-14 pb-12 md:pb-16">
+      <div className="mt-8 md:mt-14 pb-12 md:pb-16 relative z-20">
         <div className="flex items-center gap-2 md:gap-4">
           {/* Left arrow — outside carousel, desktop only */}
           <button
