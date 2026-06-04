@@ -385,7 +385,7 @@ export function CommerceHero() {
           {/* Scrollable track */}
           <div
             ref={scrollerRef}
-            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 py-6 -my-6 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+            className="flex-1 min-w-0 flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 md:gap-4 py-12 -my-12 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: "none" }}
           >
             {categoryDisplay.map((cat) => (
