@@ -226,8 +226,7 @@ export const products: Product[] = [
 
 export const partners: Partner[] = [
   { "name": "Raqueteria", "logoUrl": "/partners/raqueteria.png" },
-  { "name": "Minimalist", "logoUrl": "/partners/minimalist.png" },
-  { "name": "Viper Nutrition", "logoUrl": "/partners/viper-nutrition.jpg" }
+  { "name": "Minimalist", "logoUrl": "/partners/minimalist.png" }
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
