@@ -1,14 +1,30 @@
-# Cloudflare Pages config — NEX SPORTS
-# Used by `wrangler pages deploy` and by CF Pages CI/CD dashboard.
-# Docs: https://developers.cloudflare.com/pages/
+# Cloudflare Worker config — NEX SPORTS (via OpenNext)
+# Docs: https://opennext.js.org/cloudflare
 
-name = "nex-sports-ecommerce"
+name = "nex-sports"
+main = ".open-next/worker.js"
 compatibility_date = "2026-06-01"
-compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output/static"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+workers_dev = true
 
-# Env vars are managed in the CF dashboard (Settings → Environment variables)
-# or via `wrangler pages secret put <NAME>`.
+# Custom domain routes — re-enable after clearing legacy DNS records in CF dashboard
+# routes = [
+#   { pattern = "nexsportts.com.br", custom_domain = true },
+#   { pattern = "www.nexsportts.com.br", custom_domain = true },
+# ]
+
+# Static assets binding (Next public + .open-next/assets)
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# R2 incremental cache — enable R2 in CF dashboard then uncomment
+# [[r2_buckets]]
+# binding = "NEXT_INC_CACHE_R2_BUCKET"
+# bucket_name = "nex-sports-cache"
+# preview_bucket_name = "nex-sports-cache-preview"
+
+# Env vars set via CF dashboard / wrangler secret put
 # Required at runtime:
 #   NEXT_PUBLIC_SITE_URL
 #   NEXT_PUBLIC_SUPABASE_URL
@@ -21,5 +37,3 @@ pages_build_output_dir = ".vercel/output/static"
 #   MP_ACCESS_TOKEN              (secret, optional until checkout enabled)
 #   MP_PUBLIC_KEY                (optional)
 #   MP_WEBHOOK_SECRET            (secret, optional)
-#   MELHORENVIO_TOKEN            (secret, optional)
-#   MELHORENVIO_SANDBOX          (optional)

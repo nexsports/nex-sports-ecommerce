@@ -50,3 +50,7 @@ nex-current-*.png
 # drizzle backups
 /drizzle/meta/_journal.json.bak
 test-results/
+
+# OpenNext build output
+/.open-next
+/.vercel
