@@ -31,7 +31,7 @@ export function NewsletterCta() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-8 md:p-12">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 sm:p-8 md:p-12">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
               <h3 className="mb-3 text-2xl md:text-3xl font-bold font-display tracking-tight">
@@ -57,23 +57,23 @@ export function NewsletterCta() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 transition disabled:opacity-60"
+                  className="w-full sm:w-auto rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 transition disabled:opacity-60"
                 >
                   {loading ? "Inscrevendo..." : "INSCREVER"}
                 </button>
               </form>
             </div>
 
-            {/* Visual side */}
-            <div className="hidden md:flex justify-center">
+            {/* Visual side — visible on all sizes; appears above text on mobile */}
+            <div className="order-first md:order-none flex justify-center">
               <div className="relative">
                 <div className="absolute inset-0 rotate-6 rounded-2xl bg-primary/20" />
-                <div className="relative w-80 h-60 rounded-2xl overflow-hidden border border-white/10">
+                <div className="relative w-60 h-44 sm:w-72 sm:h-52 md:w-80 md:h-60 rounded-2xl overflow-hidden border border-white/10">
                   <Image
                     src="/branding/newsletter-banner.png"
                     alt="NEX Sports"
                     fill
-                    sizes="320px"
+                    sizes="(max-width: 640px) 240px, (max-width: 768px) 288px, 320px"
                     className="object-cover"
                   />
                 </div>
