@@ -100,8 +100,8 @@ export function CommerceHero() {
   }
 
   return (
-    <div className="w-full relative mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <div className="mt-6 bg-card rounded-2xl relative overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
+    <div className="w-full relative">
+      <div className="relative">
         {/* ===== TOP CONTACT BAR ===== */}
         <div className="hidden md:flex items-center justify-between gap-4 px-6 py-2 text-[11px] text-foreground/70 border-b border-border/40 bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-5">
@@ -324,13 +324,15 @@ export function CommerceHero() {
 
         {/* Sentinel: pill nav from SiteHeader appears only when this passes top of viewport */}
         <div id="hero-end-sentinel" aria-hidden className="h-0 w-full" />
+      </div>
 
-        {/* ===== BANNER ===== */}
+      {/* ===== BANNER (contido em max-w-7xl) ===== */}
+      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         <motion.div
           initial={false}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full aspect-square md:aspect-[1672/941] overflow-hidden"
+          className="relative w-full aspect-square md:aspect-[1672/941] overflow-hidden rounded-2xl mt-6 border border-border/40"
         >
           <Image
             src="/banners/hero-1-mobile.png"
@@ -353,7 +355,7 @@ export function CommerceHero() {
       </div>
 
       {/* ===== Category carousel — Embla, real infinite loop ===== */}
-      <div className="mt-8 md:mt-12">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 mt-8 md:mt-12">
         <div className="flex items-center gap-2 md:gap-4">
           {/* Left arrow — desktop only */}
           <button
