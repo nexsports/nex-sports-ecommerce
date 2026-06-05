@@ -1,17 +1,13 @@
 "use client"
 
-import { usePathname } from "next/navigation"
-import { SiteHeader } from "@/components/storefront/site-header"
+import { MainHeader } from "@/components/storefront/main-header"
 import { SiteFooter } from "@/components/storefront/site-footer"
 import { CartProvider } from "@/lib/cart/cart-context"
 import { CartDrawer } from "@/components/storefront/cart-drawer"
 import { Toaster } from "@/components/ui/sonner"
 import { Banner } from "@/components/ui/banner"
-import { cn } from "@/lib/utils"
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const isHome = pathname === "/"
   return (
     <CartProvider>
       {/* Pix banner — in-flow at the top, scrolls away with the page */}
@@ -23,8 +19,9 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       >
         Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
       </Banner>
-      <SiteHeader />
-      <main className={cn("flex-1", isHome ? "pt-0" : "pt-16")}>{children}</main>
+      <MainHeader />
+      {/* Header heights: ~150px desktop (topbar 32 + main 80 + subnav 38) / ~110px mobile (main 2 rows) */}
+      <main className="flex-1 pt-[110px] md:pt-[150px]">{children}</main>
       <SiteFooter />
       <CartDrawer />
       <Toaster position="top-right" richColors />
