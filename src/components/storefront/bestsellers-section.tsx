@@ -3,11 +3,9 @@
 import { motion } from "framer-motion"
 import { TrendingUp } from "lucide-react"
 import { ProductGrid } from "./product-grid"
-import { getBestSellers } from "@/lib/data/catalog"
+import type { Product } from "@/lib/mocks/types"
 
-export function BestsellersSection() {
-  const products = getBestSellers()
-
+export function BestsellersSection({ products }: { products: Product[] }) {
   return (
     <section className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-12 md:py-16">
       <motion.div

@@ -1,9 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { partners } from "@/lib/data/catalog"
+import type { Partner } from "@/lib/mocks/types"
 
-export function PartnersMarquee() {
+export function PartnersMarquee({ partners }: { partners: Partner[] }) {
   // Repeat enough times so the marquee fills the viewport even with few partners
   const reel = [...partners, ...partners, ...partners, ...partners, ...partners, ...partners]
 

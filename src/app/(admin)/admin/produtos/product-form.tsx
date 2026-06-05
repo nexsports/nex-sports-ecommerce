@@ -77,6 +77,8 @@ export function ProductForm({ mode, categories, initialData, productId }: Produc
   const [status, setStatus] = useState<"draft" | "active" | "archived">(
     initialData?.status ?? "draft"
   );
+  const [gender, setGender] = useState<string>(initialData?.gender ?? "");
+  const [badge, setBadge] = useState<string>(initialData?.badge ?? "");
   const [basePrice, setBasePrice] = useState(
     initialData?.basePrice ? (initialData.basePrice / 100).toFixed(2) : ""
   );
@@ -130,6 +132,8 @@ export function ProductForm({ mode, categories, initialData, productId }: Produc
       description: description || "",
       categoryId,
       status,
+      gender: gender || "",
+      badge: badge || "",
       basePrice: parseCents(basePrice),
       salePrice: salePrice ? parseCents(salePrice) : null,
       skuRoot: skuRoot || "",
@@ -282,18 +286,47 @@ export function ProductForm({ mode, categories, initialData, productId }: Produc
                   rows={4}
                 />
               </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <Select value={status} onValueChange={(v) => setStatus(v as typeof status)}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Rascunho</SelectItem>
-                    <SelectItem value="active">Ativo</SelectItem>
-                    <SelectItem value="archived">Arquivado</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Select value={status} onValueChange={(v) => setStatus(v as typeof status)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="draft">Rascunho</SelectItem>
+                      <SelectItem value="active">Ativo</SelectItem>
+                      <SelectItem value="archived">Arquivado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Gênero</Label>
+                  <Select value={gender} onValueChange={setGender}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="unissex">Unissex</SelectItem>
+                      <SelectItem value="masculino">Masculino</SelectItem>
+                      <SelectItem value="feminino">Feminino</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Badge</Label>
+                  <Select value={badge} onValueChange={setBadge}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Nenhum" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Nenhum</SelectItem>
+                      <SelectItem value="HOT">HOT</SelectItem>
+                      <SelectItem value="NOVO">NOVO</SelectItem>
+                      <SelectItem value="TOP 1">TOP 1</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </CardContent>
           </Card>

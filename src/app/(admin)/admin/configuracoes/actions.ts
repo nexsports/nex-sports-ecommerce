@@ -1,6 +1,5 @@
 "use server";
 
-import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/admin-client";
 import { requireAdmin } from "@/lib/auth/admin";
 import { auditLog } from "@/lib/auth/audit";
@@ -15,26 +14,22 @@ export async function getSettings(): Promise<Record<string, unknown>> {
   return map;
 }
 
+const SETTINGS_KEYS = [
+  "store.name", "store.email", "store.phone", "store.address", "store.cnpj", "store.description",
+  "social.instagram", "social.tiktok", "social.whatsapp",
+  "shipping.free_threshold", "shipping.default_rate",
+  "payment.mp_public_key", "payment.mp_access_token",
+  "pix.banner_title", "pix.banner_body", "pix.banner_cta",
+  "newsletter.title", "newsletter.subtitle", "newsletter.cta",
+  "seo.default_title", "seo.default_description", "seo.og_image",
+];
+
 export async function saveSettings(formData: FormData) {
   const user = await requireAdmin();
 
-  const storeName = formData.get("store.name") as string;
-  const storeEmail = formData.get("store.email") as string;
-  const storePhone = formData.get("store.phone") as string;
-  const storeAddress = formData.get("store.address") as string;
-  const storeCnpj = formData.get("store.cnpj") as string;
-  const socialInstagram = formData.get("social.instagram") as string;
-  const socialTiktok = formData.get("social.tiktok") as string;
-
-  const rows = [
-    { key: "store.name", value: { value: storeName } },
-    { key: "store.email", value: { value: storeEmail } },
-    { key: "store.phone", value: { value: storePhone } },
-    { key: "store.address", value: { value: storeAddress } },
-    { key: "store.cnpj", value: { value: storeCnpj } },
-    { key: "social.instagram", value: { value: socialInstagram } },
-    { key: "social.tiktok", value: { value: socialTiktok } },
-  ];
+  const rows = SETTINGS_KEYS
+    .filter((key) => formData.has(key))
+    .map((key) => ({ key, value: { value: formData.get(key) as string } }));
 
   for (const row of rows) {
     const { error } = await supabaseAdmin

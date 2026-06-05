@@ -79,6 +79,8 @@ export default async function EditarProdutoPage({
         skuRoot: product.sku_root ?? "",
         seoTitle: product.seo_title ?? "",
         seoDescription: product.seo_description ?? "",
+        gender: product.gender ?? "",
+        badge: product.badge ?? "",
         images,
         variants,
       }}

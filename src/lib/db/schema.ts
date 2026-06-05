@@ -287,6 +287,20 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+export const activityLogs = pgTable("activity_logs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  actorId: uuid("actor_id").references(() => users.id),
+  action: varchar("action", { length: 30 }).notNull(), // created | updated | deleted
+  entityType: varchar("entity_type", { length: 60 }).notNull(), // product | order | category | ...
+  entityId: uuid("entity_id"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+}, (t) => ({
+  actorIdx: index("activity_logs_actor_idx").on(t.actorId),
+  entityIdx: index("activity_logs_entity_idx").on(t.entityType, t.entityId),
+  createdIdx: index("activity_logs_created_idx").on(t.createdAt),
+}));
+
 /* ------------------------------------------------------------------ */
 /* Relations                                                          */
 /* ------------------------------------------------------------------ */

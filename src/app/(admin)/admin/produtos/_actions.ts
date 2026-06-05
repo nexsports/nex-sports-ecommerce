@@ -13,6 +13,8 @@ const productSchema = z.object({
   description: z.string().optional().default(""),
   categoryId: z.string().uuid("Categoria inválida"),
   status: z.enum(["draft", "active", "archived"]),
+  gender: z.string().optional().default(""),
+  badge: z.string().optional().default(""),
   basePrice: z.number().int().min(0, "Preço deve ser positivo"),
   salePrice: z.number().int().min(0).nullable().optional(),
   skuRoot: z.string().max(60).optional().default(""),
@@ -56,6 +58,8 @@ export async function createProduct(
       sku_root: data.skuRoot || null,
       seo_title: data.seoTitle || null,
       seo_description: data.seoDescription || null,
+      gender: data.gender || null,
+      badge: data.badge || null,
     })
     .select("id")
     .single();
@@ -140,6 +144,8 @@ export async function updateProduct(
       sku_root: data.skuRoot || null,
       seo_title: data.seoTitle || null,
       seo_description: data.seoDescription || null,
+      gender: data.gender || null,
+      badge: data.badge || null,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);
