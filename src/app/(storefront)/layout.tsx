@@ -15,7 +15,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <Banner
         variant="rainbow"
         height="2.25rem"
-        className="relative text-white text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase shadow-md"
+        className="relative text-white text-[9px] md:text-[10px] font-semibold tracking-[0.18em] uppercase shadow-md"
         rainbowColors={["#0048D8", "#0063FA", "#0048D8", "#0063FA"]}
       >
         Pague no Pix e ganhe <span className="text-white font-black mx-1">5% OFF</span> na sua compra
