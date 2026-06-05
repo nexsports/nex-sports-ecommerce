@@ -1,6 +1,10 @@
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Mail, MapPin, Phone } from "lucide-react"
+import { toast } from "sonner"
 import { categoryDisplay } from "@/lib/data/category-display"
 
 function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -63,6 +67,50 @@ const contatoInfo = [
   { Icon: MapPin, text: "Av. Paulista, 1000 — São Paulo, SP", isAddress: true },
 ]
 
+function FooterNewsletter() {
+  const [email, setEmail] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !email.includes("@")) {
+      toast.error("Digite um e-mail válido")
+      return
+    }
+    setLoading(true)
+    setTimeout(() => {
+      toast.success("Inscrito! Você receberá nossas novidades.")
+      setEmail("")
+      setLoading(false)
+    }, 600)
+  }
+
+  return (
+    <div className="mt-8">
+      <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-foreground/70 mb-3">
+        Newsletter
+      </p>
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="seu@email.com"
+          aria-label="E-mail para newsletter"
+          className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground focus:border-primary/50 focus:ring-2 focus:ring-primary/30 focus:outline-none transition"
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="rounded-lg bg-primary px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90 transition disabled:opacity-60"
+        >
+          {loading ? "..." : "Inscrever"}
+        </button>
+      </form>
+    </div>
+  )
+}
+
 export function SiteFooter() {
   return (
     <footer className="bg-secondary/20 mt-16 w-full rounded-t-2xl border-t border-border">
@@ -85,6 +133,8 @@ export function SiteFooter() {
               futebol, corrida, lifestyle e tecnologia. Entregamos em todo o
               Brasil com suporte ágil e marcas verificadas.
             </p>
+
+            <FooterNewsletter />
 
             <ul className="mt-8 flex justify-center sm:justify-start gap-4 sm:gap-5 md:gap-6">
               {socialLinks.map(({ Icon, label, href }) => (

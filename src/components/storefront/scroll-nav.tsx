@@ -8,6 +8,7 @@ import { ArrowUpRight, Menu, ShoppingBasket } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -84,22 +85,20 @@ export function ScrollNav() {
               </SheetHeader>
               <nav className="flex flex-col p-6 space-y-1">
                 {subnavLinks.map((item) => (
-                  <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
-                    {item.name}
-                  </Link>
+                  <SheetClose asChild key={item.name}><Link href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">{item.name}</Link></SheetClose>
                 ))}
               </nav>
               <Separator className="mx-6" />
               <div className="p-6 space-y-1">
                 <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
                 {categoryDisplay.map((cat) => (
-                  <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
+                  <SheetClose asChild key={cat.slug}><Link href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
                     <div className="flex flex-col">
                       <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
                       <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
                     </div>
                     <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
+                  </Link></SheetClose>
                 ))}
               </div>
             </SheetContent>
@@ -146,22 +145,20 @@ export function ScrollNav() {
             </SheetHeader>
             <nav className="flex flex-col p-6 space-y-1">
               {subnavLinks.map((item) => (
-                <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
-                  {item.name}
-                </Link>
+                <SheetClose asChild key={item.name}><Link href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">{item.name}</Link></SheetClose>
               ))}
             </nav>
             <Separator className="mx-6" />
             <div className="p-6 space-y-1">
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
               {categoryDisplay.map((cat) => (
-                <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
+                <SheetClose asChild key={cat.slug}><Link href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
                   <div className="flex flex-col">
                     <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
                     <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
                   </div>
                   <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
+                </Link></SheetClose>
               ))}
             </div>
           </SheetContent>

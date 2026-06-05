@@ -1,27 +1,24 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
-import { toast } from "sonner"
+import { ArrowUpRight } from "lucide-react"
+
+// TODO: replace with real WhatsApp group invite when ready
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/PLACEHOLDER-NEX-SPORTS"
+
+function WhatsAppIcon() {
+  return (
+    <Image
+      src="/branding/whatsapp.png"
+      alt=""
+      width={512}
+      height={512}
+      className="h-5 w-5 object-contain [filter:brightness(0)_invert(1)]"
+    />
+  )
+}
 
 export function NewsletterCta() {
-  const [email, setEmail] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || !email.includes("@")) {
-      toast.error("Digite um e-mail válido")
-      return
-    }
-    setLoading(true)
-    setTimeout(() => {
-      toast.success("Inscrito com sucesso! Bem-vindo à NEX Sports.")
-      setEmail("")
-      setLoading(false)
-    }, 800)
-  }
-
   return (
     <section className="relative w-full py-16 md:py-24 overflow-hidden">
       {/* Ambient primary glow background */}
@@ -34,34 +31,28 @@ export function NewsletterCta() {
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 sm:p-8 md:p-12">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366]/15 text-[#25D366] px-3 py-1 text-[10px] font-bold tracking-wider uppercase mb-4">
+                Grupo VIP · WhatsApp
+              </span>
               <h3 className="mb-3 text-2xl md:text-3xl font-bold font-display tracking-tight">
-                Receba ofertas em primeira mão
+                Promoções, drops e ofertas em primeira mão
               </h3>
               <p className="text-foreground/70 mb-6 max-w-md">
-                Lançamentos, descontos e novidades NEX Sports direto no seu
-                e-mail. Cancele a qualquer momento.
+                Entra no nosso grupo do WhatsApp e recebe os melhores preços
+                NEX Sports antes de todo mundo. Sem spam, sem zoeira — só
+                avisos quando algo bom rola.
               </p>
 
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-3 sm:flex-row"
+              <a
+                href={WHATSAPP_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#25D366]/30 hover:bg-[#1da851] hover:shadow-[#25D366]/40 transition-all"
               >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
-                  aria-label="E-mail para newsletter"
-                  className="flex-1 rounded-lg border border-foreground/20 bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:border-primary/50 focus:ring-2 focus:ring-primary/30 focus:outline-none transition"
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full sm:w-auto rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 transition disabled:opacity-60"
-                >
-                  {loading ? "Inscrevendo..." : "INSCREVER"}
-                </button>
-              </form>
+                <WhatsAppIcon />
+                Entrar no grupo
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
             </div>
 
             {/* Visual side — visible on all sizes; appears above text on mobile */}
