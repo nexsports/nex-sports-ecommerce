@@ -96,7 +96,7 @@ export function MainHeader() {
           </a>
         </div>
         {/* Spacer width mirrors the mainbar search column so contact aligns above logo and socials above Entrar */}
-        <div className="w-full max-w-md lg:max-w-lg" aria-hidden />
+        <div className="w-full max-w-xl lg:max-w-3xl" aria-hidden />
         <div className="w-10 shrink-0" aria-hidden />
         <div className="shrink-0 inline-flex items-center gap-3 text-foreground/80">
           <a href="#" aria-label="Instagram" className="hover:text-[#0061F9] transition-colors">
@@ -126,7 +126,7 @@ export function MainHeader() {
             />
           </Link>
 
-          <form onSubmit={submitSearch} role="search" className="w-full max-w-md lg:max-w-lg">
+          <form onSubmit={submitSearch} role="search" className="w-full max-w-xl lg:max-w-3xl">
             <label className="relative flex items-center w-full">
               <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
               <input
@@ -229,7 +229,7 @@ export function MainHeader() {
           <Link
             key={link.href}
             href={link.href}
-            className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors whitespace-nowrap relative after:absolute after:left-3 after:right-3 after:bottom-0.5 after:h-0.5 after:bg-white after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
+            className="px-3 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors whitespace-nowrap relative after:absolute after:left-3 after:right-3 after:bottom-0.5 after:h-0.5 after:bg-white after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform"
           >
             {link.name}
           </Link>
@@ -237,7 +237,7 @@ export function MainHeader() {
         <div className="relative group ml-0.5">
           <button
             type="button"
-            className="inline-flex items-center gap-1 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-wider text-white/95 hover:text-white rounded-md transition-colors whitespace-nowrap"
           >
             Todas Categorias
             <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
