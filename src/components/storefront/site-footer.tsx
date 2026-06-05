@@ -38,7 +38,6 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const socialLinks = [
-  { Icon: WhatsAppIcon, label: "WhatsApp", href: "https://wa.me/5511999999999" },
   { Icon: InstagramIcon, label: "Instagram", href: "#" },
   { Icon: FacebookIcon, label: "Facebook", href: "#" },
   { Icon: TikTokIcon, label: "TikTok", href: "#" },
