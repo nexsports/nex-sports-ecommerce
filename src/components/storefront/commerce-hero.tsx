@@ -130,7 +130,7 @@ export function CommerceHero() {
           className="relative w-full aspect-square md:aspect-[1672/941] overflow-hidden rounded-2xl mt-6 border border-border/40"
         >
           <Image
-            src="/banners/hero-1-mobile.png"
+            src="/banners/hero-1-mobile.avif"
             alt="NEX SPORTS — temporada 2026"
             fill
             priority
@@ -138,7 +138,7 @@ export function CommerceHero() {
             className="object-cover md:hidden"
           />
           <Image
-            src="/banners/hero-1.png"
+            src="/banners/hero-1.avif"
             alt="NEX SPORTS — temporada 2026"
             fill
             priority

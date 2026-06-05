@@ -9,7 +9,7 @@ const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/PLACEHOLDER-NEX-SPORTS"
 function WhatsAppIcon() {
   return (
     <Image
-      src="/branding/whatsapp.png"
+      src="/branding/whatsapp.avif"
       alt=""
       width={512}
       height={512}
@@ -61,7 +61,7 @@ export function NewsletterCta() {
                 <div className="absolute inset-0 rotate-6 rounded-2xl bg-primary/20" />
                 <div className="relative w-60 h-44 sm:w-72 sm:h-52 md:w-80 md:h-60 rounded-2xl overflow-hidden border border-white/10">
                   <Image
-                    src="/branding/newsletter-banner.png"
+                    src="/branding/newsletter-banner.avif"
                     alt="NEX Sports"
                     fill
                     sizes="(max-width: 640px) 240px, (max-width: 768px) 288px, 320px"

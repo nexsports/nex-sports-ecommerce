@@ -120,7 +120,7 @@ export function SiteFooter() {
           <div className="text-center sm:text-left">
             <Link href="/" aria-label="NEX SPORTS" className="inline-block">
               <Image
-                src="/branding/nex-logo.png"
+                src="/branding/nex-logo.avif"
                 alt="NEX SPORTS"
                 width={1200}
                 height={430}

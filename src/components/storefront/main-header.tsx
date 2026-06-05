@@ -38,7 +38,7 @@ const subnavLinks = [
 function WhatsAppIcon() {
   return (
     <Image
-      src="/branding/whatsapp.png"
+      src="/branding/whatsapp.avif"
       alt=""
       width={512}
       height={512}
@@ -128,7 +128,7 @@ export function MainHeader() {
         <div className={cn("hidden md:flex items-center justify-center gap-4 h-20", ROW_PX)}>
           <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
             <Image
-              src="/branding/nex-logo.png"
+              src="/branding/nex-logo.avif"
               alt="NEX SPORTS"
               width={1200}
               height={430}
@@ -202,7 +202,7 @@ export function MainHeader() {
                   <SheetHeader className="p-6 pb-4 border-b border-border/50">
                     <SheetTitle>
                       <Link href="/" aria-label="NEX SPORTS">
-                        <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                        <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
                       </Link>
                     </SheetTitle>
                   </SheetHeader>
@@ -230,7 +230,7 @@ export function MainHeader() {
 
             {/* Center: logo */}
             <Link href="/" aria-label="NEX SPORTS" className="justify-self-center inline-flex items-center">
-              <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-10 sm:h-11 w-auto object-contain" />
+              <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} priority className="h-10 sm:h-11 w-auto object-contain" />
             </Link>
 
             {/* Right: cart */}

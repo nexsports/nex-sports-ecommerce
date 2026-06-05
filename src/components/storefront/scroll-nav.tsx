@@ -79,7 +79,7 @@ export function ScrollNav() {
               <SheetHeader className="p-6 pb-4 border-b border-border/50">
                 <SheetTitle>
                   <Link href="/" aria-label="NEX SPORTS">
-                    <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                    <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -106,7 +106,7 @@ export function ScrollNav() {
         </div>
 
         <Link href="/" aria-label="NEX SPORTS" className="justify-self-center inline-flex items-center">
-          <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-9 w-auto object-contain" />
+          <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-9 w-auto object-contain" />
         </Link>
 
         <div className="justify-self-end">
@@ -139,7 +139,7 @@ export function ScrollNav() {
             <SheetHeader className="p-6 pb-4 border-b border-border/50">
               <SheetTitle>
                 <Link href="/" aria-label="NEX SPORTS">
-                  <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                  <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
                 </Link>
               </SheetTitle>
             </SheetHeader>
@@ -165,7 +165,7 @@ export function ScrollNav() {
         </Sheet>
 
         <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
-          <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-9 w-auto object-contain" />
+          <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-9 w-auto object-contain" />
         </Link>
 
         <form onSubmit={submitSearch} role="search" className="min-w-0 flex-1 max-w-md">
