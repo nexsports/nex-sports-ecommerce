@@ -188,7 +188,7 @@ export function SiteHeader() {
         <form
           onSubmit={submitSearch}
           role="search"
-          className="flex-1 min-w-0 max-w-2xl mx-auto"
+          className="flex-1 min-w-0 mx-2 md:mx-4"
         >
           <label className="relative flex items-center w-full">
             <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
