@@ -1,12 +1,5 @@
-import { db } from "@/lib/db/client"
-import {
-  categories,
-  products,
-  productImages,
-  productVariants,
-} from "@/lib/db/schema"
-import { eq, desc, ilike, and, sql, inArray } from "drizzle-orm"
 import { unstable_cache } from "next/cache"
+import { sbStorefront } from "@/lib/supabase/storefront-client"
 import type { Product, Category, Partner } from "@/lib/mocks/types"
 
 /* ------------------------------------------------------------------ */
@@ -19,31 +12,39 @@ type ProductRow = {
   title: string
   description: string | null
   brand: string | null
-  basePrice: number
-  salePrice: number | null
-  ratingAvg: string | null
-  ratingCount: number
-  salesCount: number
-  categorySlug: string | null
-  images: string[]
-  sizes: string[]
-  colors: string[]
-  stock: number
+  base_price: number
+  sale_price: number | null
+  rating_avg: string | null
+  rating_count: number
+  sales_count: number
+  status: string
+  categories: { slug: string; name: string } | null
+  product_images: { url: string; position: number }[]
+  product_variants: { size: string | null; color: string | null; stock: number }[]
 }
 
 function rowToProduct(row: ProductRow): Product {
-  const sizes = row.sizes.length > 0 ? row.sizes : ["Único"]
-  const colors =
-    row.colors.length > 0
-      ? row.colors.map((c) => ({ name: c, hex: "#334155" }))
+  const images = (row.product_images ?? [])
+    .sort((a, b) => a.position - b.position)
+    .map((i) => i.url)
+
+  const variants = row.product_variants ?? []
+  const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean) as string[])]
+  const colorNames = [...new Set(variants.map((v) => v.color).filter(Boolean) as string[])]
+  const stock = variants.reduce((sum, v) => sum + (v.stock ?? 0), 0)
+
+  const sized = sizes.length > 0 ? sizes : ["Único"]
+  const colored =
+    colorNames.length > 0
+      ? colorNames.map((c) => ({ name: c, hex: "#334155" }))
       : [{ name: "Padrão", hex: "#334155" }]
 
-  const images = row.images.length >= 3
-    ? (row.images.slice(0, 3) as [string, string, string])
+  const imgs = images.length >= 3
+    ? (images.slice(0, 3) as [string, string, string])
     : ([
-      row.images[0] ?? "/no-image.svg",
-      row.images[1] ?? row.images[0] ?? "/no-image.svg",
-      row.images[2] ?? row.images[0] ?? "/no-image.svg",
+      images[0] ?? "/no-image.svg",
+      images[1] ?? images[0] ?? "/no-image.svg",
+      images[2] ?? images[0] ?? "/no-image.svg",
     ] as [string, string, string])
 
   return {
@@ -51,18 +52,21 @@ function rowToProduct(row: ProductRow): Product {
     slug: row.slug,
     title: row.title,
     brand: row.brand ?? "NEX",
-    category: row.categorySlug ?? "",
-    priceCents: row.basePrice,
-    salePriceCents: row.salePrice ?? undefined,
-    images,
-    rating: Number(row.ratingAvg ?? 0),
-    reviewCount: row.ratingCount,
-    sizes,
-    colors,
+    category: row.categories?.slug ?? "",
+    priceCents: row.base_price,
+    salePriceCents: row.sale_price ?? undefined,
+    images: imgs,
+    rating: Number(row.rating_avg ?? 0),
+    reviewCount: row.rating_count,
+    sizes: sized,
+    colors: colored,
     description: row.description ?? "",
-    stock: row.stock,
+    stock,
   }
 }
+
+const PRODUCT_SELECT =
+  "id, slug, title, description, brand, base_price, sale_price, rating_avg, rating_count, sales_count, status, categories(slug, name), product_images(url, position), product_variants(size, color, stock)"
 
 /* ------------------------------------------------------------------ */
 /* Categories                                                         */
@@ -71,33 +75,32 @@ function rowToProduct(row: ProductRow): Product {
 export const getActiveCategories = unstable_cache(
   async (): Promise<Category[]> => {
     try {
-      const rows = await db
-        .select({
-          id: categories.id,
-          slug: categories.slug,
-          name: categories.name,
-          description: categories.seoDescription,
-          imageUrl: categories.imageUrl,
-          productCount: sql<number>`count(${products.id})::int`,
-        })
-        .from(categories)
-        .leftJoin(
-          products,
-          and(
-            eq(products.categoryId, categories.id),
-            eq(products.status, "active")
-          )
-        )
-        .groupBy(categories.id)
-        .orderBy(categories.position)
+      const sb = sbStorefront()
+      const { data: cats, error } = await sb
+        .from("categories")
+        .select("id, slug, name, seo_description, image_url, position")
+        .order("position")
 
-      return rows.map((r) => ({
-        id: r.id,
-        slug: r.slug,
-        name: r.name,
-        description: r.description ?? r.name,
-        imageUrl: r.imageUrl ?? "/no-image.svg",
-        productCount: r.productCount,
+      if (error || !cats) return []
+
+      // Get product counts per category
+      const { data: countRows } = await sb
+        .from("products")
+        .select("category_id")
+        .eq("status", "active")
+
+      const countMap = new Map<string, number>()
+      for (const r of countRows ?? []) {
+        countMap.set(r.category_id, (countMap.get(r.category_id) ?? 0) + 1)
+      }
+
+      return cats.map((c) => ({
+        id: c.id,
+        slug: c.slug,
+        name: c.name,
+        description: c.seo_description ?? c.name,
+        imageUrl: c.image_url ?? "/no-image.svg",
+        productCount: countMap.get(c.id) ?? 0,
       }))
     } catch {
       return []
@@ -108,41 +111,72 @@ export const getActiveCategories = unstable_cache(
 )
 
 /* ------------------------------------------------------------------ */
+/* Category by slug                                                   */
+/* ------------------------------------------------------------------ */
+
+export const getCategoryBySlug = unstable_cache(
+  async (slug: string): Promise<Category | null> => {
+    try {
+      const sb = sbStorefront()
+      const { data, error } = await sb
+        .from("categories")
+        .select("id, slug, name, seo_description, image_url")
+        .eq("slug", slug)
+        .limit(1)
+        .single()
+
+      if (error || !data) return null
+
+      const { count } = await sb
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("category_id", data.id)
+        .eq("status", "active")
+
+      return {
+        id: data.id,
+        slug: data.slug,
+        name: data.name,
+        description: data.seo_description ?? data.name,
+        imageUrl: data.image_url ?? "/no-image.svg",
+        productCount: count ?? 0,
+      }
+    } catch {
+      return null
+    }
+  },
+  ["storefront-category-by-slug"],
+  { tags: ["categories"], revalidate: 60 }
+)
+
+/* ------------------------------------------------------------------ */
 /* Products by category                                               */
 /* ------------------------------------------------------------------ */
 
 export const getProductsByCategory = unstable_cache(
   async (categorySlug: string): Promise<Product[]> => {
     try {
-      const rows = await db
-        .select({
-          id: products.id,
-          slug: products.slug,
-          title: products.title,
-          description: products.description,
-          brand: products.brand,
-          basePrice: products.basePrice,
-          salePrice: products.salePrice,
-          ratingAvg: products.ratingAvg,
-          ratingCount: products.ratingCount,
-          salesCount: products.salesCount,
-          categorySlug: categories.slug,
-          images: sql<string[]>`coalesce(array_agg(distinct ${productImages.url} order by ${productImages.position}) filter (where ${productImages.url} is not null), '{}')`,
-          sizes: sql<string[]>`coalesce(array_agg(distinct ${productVariants.size}) filter (where ${productVariants.size} is not null), '{}')`,
-          colors: sql<string[]>`coalesce(array_agg(distinct ${productVariants.color}) filter (where ${productVariants.color} is not null), '{}')`,
-          stock: sql<number>`coalesce(sum(${productVariants.stock}), 0)::int`,
-        })
-        .from(products)
-        .innerJoin(categories, eq(products.categoryId, categories.id))
-        .leftJoin(productImages, eq(productImages.productId, products.id))
-        .leftJoin(productVariants, eq(productVariants.productId, products.id))
-        .where(
-          and(eq(categories.slug, categorySlug), eq(products.status, "active"))
-        )
-        .groupBy(products.id, categories.slug)
-        .orderBy(desc(products.salesCount))
+      const sb = sbStorefront()
 
-      return rows.map(rowToProduct)
+      // Resolve category id from slug
+      const { data: cat } = await sb
+        .from("categories")
+        .select("id")
+        .eq("slug", categorySlug)
+        .limit(1)
+        .single()
+
+      if (!cat) return []
+
+      const { data, error } = await sb
+        .from("products")
+        .select(PRODUCT_SELECT)
+        .eq("status", "active")
+        .eq("category_id", cat.id)
+        .order("sales_count", { ascending: false })
+
+      if (error || !data) return []
+      return (data as unknown as ProductRow[]).map(rowToProduct)
     } catch {
       return []
     }
@@ -158,34 +192,17 @@ export const getProductsByCategory = unstable_cache(
 export const getBestSellers = unstable_cache(
   async (limit = 4): Promise<Product[]> => {
     try {
-      const rows = await db
-        .select({
-          id: products.id,
-          slug: products.slug,
-          title: products.title,
-          description: products.description,
-          brand: products.brand,
-          basePrice: products.basePrice,
-          salePrice: products.salePrice,
-          ratingAvg: products.ratingAvg,
-          ratingCount: products.ratingCount,
-          salesCount: products.salesCount,
-          categorySlug: categories.slug,
-          images: sql<string[]>`coalesce(array_agg(distinct ${productImages.url} order by ${productImages.position}) filter (where ${productImages.url} is not null), '{}')`,
-          sizes: sql<string[]>`coalesce(array_agg(distinct ${productVariants.size}) filter (where ${productVariants.size} is not null), '{}')`,
-          colors: sql<string[]>`coalesce(array_agg(distinct ${productVariants.color}) filter (where ${productVariants.color} is not null), '{}')`,
-          stock: sql<number>`coalesce(sum(${productVariants.stock}), 0)::int`,
-        })
-        .from(products)
-        .innerJoin(categories, eq(products.categoryId, categories.id))
-        .leftJoin(productImages, eq(productImages.productId, products.id))
-        .leftJoin(productVariants, eq(productVariants.productId, products.id))
-        .where(eq(products.status, "active"))
-        .groupBy(products.id, categories.slug)
-        .orderBy(desc(products.salesCount), desc(products.createdAt))
+      const sb = sbStorefront()
+      const { data, error } = await sb
+        .from("products")
+        .select(PRODUCT_SELECT)
+        .eq("status", "active")
+        .order("sales_count", { ascending: false })
+        .order("created_at", { ascending: false })
         .limit(limit)
 
-      return rows.map(rowToProduct)
+      if (error || !data) return []
+      return (data as unknown as ProductRow[]).map(rowToProduct)
     } catch {
       return []
     }
@@ -195,39 +212,23 @@ export const getBestSellers = unstable_cache(
 )
 
 /* ------------------------------------------------------------------ */
-/* Single product by slug                                             */
+/* Product by slug                                                    */
 /* ------------------------------------------------------------------ */
 
 export const getProductBySlug = unstable_cache(
   async (slug: string): Promise<Product | null> => {
     try {
-      const rows = await db
-        .select({
-          id: products.id,
-          slug: products.slug,
-          title: products.title,
-          description: products.description,
-          brand: products.brand,
-          basePrice: products.basePrice,
-          salePrice: products.salePrice,
-          ratingAvg: products.ratingAvg,
-          ratingCount: products.ratingCount,
-          salesCount: products.salesCount,
-          categorySlug: categories.slug,
-          images: sql<string[]>`coalesce(array_agg(distinct ${productImages.url} order by ${productImages.position}) filter (where ${productImages.url} is not null), '{}')`,
-          sizes: sql<string[]>`coalesce(array_agg(distinct ${productVariants.size}) filter (where ${productVariants.size} is not null), '{}')`,
-          colors: sql<string[]>`coalesce(array_agg(distinct ${productVariants.color}) filter (where ${productVariants.color} is not null), '{}')`,
-          stock: sql<number>`coalesce(sum(${productVariants.stock}), 0)::int`,
-        })
-        .from(products)
-        .innerJoin(categories, eq(products.categoryId, categories.id))
-        .leftJoin(productImages, eq(productImages.productId, products.id))
-        .leftJoin(productVariants, eq(productVariants.productId, products.id))
-        .where(and(eq(products.slug, slug), eq(products.status, "active")))
-        .groupBy(products.id, categories.slug)
+      const sb = sbStorefront()
+      const { data, error } = await sb
+        .from("products")
+        .select(PRODUCT_SELECT)
+        .eq("status", "active")
+        .eq("slug", slug)
         .limit(1)
+        .single()
 
-      return rows[0] ? rowToProduct(rows[0]) : null
+      if (error || !data) return null
+      return rowToProduct(data as unknown as ProductRow)
     } catch {
       return null
     }
@@ -243,38 +244,16 @@ export const getProductBySlug = unstable_cache(
 export const getFeatured = unstable_cache(
   async (): Promise<Product[]> => {
     try {
-      const rows = await db
-        .select({
-          id: products.id,
-          slug: products.slug,
-          title: products.title,
-          description: products.description,
-          brand: products.brand,
-          basePrice: products.basePrice,
-          salePrice: products.salePrice,
-          ratingAvg: products.ratingAvg,
-          ratingCount: products.ratingCount,
-          salesCount: products.salesCount,
-          categorySlug: categories.slug,
-          images: sql<string[]>`coalesce(array_agg(distinct ${productImages.url} order by ${productImages.position}) filter (where ${productImages.url} is not null), '{}')`,
-          sizes: sql<string[]>`coalesce(array_agg(distinct ${productVariants.size}) filter (where ${productVariants.size} is not null), '{}')`,
-          colors: sql<string[]>`coalesce(array_agg(distinct ${productVariants.color}) filter (where ${productVariants.color} is not null), '{}')`,
-          stock: sql<number>`coalesce(sum(${productVariants.stock}), 0)::int`,
-        })
-        .from(products)
-        .innerJoin(categories, eq(products.categoryId, categories.id))
-        .leftJoin(productImages, eq(productImages.productId, products.id))
-        .leftJoin(productVariants, eq(productVariants.productId, products.id))
-        .where(
-          and(
-            eq(products.status, "active"),
-            sql`${products.salePrice} is not null`
-          )
-        )
-        .groupBy(products.id, categories.slug)
+      const sb = sbStorefront()
+      const { data, error } = await sb
+        .from("products")
+        .select(PRODUCT_SELECT)
+        .eq("status", "active")
+        .not("sale_price", "is", null)
         .limit(8)
 
-      return rows.map(rowToProduct)
+      if (error || !data) return []
+      return (data as unknown as ProductRow[]).map(rowToProduct)
     } catch {
       return []
     }
@@ -284,27 +263,27 @@ export const getFeatured = unstable_cache(
 )
 
 /* ------------------------------------------------------------------ */
-/* Partners (from settings or fallback)                               */
+/* Partners                                                           */
 /* ------------------------------------------------------------------ */
 
 export const getPartners = unstable_cache(
   async (): Promise<Partner[]> => {
     try {
-      const { settings } = await import("@/lib/db/schema")
-      const row = await db
-        .select({ value: settings.value })
-        .from(settings)
-        .where(eq(settings.key, "partners"))
+      const sb = sbStorefront()
+      const { data } = await sb
+        .from("settings")
+        .select("value")
+        .eq("key", "partners")
         .limit(1)
+        .single()
 
-      if (row[0]?.value && Array.isArray(row[0].value)) {
-        return row[0].value as Partner[]
+      if (data?.value && Array.isArray(data.value)) {
+        return data.value as Partner[]
       }
     } catch {
-      // settings table may not exist yet
+      // settings table may not exist
     }
 
-    // Fallback: static partners
     return [
       { name: "NIKE", logoUrl: "" },
       { name: "ADIDAS", logoUrl: "" },
@@ -321,92 +300,51 @@ export const getPartners = unstable_cache(
 )
 
 /* ------------------------------------------------------------------ */
-/* Category by slug (for breadcrumb / metadata)                       */
-/* ------------------------------------------------------------------ */
-
-export const getCategoryBySlug = unstable_cache(
-  async (slug: string): Promise<Category | null> => {
-    try {
-      const rows = await db
-        .select({
-          id: categories.id,
-          slug: categories.slug,
-          name: categories.name,
-          description: categories.seoDescription,
-          imageUrl: categories.imageUrl,
-          productCount: sql<number>`count(${products.id})::int`,
-        })
-        .from(categories)
-        .leftJoin(
-          products,
-          and(
-            eq(products.categoryId, categories.id),
-            eq(products.status, "active")
-          )
-        )
-        .where(eq(categories.slug, slug))
-        .groupBy(categories.id)
-        .limit(1)
-
-      if (!rows[0]) return null
-      const r = rows[0]
-      return {
-        id: r.id,
-        slug: r.slug,
-        name: r.name,
-        description: r.description ?? r.name,
-        imageUrl: r.imageUrl ?? "/no-image.svg",
-        productCount: r.productCount,
-      }
-    } catch {
-      return null
-    }
-  },
-  ["storefront-category-by-slug"],
-  { tags: ["categories"], revalidate: 60 }
-)
-
-/* ------------------------------------------------------------------ */
 /* Search                                                             */
 /* ------------------------------------------------------------------ */
 
 export const searchProducts = unstable_cache(
   async (query: string): Promise<Product[]> => {
     try {
+      const sb = sbStorefront()
       const pattern = `%${query}%`
-      const rows = await db
-        .select({
-          id: products.id,
-          slug: products.slug,
-          title: products.title,
-          description: products.description,
-          brand: products.brand,
-          basePrice: products.basePrice,
-          salePrice: products.salePrice,
-          ratingAvg: products.ratingAvg,
-          ratingCount: products.ratingCount,
-          salesCount: products.salesCount,
-          categorySlug: categories.slug,
-          images: sql<string[]>`coalesce(array_agg(distinct ${productImages.url} order by ${productImages.position}) filter (where ${productImages.url} is not null), '{}')`,
-          sizes: sql<string[]>`coalesce(array_agg(distinct ${productVariants.size}) filter (where ${productVariants.size} is not null), '{}')`,
-          colors: sql<string[]>`coalesce(array_agg(distinct ${productVariants.color}) filter (where ${productVariants.color} is not null), '{}')`,
-          stock: sql<number>`coalesce(sum(${productVariants.stock}), 0)::int`,
-        })
-        .from(products)
-        .innerJoin(categories, eq(products.categoryId, categories.id))
-        .leftJoin(productImages, eq(productImages.productId, products.id))
-        .leftJoin(productVariants, eq(productVariants.productId, products.id))
-        .where(
-          and(
-            eq(products.status, "active"),
-            sql`(${products.title} ilike ${pattern} or ${products.brand} ilike ${pattern} or ${categories.name} ilike ${pattern} or ${categories.slug} ilike ${pattern})`
-          )
-        )
-        .groupBy(products.id, categories.slug)
-        .orderBy(desc(products.salesCount))
+
+      // Search by title or brand on products, then filter by status
+      const { data, error } = await sb
+        .from("products")
+        .select(PRODUCT_SELECT)
+        .eq("status", "active")
+        .or(`title.ilike.${pattern},brand.ilike.${pattern}`)
+        .order("sales_count", { ascending: false })
         .limit(50)
 
-      return rows.map(rowToProduct)
+      if (error || !data) return []
+
+      // Also match by category name — fetch category matches separately
+      const { data: catMatch } = await sb
+        .from("categories")
+        .select("id")
+        .or(`name.ilike.${pattern},slug.ilike.${pattern}`)
+
+      if (catMatch && catMatch.length > 0) {
+        const catIds = catMatch.map((c) => c.id)
+        const { data: catProducts } = await sb
+          .from("products")
+          .select(PRODUCT_SELECT)
+          .eq("status", "active")
+          .in("category_id", catIds)
+          .order("sales_count", { ascending: false })
+          .limit(50)
+
+        if (catProducts) {
+          const existingIds = new Set(data.map((p) => p.id))
+          for (const p of catProducts) {
+            if (!existingIds.has(p.id)) data.push(p)
+          }
+        }
+      }
+
+      return (data as unknown as ProductRow[]).map(rowToProduct)
     } catch {
       return []
     }
