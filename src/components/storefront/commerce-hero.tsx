@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import {
   ArrowUpRight,
@@ -92,6 +92,24 @@ export function CommerceHero() {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
+  // Pagination dots state
+  const [snaps, setSnaps] = useState<number[]>([])
+  const [selected, setSelected] = useState(0)
+  useEffect(() => {
+    if (!emblaApi) return
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap())
+    const onReInit = () => setSnaps(emblaApi.scrollSnapList())
+    onReInit()
+    onSelect()
+    emblaApi.on("select", onSelect)
+    emblaApi.on("reInit", onReInit)
+    return () => {
+      emblaApi.off("select", onSelect)
+      emblaApi.off("reInit", onReInit)
+    }
+  }, [emblaApi])
+  const scrollTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi])
+
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
     const q = query.trim()
@@ -166,11 +184,11 @@ export function CommerceHero() {
                     <div className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
                       <ArrowUpRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:rotate-12" />
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                    <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 md:p-5">
                       <p className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.22em] uppercase drop-shadow">
                         {cat.nexLabel}
                       </p>
-                      <h3 className="text-xl md:text-2xl font-bold font-display text-white mt-1 drop-shadow">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold font-display text-white mt-1 drop-shadow">
                         {cat.theme}
                       </h3>
                       <p className="text-[11px] md:text-xs text-white/75 mt-1.5 line-clamp-2">
@@ -192,6 +210,28 @@ export function CommerceHero() {
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
+
+        {/* Pagination dots */}
+        {snaps.length > 1 && (
+          <div className="mt-5 flex items-center justify-center gap-2">
+            {snaps.map((_, i) => {
+              const active = i === selected
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => scrollTo(i)}
+                  aria-label={`Ir para slide ${i + 1}`}
+                  aria-current={active ? "true" : undefined}
+                  className={cn(
+                    "transition-all rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                    active ? "h-2 w-6 bg-primary" : "h-2 w-2 bg-white/40 hover:bg-white/70"
+                  )}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )
