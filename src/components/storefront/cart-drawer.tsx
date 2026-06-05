@@ -21,26 +21,23 @@ export function CartDrawer() {
     <Sheet open={isOpen} onOpenChange={(v) => { if (!v) close() }}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-md flex flex-col p-0 [&>button]:hidden"
+        className="w-full sm:max-w-md flex flex-col p-0 gap-0 [&>button]:hidden"
       >
-        {/* Accessible title (sr-only) */}
-        <SheetHeader className="p-0">
-          <SheetTitle className="sr-only">Minhas Compras</SheetTitle>
+        {/* ── Header with sr-only title for a11y ── */}
+        <SheetHeader className="p-0 space-y-0">
+          <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#0048D8] to-[#0063FA] shadow-md shrink-0">
+            <SheetTitle className="font-display text-base font-semibold text-white tracking-tight">
+              Minhas Compras
+            </SheetTitle>
+            <button
+              onClick={close}
+              aria-label="Fechar carrinho"
+              className="rounded-sm p-1 text-white/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </SheetHeader>
-
-        {/* ── Header ── */}
-        <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#0048D8] to-[#0063FA] shadow-md shrink-0">
-          <span className="font-display text-base font-semibold text-white tracking-tight">
-            Minhas Compras
-          </span>
-          <button
-            onClick={close}
-            aria-label="Fechar carrinho"
-            className="rounded-sm p-1 text-white/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
 
         {/* ── Empty state ── */}
         {items.length === 0 ? (
@@ -51,7 +48,7 @@ export function CartDrawer() {
               Adicione produtos para começar
             </p>
             <Button asChild className="mt-6">
-              <Link href="/busca">Explorar produtos</Link>
+              <Link href="/busca" onClick={close}>Explorar produtos</Link>
             </Button>
           </div>
         ) : (
