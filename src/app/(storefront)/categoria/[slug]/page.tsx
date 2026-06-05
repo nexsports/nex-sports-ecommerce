@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/storefront/product-card"
 import { PlpFiltersSidebar, PlpFiltersTrigger, type FilterState } from "@/components/storefront/plp-filters"
 import { getProductsByCategory, getCategoryBySlug } from "@/lib/data/catalog"
 import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export default function CategoryPage() {
   const params = useParams()
@@ -31,8 +32,15 @@ export default function CategoryPage() {
     sort: "relevance",
   })
 
+  const [gender, setGender] = useState<'todos' | 'masculino' | 'feminino'>('todos')
+
+  const filteredByGender = useMemo(() => {
+    if (gender === 'todos') return allProducts
+    return allProducts.filter((p) => p.gender === gender || p.gender === 'unissex')
+  }, [allProducts, gender])
+
   const filtered = useMemo(() => {
-    let result = [...allProducts]
+    let result = [...filteredByGender]
 
     if (filters.priceRange[0] > 0) {
       result = result.filter((p) => (p.salePriceCents ?? p.priceCents) >= filters.priceRange[0] * 100)
@@ -60,7 +68,7 @@ export default function CategoryPage() {
     }
 
     return result
-  }, [allProducts, filters])
+  }, [filteredByGender, filters])
 
   if (!category) {
     return (
@@ -80,15 +88,47 @@ export default function CategoryPage() {
         <p className="text-muted-foreground mt-1">{category.description}</p>
       </div>
 
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-muted-foreground">{filtered.length} produtos</p>
-        <div className="lg:hidden">
-          <PlpFiltersTrigger
-            availableSizes={availableSizes}
-            availableBrands={availableBrands}
-            filters={filters}
-            onChange={setFilters}
-          />
+      {/* Filter bar — stacks on mobile, single row on lg+ */}
+      <div className="mt-6 mb-6 space-y-3 lg:flex lg:items-center lg:justify-between lg:gap-4 lg:space-y-0">
+        {/* Gender pills (scrollable on mobile) */}
+        <div
+          className="flex items-center gap-2 overflow-x-auto -mx-1 px-1 [&::-webkit-scrollbar]:hidden"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <span className="shrink-0 text-[11px] uppercase tracking-wider text-muted-foreground mr-1">
+            Gênero
+          </span>
+          {[
+            { value: 'todos' as const, label: 'Todos' },
+            { value: 'masculino' as const, label: 'Masculino' },
+            { value: 'feminino' as const, label: 'Feminino' },
+          ].map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setGender(opt.value)}
+              className={cn(
+                'shrink-0 px-4 h-10 rounded-full text-xs font-semibold transition-colors',
+                gender === opt.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary/60 text-foreground/80 hover:bg-secondary'
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Count + mobile filter trigger */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground">{filtered.length} produtos</p>
+          <div className="lg:hidden">
+            <PlpFiltersTrigger
+              availableSizes={availableSizes}
+              availableBrands={availableBrands}
+              filters={filters}
+              onChange={setFilters}
+            />
+          </div>
         </div>
       </div>
 
