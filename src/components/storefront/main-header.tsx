@@ -3,28 +3,18 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import {
   ArrowUpRight,
   ChevronDown,
   Mail,
-  Menu,
   Phone,
   Search,
   ShoppingBasket,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart/cart-context"
 import { categories as allCategories } from "@/lib/data/catalog"
-import { categoryDisplay } from "@/lib/data/category-display"
 import { cn } from "@/lib/utils"
 
 const subnavLinks = [
@@ -34,14 +24,13 @@ const subnavLinks = [
   { name: "Outlet", href: "/colecao/outlet" },
 ]
 
-function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
+function WhatsAppIcon() {
   return (
     <Image
       src="/branding/whatsapp.png"
       alt=""
       width={512}
       height={512}
-      {...(props as object)}
       className="h-4 w-4 object-contain [filter:brightness(0)_invert(1)]"
     />
   )
@@ -78,31 +67,6 @@ export function MainHeader() {
   const cart = useCart()
   const cartCount = cart?.count ?? 0
   const [query, setQuery] = useState("")
-  const [visible, setVisible] = useState(true)
-  const lastYRef = useRef(0)
-
-  // Auto-hide on scroll down, show on scroll up, always show at top
-  useEffect(() => {
-    const TOP_THRESHOLD = 8
-    const DELTA = 6
-    const onScroll = () => {
-      const y = window.scrollY
-      const delta = y - lastYRef.current
-      if (y <= TOP_THRESHOLD) {
-        setVisible(true)
-      } else if (Math.abs(delta) < DELTA) {
-        // ignore micro scroll
-      } else if (delta < 0) {
-        setVisible(true)
-      } else {
-        setVisible(false)
-      }
-      lastYRef.current = y
-    }
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,19 +75,12 @@ export function MainHeader() {
     router.push(`/busca?q=${encodeURIComponent(q)}`)
   }
 
-  // Shared horizontal padding so topbar / mainbar / subnav align on the same x edges
   const ROW_PX = "px-4 md:px-6 lg:px-10"
 
   return (
-    <header
-      aria-hidden={!visible}
-      className={cn(
-        "fixed left-0 right-0 z-40 w-full top-0 transition-transform duration-300 ease-out",
-        visible ? "translate-y-0" : "-translate-y-full",
-      )}
-    >
+    <header className="relative z-30 w-full bg-background">
       {/* ===== TOP CONTACT BAR (desktop only) ===== */}
-      <div className={cn("hidden md:flex w-full items-center justify-between gap-4 py-2 text-[11px] text-foreground/70 border-b border-border/40 bg-background/95 backdrop-blur-sm", ROW_PX)}>
+      <div className={cn("hidden md:flex w-full items-center justify-between gap-4 py-2 text-[11px] text-foreground/70 border-b border-border/40", ROW_PX)}>
         <div className="flex items-center gap-5">
           <a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <WhatsAppIcon />
@@ -151,49 +108,10 @@ export function MainHeader() {
         </div>
       </div>
 
-      {/* ===== MAIN BAR ===== */}
-      <div className="bg-background/95 backdrop-blur-sm border-b border-border/40">
-        {/* DESKTOP: logo | search (flex-1) | cart | Entrar */}
-        <div className={cn("hidden md:flex items-center gap-3 lg:gap-4 h-16 lg:h-20", ROW_PX)}>
-          {/* Hamburger (desktop, for full sheet menu) */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Abrir menu" className="shrink-0">
-                <Menu className="w-5 h-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0">
-              <SheetHeader className="p-6 pb-4 border-b border-border/50">
-                <SheetTitle>
-                  <Link href="/" aria-label="NEX SPORTS">
-                    <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
-                  </Link>
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col p-6 space-y-1">
-                {subnavLinks.map((item) => (
-                  <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
-                    {item.name}
-                  </Link>
-                ))}
-              </nav>
-              <Separator className="mx-6" />
-              <div className="p-6 space-y-1">
-                <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
-                {categoryDisplay.map((cat) => (
-                  <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
-                      <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                ))}
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          {/* Logo */}
+      {/* ===== MAIN BAR (compact, center cluster, no hamburger) ===== */}
+      <div className="border-b border-border/40">
+        {/* DESKTOP: center cluster logo | search compact | cart | Entrar */}
+        <div className={cn("hidden md:flex items-center justify-center gap-4 h-20", ROW_PX)}>
           <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
             <Image
               src="/branding/nex-logo.png"
@@ -205,8 +123,7 @@ export function MainHeader() {
             />
           </Link>
 
-          {/* Search (takes remaining space) */}
-          <form onSubmit={submitSearch} role="search" className="flex-1 min-w-0">
+          <form onSubmit={submitSearch} role="search" className="w-full max-w-md lg:max-w-lg">
             <label className="relative flex items-center w-full">
               <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
               <input
@@ -227,7 +144,6 @@ export function MainHeader() {
             </label>
           </form>
 
-          {/* Right cluster: cart + Entrar (tight) */}
           <div className="flex items-center gap-2 shrink-0">
             <Button
               variant="ghost"
@@ -258,47 +174,12 @@ export function MainHeader() {
           </div>
         </div>
 
-        {/* MOBILE: row1 hamburger | logo | cart   row2 search */}
+        {/* MOBILE: row1 logo | cart   row2 search */}
         <div className="md:hidden">
           <div className={cn("flex items-center justify-between gap-2 pt-3 pb-2", ROW_PX)}>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Menu" className="shrink-0">
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0">
-                <SheetHeader className="p-6 pb-4 border-b border-border/50">
-                  <SheetTitle>
-                    <Link href="/" aria-label="NEX SPORTS">
-                      <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
-                    </Link>
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col p-6 space-y-1">
-                  {subnavLinks.map((item) => (
-                    <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
-                      {item.name}
-                    </Link>
-                  ))}
-                </nav>
-                <Separator className="mx-6" />
-                <div className="p-6 space-y-1">
-                  <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
-                  {categoryDisplay.map((cat) => (
-                    <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
-                      <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
-                      <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
-                    </Link>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
-
             <Link href="/" aria-label="NEX SPORTS" className="shrink-0 inline-flex items-center">
               <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-9 w-auto object-contain" />
             </Link>
-
             <Button
               variant="ghost"
               size="icon"
@@ -375,6 +256,9 @@ export function MainHeader() {
           </div>
         </div>
       </nav>
+
+      {/* Sentinel for the ScrollNav to know when MainHeader has scrolled out */}
+      <div id="main-header-end" aria-hidden className="h-0 w-full" />
     </header>
   )
 }
