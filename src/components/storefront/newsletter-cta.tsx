@@ -65,12 +65,12 @@ export function NewsletterCta() {
             </div>
 
             {/* Visual side */}
-            <div className="hidden md:flex justify-end">
+            <div className="hidden md:flex justify-center">
               <div className="relative">
                 <div className="absolute inset-0 rotate-6 rounded-2xl bg-primary/20" />
                 <div className="relative w-80 h-60 rounded-2xl overflow-hidden border border-white/10">
                   <Image
-                    src="/categories/nex-run.png"
+                    src="/branding/newsletter-banner.png"
                     alt="NEX Sports"
                     fill
                     sizes="320px"
