@@ -26,31 +26,34 @@ export function PdpGallery({ images, title }: { images: string[]; title: string 
         ))}
       </div>
 
-      {/* Main image */}
-      <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-secondary/50">
+      {/* Mobile: horizontal snap scroll | Desktop: main image */}
+      <div className="md:hidden w-full overflow-x-auto snap-x snap-mandatory flex gap-2 rounded-2xl scrollbar-none">
+        {images.map((img, i) => (
+          <div
+            key={i}
+            className="relative aspect-square w-full flex-shrink-0 snap-center rounded-2xl overflow-hidden bg-secondary/50"
+          >
+            <Image
+              src={img}
+              alt={`${title} ${i + 1}`}
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden md:block relative aspect-square w-full rounded-2xl overflow-hidden bg-secondary/50">
         <Image
           src={images[active]}
           alt={title}
           fill
           priority
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="50vw"
           className="object-cover"
         />
-
-        {/* Mobile dots */}
-        <div className="md:hidden absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={cn(
-                "h-2 w-2 rounded-full transition-all",
-                active === i ? "bg-primary w-4" : "bg-white/50"
-              )}
-              aria-label={`Ver imagem ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </div>
   )

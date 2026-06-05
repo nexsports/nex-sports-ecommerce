@@ -14,12 +14,12 @@ export default async function EnderecosPage() {
     .order("is_default", { ascending: false });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Endereços</h1>
+    <div className="space-y-5 md:space-y-6">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold">Endereços</h1>
         <button
           type="button"
-          className="h-10 px-4 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 text-sm"
+          className="h-11 px-4 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 text-sm"
           disabled
           title="Em breve"
         >

@@ -16,7 +16,7 @@ export function BestsellersSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
       >
-        <div className="flex items-center gap-2 mb-8">
+        <div className="flex items-center gap-2 mb-6 md:mb-8">
           <TrendingUp className="h-5 w-5 text-primary" />
           <h2 className="text-2xl md:text-3xl font-bold">Mais vendidos</h2>
         </div>

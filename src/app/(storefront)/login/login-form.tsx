@@ -9,19 +9,19 @@ import Link from "next/link";
 export function LoginForm() {
   const [state, action, pending] = useActionState(signIn, {});
   return (
-    <form action={action} className="space-y-4">
-      <div className="space-y-2">
+    <form action={action} className="space-y-5">
+      <div className="space-y-1.5">
         <Label htmlFor="email">E-mail</Label>
-        <Input id="email" name="email" type="email" required autoComplete="email" />
+        <Input id="email" name="email" type="email" required autoComplete="email" className="h-11" />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Senha</Label>
           <Link href="/recuperar" className="text-xs text-accent hover:underline">
             Esqueci
           </Link>
         </div>
-        <Input id="password" name="password" type="password" required autoComplete="current-password" />
+        <Input id="password" name="password" type="password" required autoComplete="current-password" className="h-11" />
       </div>
       {state.error && (
         <p className="text-sm text-destructive bg-destructive/10 rounded-md px-3 py-2">{state.error}</p>

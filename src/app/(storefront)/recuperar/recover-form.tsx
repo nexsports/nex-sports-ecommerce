@@ -15,10 +15,10 @@ export function RecoverForm() {
     );
   }
   return (
-    <form action={action} className="space-y-4">
-      <div className="space-y-2">
+    <form action={action} className="space-y-5">
+      <div className="space-y-1.5">
         <Label htmlFor="email">E-mail</Label>
-        <Input id="email" name="email" type="email" required autoComplete="email" />
+        <Input id="email" name="email" type="email" required autoComplete="email" className="h-11" />
       </div>
       {state.error && (
         <p className="text-sm text-destructive bg-destructive/10 rounded-md px-3 py-2">{state.error}</p>

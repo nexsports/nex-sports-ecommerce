@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { toast } from "sonner"
 import { ShoppingBag, Star, Truck, ShieldCheck, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -52,7 +51,7 @@ export default function ProductPage() {
       priceCents: price,
       qty,
     })
-    toast.success(`${product.title} adicionado ao carrinho!`)
+    cart.open()
   }
 
   return (
@@ -180,10 +179,10 @@ export default function ProductPage() {
 
             {/* Tabs */}
             <Tabs defaultValue="description">
-              <TabsList>
-                <TabsTrigger value="description">Descrição</TabsTrigger>
-                <TabsTrigger value="specs">Especificações</TabsTrigger>
-                <TabsTrigger value="reviews">Avaliações</TabsTrigger>
+              <TabsList className="w-full overflow-x-auto flex-nowrap justify-start">
+                <TabsTrigger value="description" className="whitespace-nowrap">Descrição</TabsTrigger>
+                <TabsTrigger value="specs" className="whitespace-nowrap">Especificações</TabsTrigger>
+                <TabsTrigger value="reviews" className="whitespace-nowrap">Avaliações</TabsTrigger>
               </TabsList>
               <TabsContent value="description" className="mt-4">
                 <p className="text-sm text-muted-foreground leading-relaxed">{product.description}</p>

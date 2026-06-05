@@ -14,19 +14,41 @@ export default async function ContaLayout({ children }: { children: React.ReactN
   const user = await requireUser("/login?next=/conta");
   const name = (user.user_metadata as any)?.name ?? user.email;
   return (
-    <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-8 md:py-12">
-      <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6 md:gap-10">
-        <aside className="space-y-1">
+    <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-6 md:py-12">
+      {/* Mobile: horizontal scroll tabbar */}
+      <nav className="flex md:hidden gap-1 overflow-x-auto snap-x snap-mandatory scrollbar-none -mx-4 px-4 pb-3 mb-4 border-b border-border">
+        {items.map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className="flex items-center gap-2 shrink-0 snap-start rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent/10 hover:text-accent transition-colors whitespace-nowrap"
+          >
+            <Icon className="w-4 h-4" /> {label}
+          </Link>
+        ))}
+        <form action={signOut} className="shrink-0 snap-start">
+          <button
+            type="submit"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-destructive/10 hover:text-destructive transition-colors whitespace-nowrap"
+          >
+            <LogOut className="w-4 h-4" /> Sair
+          </button>
+        </form>
+      </nav>
+
+      <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-6 md:gap-10">
+        {/* Desktop sidebar */}
+        <aside className="hidden md:block space-y-1">
           <div className="rounded-2xl border border-border bg-card p-4 mb-4">
             <p className="text-xs text-muted-foreground">Olá</p>
             <p className="font-semibold truncate">{name}</p>
           </div>
-          <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible">
+          <nav className="flex flex-col gap-1">
             {items.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm hover:bg-accent/10 hover:text-accent transition-colors whitespace-nowrap"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm hover:bg-accent/10 hover:text-accent transition-colors"
               >
                 <Icon className="w-4 h-4" /> {label}
               </Link>

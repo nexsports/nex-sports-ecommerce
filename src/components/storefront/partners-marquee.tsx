@@ -16,7 +16,7 @@ export function PartnersMarquee() {
       </div>
 
       <div className="relative flex overflow-hidden">
-        <div className="flex items-center gap-16 md:gap-24 animate-marquee whitespace-nowrap">
+        <div className="flex items-center gap-12 md:gap-24 animate-marquee whitespace-nowrap">
           {reel.map((p, i) => (
             <div
               key={`${p.name}-${i}`}

@@ -35,7 +35,7 @@ export function PdpVariantSelector({
                 key={c.name}
                 onClick={() => onColorChange(c.name)}
                 className={cn(
-                  "relative h-9 w-9 rounded-full border-2 transition-all",
+                  "relative h-11 w-11 min-h-[44px] min-w-[44px] rounded-full border-2 transition-all",
                   selectedColor === c.name
                     ? "border-primary ring-2 ring-primary/30"
                     : "border-border hover:border-muted-foreground"
@@ -67,7 +67,7 @@ export function PdpVariantSelector({
                   onClick={() => !oos && onSizeChange(s)}
                   disabled={oos}
                   className={cn(
-                    "min-w-[2.5rem] h-10 px-3 rounded-xl text-sm font-medium transition-all border",
+                    "min-w-[2.5rem] h-11 min-h-[44px] px-3 rounded-xl text-sm font-medium transition-all border",
                     selectedSize === s
                       ? "bg-primary text-primary-foreground border-primary"
                       : oos

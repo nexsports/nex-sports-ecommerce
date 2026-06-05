@@ -54,7 +54,7 @@ function FilterContent({ availableSizes, availableBrands, filters, onChange }: P
               key={opt.value}
               onClick={() => onChange({ ...filters, sort: opt.value })}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-sm transition-all border",
+                "px-3 h-11 min-h-[44px] rounded-lg text-sm transition-all border",
                 filters.sort === opt.value
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-secondary text-foreground border-transparent hover:border-muted-foreground"
@@ -107,7 +107,7 @@ function FilterContent({ availableSizes, availableBrands, filters, onChange }: P
                 key={s}
                 onClick={() => toggleSize(s)}
                 className={cn(
-                  "min-w-[2.5rem] h-9 px-2.5 rounded-lg text-sm transition-all border",
+                  "min-w-[2.5rem] h-11 min-h-[44px] px-2.5 rounded-lg text-sm transition-all border",
                   filters.sizes.includes(s)
                     ? "bg-primary text-primary-foreground border-primary"
                     : "bg-secondary text-foreground border-transparent hover:border-muted-foreground"
@@ -132,7 +132,7 @@ function FilterContent({ availableSizes, availableBrands, filters, onChange }: P
                 key={b}
                 onClick={() => toggleBrand(b)}
                 className={cn(
-                  "px-3 py-1.5 rounded-lg text-sm transition-all border",
+                  "px-3 h-11 min-h-[44px] rounded-lg text-sm transition-all border",
                   filters.brands.includes(b)
                     ? "bg-primary text-primary-foreground border-primary"
                     : "bg-secondary text-foreground border-transparent hover:border-muted-foreground"
@@ -186,7 +186,7 @@ export function PlpFiltersTrigger(props: PlpFiltersProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" className="h-11 min-h-[44px] px-4">
           <SlidersHorizontal className="h-4 w-4 mr-2" />
           Filtros
           {hasActiveFilters(filters) && (
@@ -194,19 +194,19 @@ export function PlpFiltersTrigger(props: PlpFiltersProps) {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[85vh] rounded-t-3xl">
-        <SheetHeader className="pb-4">
+      <SheetContent side="right" className="w-full sm:max-w-md flex flex-col p-0">
+        <SheetHeader className="px-5 py-4 border-b border-border shrink-0">
           <SheetTitle>Filtros</SheetTitle>
         </SheetHeader>
-        <div className="overflow-y-auto h-[calc(100%-8rem)]">
+        <div className="flex-1 overflow-y-auto px-5 py-4">
           <FilterContent {...props} />
         </div>
-        <div className="flex gap-3 pt-4 border-t border-border">
+        <div className="flex gap-3 px-5 py-4 border-t border-border shrink-0">
           {hasActiveFilters(filters) && (
             <SheetClose asChild>
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 h-12 min-h-[48px]"
                 onClick={() =>
                   onChange({ priceRange: [0, 0], sizes: [], brands: [], sort: "relevance" })
                 }
@@ -216,7 +216,7 @@ export function PlpFiltersTrigger(props: PlpFiltersProps) {
             </SheetClose>
           )}
           <SheetClose asChild>
-            <Button className="flex-1">Aplicar</Button>
+            <Button className="flex-1 h-12 min-h-[48px]">Aplicar</Button>
           </SheetClose>
         </div>
       </SheetContent>

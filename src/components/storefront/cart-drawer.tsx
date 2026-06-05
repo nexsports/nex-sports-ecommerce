@@ -102,27 +102,27 @@ export function CartDrawer() {
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-7 w-7"
+                            className="h-9 w-9 min-h-[36px] min-w-[36px]"
                             onClick={() =>
                               updateQty(item.variantId, item.qty - 1)
                             }
                             aria-label="Diminuir quantidade"
                           >
-                            <Minus className="h-3 w-3" />
+                            <Minus className="h-3.5 w-3.5" />
                           </Button>
-                          <span className="w-7 text-center text-sm font-medium tabular-nums">
+                          <span className="w-8 text-center text-sm font-medium tabular-nums">
                             {item.qty}
                           </span>
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-7 w-7"
+                            className="h-9 w-9 min-h-[36px] min-w-[36px]"
                             onClick={() =>
                               updateQty(item.variantId, item.qty + 1)
                             }
                             aria-label="Aumentar quantidade"
                           >
-                            <Plus className="h-3 w-3" />
+                            <Plus className="h-3.5 w-3.5" />
                           </Button>
                         </div>
                         <span className="text-sm font-bold tabular-nums">

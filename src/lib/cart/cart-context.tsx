@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useReducer, useCallback } from "react"
+import React, { createContext, useContext, useEffect, useReducer, useCallback, useState } from "react"
 import type { CartItem } from "@/lib/mocks/types"
 
 interface CartState {
@@ -57,6 +57,10 @@ interface CartContextValue {
   clear: () => void
   total: number
   count: number
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
@@ -65,6 +69,11 @@ const STORAGE_KEY = "nex-cart"
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] })
+  const [isOpen, setIsOpen] = useState(false)
+
+  const open = useCallback(() => setIsOpen(true), [])
+  const close = useCallback(() => setIsOpen(false), [])
+  const toggle = useCallback(() => setIsOpen((v) => !v), [])
 
   useEffect(() => {
     try {
@@ -85,7 +94,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state.items])
 
-  const add = useCallback((item: CartItem) => dispatch({ type: "ADD", item }), [])
+  const add = useCallback(
+    (item: CartItem) => {
+      dispatch({ type: "ADD", item })
+      setIsOpen(true)
+    },
+    []
+  )
   const remove = useCallback((variantId: string) => dispatch({ type: "REMOVE", variantId }), [])
   const updateQty = useCallback(
     (variantId: string, qty: number) => dispatch({ type: "UPDATE_QTY", variantId, qty }),
@@ -97,7 +112,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const count = state.items.reduce((sum, i) => sum + i.qty, 0)
 
   return (
-    <CartContext.Provider value={{ items: state.items, add, remove, updateQty, clear, total, count }}>
+    <CartContext.Provider value={{ items: state.items, add, remove, updateQty, clear, total, count, isOpen, open, close, toggle }}>
       {children}
     </CartContext.Provider>
   )

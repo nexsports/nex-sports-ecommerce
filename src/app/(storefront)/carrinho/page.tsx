@@ -59,21 +59,21 @@ export default function CartPage() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-10 w-10 min-h-[44px] min-w-[44px]"
                         onClick={() => updateQty(item.variantId, item.qty - 1)}
                         aria-label="Diminuir quantidade"
                       >
-                        <Minus className="h-3.5 w-3.5" />
+                        <Minus className="h-4 w-4" />
                       </Button>
-                      <span className="w-8 text-center font-medium tabular-nums">{item.qty}</span>
+                      <span className="w-10 text-center font-medium tabular-nums">{item.qty}</span>
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-10 w-10 min-h-[44px] min-w-[44px]"
                         onClick={() => updateQty(item.variantId, item.qty + 1)}
                         aria-label="Aumentar quantidade"
                       >
-                        <Plus className="h-3.5 w-3.5" />
+                        <Plus className="h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center gap-3">
@@ -81,7 +81,7 @@ export default function CartPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                        className="h-10 w-10 min-h-[44px] min-w-[44px] text-muted-foreground hover:text-destructive"
                         onClick={() => remove(item.variantId)}
                         aria-label={`Remover ${item.title}`}
                       >
@@ -108,7 +108,7 @@ export default function CartPage() {
 
           {/* Summary */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20 rounded-2xl border border-border bg-card p-6 space-y-4">
+            <div className="lg:sticky lg:top-20 rounded-2xl border border-border bg-card p-5 md:p-6 space-y-4">
               <h2 className="font-semibold text-lg">Resumo do pedido</h2>
               <Separator />
               <div className="space-y-2">
@@ -126,7 +126,7 @@ export default function CartPage() {
                 <span className="font-semibold">Total</span>
                 <span className="text-xl font-bold">{formatBRL(total)}</span>
               </div>
-              <Button className="w-full nex-glow" size="lg">
+              <Button className="w-full nex-glow h-12 min-h-[48px]" size="lg">
                 FINALIZAR COMPRA
               </Button>
               <p className="text-xs text-muted-foreground text-center">

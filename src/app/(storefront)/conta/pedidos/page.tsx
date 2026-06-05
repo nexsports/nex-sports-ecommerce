@@ -17,10 +17,10 @@ export default async function PedidosPage() {
 
   if (!orders || orders.length === 0) {
     return (
-      <div className="text-center py-16 rounded-2xl border border-border bg-card">
+      <div className="text-center py-12 md:py-16 rounded-2xl border border-border bg-card">
         <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-        <h2 className="text-xl font-semibold mb-2">Nenhum pedido ainda</h2>
-        <p className="text-muted-foreground mb-6">Que tal começar agora?</p>
+        <h2 className="text-lg sm:text-xl font-semibold mb-2">Nenhum pedido ainda</h2>
+        <p className="text-muted-foreground text-sm mb-6">Que tal começar agora?</p>
         <Link href="/" className="inline-flex items-center justify-center h-11 px-6 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90">
           Explorar produtos
         </Link>
@@ -30,7 +30,7 @@ export default async function PedidosPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Meus pedidos</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold">Meus pedidos</h1>
       <div className="space-y-3">
         {orders.map((o: any) => (
           <Link
