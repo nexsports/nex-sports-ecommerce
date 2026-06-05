@@ -69,7 +69,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-screen-xl px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
           {/* ── Brand + social ── */}
-          <div>
+          <div className="text-center sm:text-left">
             <Link href="/" aria-label="NEX SPORTS" className="inline-block">
               <Image
                 src="/branding/nex-logo.png"
@@ -80,20 +80,20 @@ export function SiteFooter() {
               />
             </Link>
 
-            <p className="text-foreground/60 mt-6 max-w-md text-sm leading-relaxed">
+            <p className="text-foreground/60 mt-6 max-w-md mx-auto sm:mx-0 text-sm leading-relaxed">
               Curadoria de produtos esportivos premium — padel, beach tennis,
               futebol, corrida, lifestyle e tecnologia. Entregamos em todo o
               Brasil com suporte ágil e marcas verificadas.
             </p>
 
-            <ul className="mt-8 flex gap-5 md:gap-6">
+            <ul className="mt-8 flex justify-center sm:justify-start gap-4 sm:gap-5 md:gap-6">
               {socialLinks.map(({ Icon, label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
                     target={href.startsWith("http") ? "_blank" : undefined}
                     rel={href.startsWith("http") ? "noreferrer" : undefined}
-                    className="text-primary hover:text-primary/80 transition-colors"
+                    className="inline-flex p-1.5 text-primary hover:text-primary/80 transition-colors"
                     aria-label={label}
                   >
                     <Icon className="size-5" />
@@ -104,7 +104,7 @@ export function SiteFooter() {
           </div>
 
           {/* ── Link columns ── */}
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-2">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:col-span-2">
             {/* Categorias */}
             <div>
               <p className="text-base font-semibold">Categorias</p>
@@ -179,7 +179,7 @@ export function SiteFooter() {
 
         {/* ── Legal bottom ── */}
         <div className="mt-12 border-t border-border pt-6">
-          <div className="flex flex-col items-center justify-between gap-3 text-xs text-foreground/60 sm:flex-row">
+          <div className="flex flex-col items-start gap-3 text-xs text-foreground/60 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 NEX Sports. Todos os direitos reservados.</p>
             <p>CNPJ 00.000.000/0001-00</p>
           </div>

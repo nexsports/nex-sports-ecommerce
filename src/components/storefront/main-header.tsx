@@ -8,13 +8,23 @@ import {
   ArrowUpRight,
   ChevronDown,
   Mail,
+  Menu,
   Phone,
   Search,
   ShoppingBasket,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart/cart-context"
 import { categories as allCategories } from "@/lib/data/catalog"
+import { categoryDisplay } from "@/lib/data/category-display"
 import { cn } from "@/lib/utils"
 
 const subnavLinks = [
@@ -75,7 +85,7 @@ export function MainHeader() {
     router.push(`/busca?q=${encodeURIComponent(q)}`)
   }
 
-  const ROW_PX = "px-4 md:px-6 lg:px-10"
+  const ROW_PX = "px-[max(1rem,env(safe-area-inset-left))] md:px-6 lg:px-10"
 
   return (
     <header className="relative z-30 w-full bg-background">
@@ -128,14 +138,13 @@ export function MainHeader() {
 
           <form onSubmit={submitSearch} role="search" className="w-full max-w-xl lg:max-w-3xl">
             <label className="relative flex items-center w-full">
-              <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
               <input
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar produtos, marcas, esportes..."
                 aria-label="Buscar"
-                className="h-11 w-full rounded-full border border-border bg-card/60 pl-11 pr-12 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                className="h-11 w-full rounded-full border border-border bg-card/60 pl-5 pr-12 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
               />
               <button
                 type="submit"
@@ -177,43 +186,87 @@ export function MainHeader() {
           </div>
         </div>
 
-        {/* MOBILE: row1 logo | cart   row2 search */}
+        {/* MOBILE: row1 hamburger | logo center | cart   row2 search */}
         <div className="md:hidden">
-          <div className={cn("flex items-center justify-between gap-2 pt-3 pb-2", ROW_PX)}>
-            <Link href="/" aria-label="NEX SPORTS" className="shrink-0 inline-flex items-center">
-              <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-9 w-auto object-contain" />
+          <div className={cn("grid grid-cols-3 items-center gap-2 pt-3 pb-2", ROW_PX)}>
+            {/* Left: hamburger */}
+            <div className="justify-self-start">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="Abrir menu" className="h-10 w-10">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0">
+                  <SheetHeader className="p-6 pb-4 border-b border-border/50">
+                    <SheetTitle>
+                      <Link href="/" aria-label="NEX SPORTS">
+                        <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                      </Link>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <nav className="flex flex-col p-6 space-y-1">
+                    {subnavLinks.map((item) => (
+                      <Link key={item.name} href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
+                        {item.name}
+                      </Link>
+                    ))}
+                  </nav>
+                  <Separator className="mx-6" />
+                  <div className="p-6 space-y-1">
+                    <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
+                    {categoryDisplay.map((cat) => (
+                      <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
+                          <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
+                        </div>
+                        <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </Link>
+                    ))}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            {/* Center: logo */}
+            <Link href="/" aria-label="NEX SPORTS" className="justify-self-center inline-flex items-center">
+              <Image src="/branding/nex-logo.png" alt="NEX SPORTS" width={1200} height={430} priority className="h-10 sm:h-11 w-auto object-contain" />
             </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => cart?.toggle?.()}
-              className="relative shrink-0"
-              aria-label={`Carrinho (${cartCount})`}
-            >
-              <ShoppingBasket className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Button>
+
+            {/* Right: cart */}
+            <div className="justify-self-end">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => cart?.toggle?.()}
+                className="relative h-10 w-10"
+                aria-label={`Carrinho (${cartCount})`}
+              >
+                <ShoppingBasket className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Button>
+            </div>
           </div>
           <div className={cn("pb-3", ROW_PX)}>
             <form onSubmit={submitSearch} role="search" className="w-full">
               <label className="relative flex items-center w-full">
-                <Search className="absolute left-4 h-4 w-4 text-muted-foreground pointer-events-none" aria-hidden />
                 <input
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Buscar..."
                   aria-label="Buscar"
-                  className="h-10 w-full rounded-full border border-border bg-card/60 pl-11 pr-11 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="h-11 w-full rounded-full border border-border bg-card/60 pl-5 pr-12 text-sm placeholder:text-muted-foreground focus:bg-card focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
                 <button
                   type="submit"
                   aria-label="Buscar"
-                  className="absolute right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  className="absolute right-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                   <Search className="h-4 w-4" />
                 </button>
