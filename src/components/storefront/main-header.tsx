@@ -79,9 +79,9 @@ export function MainHeader() {
 
   return (
     <header className="relative z-30 w-full bg-background">
-      {/* ===== TOP CONTACT BAR (desktop only) — pushed to viewport edges ===== */}
-      <div className={cn("hidden md:flex w-full items-center justify-between gap-4 py-2 text-[11px] border-b border-border/40", ROW_PX)}>
-        <div className="inline-flex items-center gap-5 text-foreground/70">
+      {/* ===== TOP CONTACT BAR (desktop only) — clustered tighter toward center ===== */}
+      <div className={cn("hidden md:flex w-full items-center justify-center gap-4 py-2 text-[11px] border-b border-border/40", ROW_PX)}>
+        <div className="shrink-0 inline-flex items-center gap-5 text-foreground/70">
           <a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <WhatsAppIcon />
             WhatsApp
@@ -95,7 +95,10 @@ export function MainHeader() {
             contato@nexsportts.com.br
           </a>
         </div>
-        <div className="inline-flex items-center gap-3 text-foreground/80">
+        {/* Spacer width mirrors the mainbar search column so contact aligns above logo and socials above Entrar */}
+        <div className="w-full max-w-md lg:max-w-lg" aria-hidden />
+        <div className="w-10 shrink-0" aria-hidden />
+        <div className="shrink-0 inline-flex items-center gap-3 text-foreground/80">
           <a href="#" aria-label="Instagram" className="hover:text-[#0061F9] transition-colors">
             <InstagramIcon className="h-3.5 w-3.5" />
           </a>
