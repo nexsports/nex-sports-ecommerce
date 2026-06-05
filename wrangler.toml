@@ -9,11 +9,10 @@ workers_dev = true
 
 # Custom domain routes
 routes = [
+  { pattern = "nexsportts.com.br", custom_domain = true },
+  { pattern = "www.nexsportts.com.br", custom_domain = true },
   { pattern = "admin.nexsportts.com.br", custom_domain = true },
 ]
-# Apex + www blocked by legacy DNS records — re-enable after clearing in CF dashboard:
-#   { pattern = "nexsportts.com.br", custom_domain = true },
-#   { pattern = "www.nexsportts.com.br", custom_domain = true },
 
 # Static assets binding (Next public + .open-next/assets)
 [assets]
