@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
-import { ArrowLeft, Save, Upload, X } from "lucide-react";
+import { ArrowLeft, Save, Upload, X, Plus, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +53,9 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
   const [status, setStatus] = useState<"draft" | "active" | "archived">(
     initialData?.status ?? "active"
   );
+  const [gender, setGender] = useState<"masculino" | "feminino" | "unissex">(
+    initialData?.gender ?? "unissex"
+  );
   const [basePrice, setBasePrice] = useState(
     initialData?.basePriceCents ? (initialData.basePriceCents / 100).toFixed(2) : ""
   );
@@ -60,7 +63,16 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
     initialData?.salePriceCents ? (initialData.salePriceCents / 100).toFixed(2) : ""
   );
   const [stock, setStock] = useState(String(initialData?.stock ?? 0));
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? "");
+
+  // Images
+  const [images, setImages] = useState<{ url: string; alt?: string | null }[]>(
+    initialData?.images ?? (initialData?.imageUrl ? [{ url: initialData.imageUrl, alt: "" }] : [])
+  );
+
+  // Attributes
+  const [attributes, setAttributes] = useState<{ name: string; value: string }[]>(
+    initialData?.attributes ?? []
+  );
 
   function onTitleChange(v: string) {
     setTitle(v);
@@ -73,27 +85,54 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
   }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("bucket", "products");
-      const r = await fetch("/api/admin/upload", { method: "POST", body: fd });
-      if (!r.ok) {
-        const j = await r.json().catch(() => ({}));
-        throw new Error(j.error ?? "Falha no upload");
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fd = new FormData();
+        fd.append("file", file);
+        fd.append("bucket", "products");
+        const r = await fetch("/api/admin/upload", { method: "POST", body: fd });
+        if (!r.ok) {
+          const j = await r.json().catch(() => ({}));
+          throw new Error(j.error ?? "Falha no upload");
+        }
+        const j = await r.json();
+        setImages((prev) => [...prev, { url: j.url, alt: "" }]);
       }
-      const j = await r.json();
-      setImageUrl(j.url);
-      toast.success("Imagem enviada");
+      toast.success(
+        files.length === 1 ? "Imagem enviada" : `${files.length} imagens enviadas`
+      );
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Falha no upload");
     } finally {
       setUploading(false);
       e.target.value = "";
     }
+  }
+
+  function removeImage(idx: number) {
+    setImages((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  function moveImage(idx: number, dir: -1 | 1) {
+    const next = [...images];
+    const target = idx + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[idx], next[target]] = [next[target], next[idx]];
+    setImages(next);
+  }
+
+  function updateAttr(idx: number, field: "name" | "value", val: string) {
+    const next = [...attributes];
+    next[idx] = { ...next[idx], [field]: val };
+    setAttributes(next);
+  }
+
+  function removeAttr(idx: number) {
+    setAttributes((prev) => prev.filter((_, i) => i !== idx));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -105,10 +144,12 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
       description: description || null,
       categoryId,
       status,
+      gender,
       basePriceCents: parseCents(basePrice),
       salePriceCents: salePrice ? parseCents(salePrice) : null,
-      imageUrl: imageUrl || null,
       stock: parseInt(stock, 10) || 0,
+      images: images.filter((i) => i.url),
+      attributes: attributes.filter((a) => a.name && a.value),
     };
     if (!values.title) {
       toast.error("Título obrigatório");
@@ -161,6 +202,7 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
 
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
+          {/* Basic info */}
           <Card>
             <CardContent className="pt-6 space-y-4">
               <div className="space-y-2">
@@ -211,9 +253,58 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
               </div>
             </CardContent>
           </Card>
+
+          {/* Specifications */}
+          <Card>
+            <CardContent className="pt-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <Label>Especificações</Label>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    setAttributes([...attributes, { name: "", value: "" }])
+                  }
+                >
+                  <Plus className="h-3 w-3 mr-1" /> Adicionar
+                </Button>
+              </div>
+              {attributes.length === 0 && (
+                <p className="text-xs text-muted-foreground">
+                  Ex: Material, Composição, Peso, Dimensões...
+                </p>
+              )}
+              {attributes.map((a, i) => (
+                <div key={i} className="flex gap-2">
+                  <Input
+                    className="flex-1"
+                    placeholder="Nome (ex: Material)"
+                    value={a.name}
+                    onChange={(e) => updateAttr(i, "name", e.target.value)}
+                  />
+                  <Input
+                    className="flex-1"
+                    placeholder="Valor"
+                    value={a.value}
+                    onChange={(e) => updateAttr(i, "value", e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeAttr(i)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
 
         <div className="space-y-6">
+          {/* Category, status, gender, pricing */}
           <Card>
             <CardContent className="pt-6 space-y-4">
               <div className="space-y-2">
@@ -250,6 +341,24 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
                 </Select>
               </div>
               <div className="space-y-2">
+                <Label>Gênero</Label>
+                <Select
+                  value={gender}
+                  onValueChange={(v) =>
+                    setGender(v as "masculino" | "feminino" | "unissex")
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="unissex">Unissex</SelectItem>
+                    <SelectItem value="masculino">Masculino</SelectItem>
+                    <SelectItem value="feminino">Feminino</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
                 <Label>Preço (R$) *</Label>
                 <Input
                   value={basePrice}
@@ -268,35 +377,77 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
             </CardContent>
           </Card>
 
+          {/* Images */}
           <Card>
             <CardContent className="pt-6 space-y-3">
-              <Label>Imagem</Label>
-              {imageUrl ? (
-                <div className="relative aspect-square rounded-lg overflow-hidden border border-border">
-                  <Image src={imageUrl} alt="" fill className="object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => setImageUrl("")}
-                    className="absolute top-2 right-2 h-7 w-7 rounded-full bg-black/60 text-white flex items-center justify-center"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+              <Label>Imagens</Label>
+              {images.length > 0 && (
+                <div className="grid grid-cols-2 gap-3">
+                  {images.map((img, i) => (
+                    <div
+                      key={i}
+                      className="relative group rounded-lg overflow-hidden border border-border"
+                    >
+                      <div className="relative aspect-square">
+                        <Image
+                          src={img.url}
+                          alt={img.alt ?? ""}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="absolute top-1.5 right-1.5 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          type="button"
+                          onClick={() => moveImage(i, -1)}
+                          disabled={i === 0}
+                          className="h-6 w-6 rounded-full bg-black/60 text-white flex items-center justify-center disabled:opacity-30"
+                        >
+                          <ChevronUp className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveImage(i, 1)}
+                          disabled={i === images.length - 1}
+                          className="h-6 w-6 rounded-full bg-black/60 text-white flex items-center justify-center disabled:opacity-30"
+                        >
+                          <ChevronDown className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(i)}
+                          className="h-6 w-6 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      {i === 0 && (
+                        <span className="absolute bottom-1.5 left-1.5 text-[10px] font-medium bg-black/60 text-white px-1.5 py-0.5 rounded">
+                          Principal
+                        </span>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <label className="flex flex-col items-center justify-center aspect-square rounded-lg border-2 border-dashed border-border cursor-pointer hover:bg-secondary/30">
-                  <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                  <span className="text-xs text-muted-foreground">
-                    {uploading ? "Enviando..." : "Clique pra enviar"}
-                  </span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleUpload}
-                    disabled={uploading}
-                  />
-                </label>
               )}
+              <label className="flex items-center justify-center gap-2 h-10 rounded-lg border-2 border-dashed border-border cursor-pointer hover:bg-secondary/30 transition-colors">
+                <Upload className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">
+                  {uploading
+                    ? "Enviando..."
+                    : images.length > 0
+                      ? "Adicionar mais"
+                      : "Adicionar imagem"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={handleUpload}
+                  disabled={uploading}
+                />
+              </label>
             </CardContent>
           </Card>
         </div>

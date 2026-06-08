@@ -2,43 +2,30 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Plus, Star } from "lucide-react"
-import { toast } from "sonner"
+import { ShoppingBasket } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn, formatBRL } from "@/lib/utils"
 import { useCart } from "@/lib/cart/cart-context"
 import type { Product } from "@/lib/mocks/types"
+import { showCartAddedToast } from "./cart-added-toast"
 
-function StarRating({ rating, count }: { rating: number; count: number }) {
-  return (
-    <div className="flex items-center gap-1">
-      <div className="flex items-center">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              "h-3 w-3 sm:h-3.5 sm:w-3.5",
-              i < Math.round(rating) ? "fill-accent text-accent" : "text-muted-foreground/30"
-            )}
-          />
-        ))}
-      </div>
-      <span className="text-xs text-muted-foreground">({count})</span>
-    </div>
-  )
-}
+const INSTALLMENTS = 6
+const MIN_INSTALLMENT_CENTS = 1500 // hide installment hint when value below R$ 15
 
 export function ProductCard({ product, className }: { product: Product; className?: string }) {
   const cart = useCart()
 
+  const price = product.salePriceCents ?? product.priceCents
+  const installmentCents = Math.ceil(price / INSTALLMENTS)
+  const showInstallment = installmentCents >= MIN_INSTALLMENT_CENTS
+
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    const defaultSize = product.sizes[0]
-    const defaultColor = product.colors[0]?.name ?? ""
+    const defaultSize = product.sizes[0] ?? "Único"
+    const defaultColor = product.colors[0]?.name ?? "Padrão"
     const variantId = `${product.id}-${defaultSize}-${defaultColor}`
-    const price = product.salePriceCents ?? product.priceCents
     cart.add({
       variantId,
       productId: product.id,
@@ -49,15 +36,28 @@ export function ProductCard({ product, className }: { product: Product; classNam
       priceCents: price,
       qty: 1,
     })
-    toast.success(`${product.title} adicionado ao carrinho!`)
+    const items = [...(cart.items ?? [])]
+    const existing = items.find((i) => i.variantId === variantId)
+    const nextQty = existing ? existing.qty + 1 : 1
+    const cartCount = (cart.count ?? 0) + 1
+    const cartTotal = (cart.total ?? 0) + price
+    showCartAddedToast({
+      image: product.images[0],
+      title: product.title,
+      priceCents: price,
+      qty: nextQty,
+      cartCount,
+      cartTotal,
+    })
   }
-
-  const price = product.salePriceCents ?? product.priceCents
 
   return (
     <Link
       href={`/produto/${product.slug}`}
-      className={cn("group relative flex flex-col rounded-2xl bg-card border border-border overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5", className)}
+      className={cn(
+        "group relative flex flex-col rounded-2xl bg-card border border-border overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5",
+        className,
+      )}
     >
       <div className="relative aspect-square overflow-hidden bg-secondary/50">
         <Image
@@ -84,28 +84,45 @@ export function ProductCard({ product, className }: { product: Product; classNam
             {product.badge}
           </Badge>
         )}
-        <Button
-          size="icon"
-          className="absolute bottom-2 right-2 h-11 w-11 sm:h-9 sm:w-9 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
-          onClick={handleAdd}
-          aria-label={`Adicionar ${product.title} ao carrinho`}
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
       </div>
-      <div className="flex flex-col gap-1 p-2.5 sm:p-3.5 flex-1">
-        <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">{product.brand}</span>
-        <h3 className="text-xs sm:text-sm font-medium leading-tight line-clamp-2 text-foreground">{product.title}</h3>
-        <StarRating rating={product.rating} count={product.reviewCount} />
-        <div className="mt-auto flex items-baseline gap-2 pt-1">
-          {product.salePriceCents ? (
-            <>
-              <span className="text-base sm:text-lg font-bold text-accent">{formatBRL(product.salePriceCents)}</span>
-              <span className="text-xs sm:text-sm text-muted-foreground line-through">{formatBRL(product.priceCents)}</span>
-            </>
-          ) : (
-            <span className="text-base sm:text-lg font-bold text-foreground">{formatBRL(product.priceCents)}</span>
-          )}
+
+      <div className="flex flex-col gap-1.5 p-3 sm:p-4 flex-1">
+        <h3 className="text-sm font-medium leading-tight line-clamp-2 text-foreground min-h-[2.5rem]">
+          {product.title}
+        </h3>
+
+        <div className="mt-auto pt-2 space-y-2">
+          <div>
+            {product.salePriceCents ? (
+              <div className="flex items-baseline gap-2">
+                <span className="text-lg sm:text-xl font-bold text-foreground tabular-nums">
+                  {formatBRL(product.salePriceCents)}
+                </span>
+                <span className="text-xs text-muted-foreground line-through tabular-nums">
+                  {formatBRL(product.priceCents)}
+                </span>
+              </div>
+            ) : (
+              <span className="text-lg sm:text-xl font-bold text-foreground tabular-nums">
+                {formatBRL(price)}
+              </span>
+            )}
+            {showInstallment && (
+              <p className="text-[10px] text-muted-foreground/70 mt-0.5 tabular-nums">
+                ou {INSTALLMENTS}x de {formatBRL(installmentCents)} sem juros
+              </p>
+            )}
+          </div>
+
+          <Button
+            type="button"
+            onClick={handleAdd}
+            className="w-full h-10 rounded-full font-semibold text-sm"
+            aria-label={`Adicionar ${product.title} ao carrinho`}
+          >
+            <ShoppingBasket className="h-4 w-4 mr-2" />
+            Comprar
+          </Button>
         </div>
       </div>
     </Link>

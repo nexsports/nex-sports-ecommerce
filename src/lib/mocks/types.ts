@@ -15,7 +15,7 @@ export interface Product {
   category: string
   priceCents: number
   salePriceCents?: number
-  images: [string, string, string]
+  images: string[]
   rating: number
   reviewCount: number
   badge?: "HOT" | "NOVO" | "TOP 1" | string

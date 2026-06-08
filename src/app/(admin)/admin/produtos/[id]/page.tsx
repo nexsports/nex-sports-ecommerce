@@ -17,19 +17,20 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   const { id } = await params;
   const c = sb();
 
-  const [{ data: prod, error: pErr }, { data: cats }] = await Promise.all([
+  const [{ data: prod, error: pErr }, { data: cats }, imgRes, attrRes, varRes] = await Promise.all([
     c.from("products")
-      .select("id, title, slug, brand, description, category_id, status, base_price, sale_price")
+      .select("id, title, slug, brand, description, category_id, status, base_price, sale_price, gender")
       .eq("id", id)
       .maybeSingle(),
     c.from("categories").select("id, name").order("position"),
+    c.from("product_images").select("url, alt").eq("product_id", id).order("position"),
+    c.from("product_attributes").select("name, value").eq("product_id", id).order("position"),
+    c.from("product_variants").select("stock").eq("product_id", id),
   ]);
   if (pErr) { console.error("[edit] product err", pErr); }
   if (!prod) notFound();
 
-  const { data: img } = await c.from("product_images").select("url").eq("product_id", id).order("position").limit(1).maybeSingle();
-  const { data: variants } = await c.from("product_variants").select("stock").eq("product_id", id);
-  const totalStock = (variants ?? []).reduce((s, v) => s + (v.stock ?? 0), 0);
+  const totalStock = (varRes.data ?? []).reduce((s, v) => s + (v.stock ?? 0), 0);
 
   const initialData = {
     id: prod.id,
@@ -39,10 +40,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     description: prod.description,
     categoryId: prod.category_id,
     status: (prod.status ?? "active") as "draft" | "active" | "archived",
+    gender: (prod.gender ?? "unissex") as "masculino" | "feminino" | "unissex",
     basePriceCents: prod.base_price ?? 0,
     salePriceCents: prod.sale_price ?? null,
-    imageUrl: img?.url ?? null,
     stock: totalStock,
+    images: (imgRes.data ?? []).map((i) => ({ url: i.url, alt: i.alt ?? "" })),
+    attributes: (attrRes.data ?? []).map((a) => ({ name: a.name, value: a.value })),
   };
   return <ProductForm mode="edit" categories={cats ?? []} initialData={initialData} />;
 }
