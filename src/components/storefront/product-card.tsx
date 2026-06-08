@@ -35,7 +35,7 @@ export function ProductCard({ product, className }: { product: Product; classNam
       color: defaultColor,
       priceCents: price,
       qty: 1,
-    })
+    }, { silent: true })
     const items = [...(cart.items ?? [])]
     const existing = items.find((i) => i.variantId === variantId)
     const nextQty = existing ? existing.qty + 1 : 1

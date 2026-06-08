@@ -51,7 +51,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 interface CartContextValue {
   items: CartItem[]
-  add: (item: CartItem) => void
+  add: (item: CartItem, opts?: { silent?: boolean }) => void
   remove: (variantId: string) => void
   updateQty: (variantId: string, qty: number) => void
   clear: () => void
@@ -95,9 +95,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [state.items])
 
   const add = useCallback(
-    (item: CartItem) => {
+    (item: CartItem, opts?: { silent?: boolean }) => {
       dispatch({ type: "ADD", item })
-      setIsOpen(true)
+      if (!opts?.silent) setIsOpen(true)
     },
     []
   )
