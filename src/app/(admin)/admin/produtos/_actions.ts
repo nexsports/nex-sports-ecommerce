@@ -286,10 +286,11 @@ export async function duplicateProduct(id: string): Promise<ActionResult> {
 export async function archiveProduct(id: string): Promise<ActionResult> {
   const user = await requireAdmin();
 
-  const { error } = await supabaseAdmin
-    .from("products")
-    .update({ status: "archived", updated_at: new Date().toISOString() })
-    .eq("id", id);
+  // Hard delete: remove product + dependents
+  await supabaseAdmin.from("product_images").delete().eq("product_id", id);
+  await supabaseAdmin.from("product_variants").delete().eq("product_id", id);
+
+  const { error } = await supabaseAdmin.from("products").delete().eq("id", id);
 
   if (error) {
     return { error: error.message };
@@ -297,12 +298,13 @@ export async function archiveProduct(id: string): Promise<ActionResult> {
 
   await auditLog({
     userId: user.id,
-    action: "archive",
+    action: "delete",
     entity: "products",
     entityId: id,
-    diff: { status: "archived" },
   });
 
   revalidatePath("/admin/produtos");
+  revalidatePath("/");
+  revalidatePath("/busca");
   return {};
 }

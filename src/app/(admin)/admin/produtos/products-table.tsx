@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Copy, Archive, Package } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/admin/data-table";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -48,7 +48,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
   const [catFilter, setCatFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmAction, setConfirmAction] = useState<{
-    type: "duplicate" | "archive";
+    type: "duplicate" | "delete";
     id: string;
     title: string;
   } | null>(null);
@@ -81,7 +81,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         if (res.error) {
           toast.error(res.error);
         } else {
-          toast.success("Produto arquivado");
+          toast.success("Produto excluído");
           router.refresh();
         }
       }
@@ -175,10 +175,10 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
             className="h-8 w-8 text-destructive hover:text-destructive"
             onClick={(e) => {
               e.stopPropagation();
-              setConfirmAction({ type: "archive", id: row.id, title: row.title });
+              setConfirmAction({ type: "delete", id: row.id, title: row.title });
             }}
           >
-            <Archive className="h-4 w-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       ),
@@ -238,15 +238,15 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         title={
           confirmAction?.type === "duplicate"
             ? "Duplicar produto"
-            : "Arquivar produto"
+            : "Excluir produto"
         }
         description={
           confirmAction?.type === "duplicate"
             ? `Deseja criar uma cópia de "${confirmAction?.title}"?`
-            : `Deseja arquivar "${confirmAction?.title}"?`
+            : `Excluir "${confirmAction?.title}" permanentemente? Esta ação não pode ser desfeita.`
         }
-        confirmLabel={confirmAction?.type === "duplicate" ? "Duplicar" : "Arquivar"}
-        destructive={confirmAction?.type === "archive"}
+        confirmLabel={confirmAction?.type === "duplicate" ? "Duplicar" : "Excluir"}
+        destructive={confirmAction?.type === "delete"}
         onConfirm={handleConfirm}
         loading={loading}
       />
