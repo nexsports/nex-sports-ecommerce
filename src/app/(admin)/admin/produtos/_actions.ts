@@ -283,6 +283,35 @@ export async function duplicateProduct(id: string): Promise<ActionResult> {
   return { id: copy.id };
 }
 
+export async function bulkDeleteProducts(
+  ids: string[]
+): Promise<ActionResult & { deleted?: number }> {
+  const user = await requireAdmin();
+  if (!ids.length) return { deleted: 0 };
+
+  await supabaseAdmin.from("product_images").delete().in("product_id", ids);
+  await supabaseAdmin.from("product_variants").delete().in("product_id", ids);
+
+  const { error, count } = await supabaseAdmin
+    .from("products")
+    .delete({ count: "exact" })
+    .in("id", ids);
+
+  if (error) return { error: error.message };
+
+  await auditLog({
+    userId: user.id,
+    action: "bulk_delete",
+    entity: "products",
+    diff: { ids },
+  });
+
+  revalidatePath("/admin/produtos");
+  revalidatePath("/");
+  revalidatePath("/busca");
+  return { deleted: count ?? ids.length };
+}
+
 export async function archiveProduct(id: string): Promise<ActionResult> {
   const user = await requireAdmin();
 

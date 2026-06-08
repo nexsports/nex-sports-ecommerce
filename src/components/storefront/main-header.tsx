@@ -126,6 +126,48 @@ export function MainHeader() {
       <div className="border-b border-border/40">
         {/* DESKTOP: center cluster logo | search compact | cart | Entrar */}
         <div className={cn("hidden md:flex items-center justify-center gap-4 h-20", ROW_PX)}>
+          {/* Hamburger appears on md tablet sizes (where blue subnav is hidden) */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Abrir menu" className="lg:hidden shrink-0 h-11 w-11">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0">
+              <SheetHeader className="p-6 pb-4 border-b border-border/50">
+                <SheetTitle>
+                  <Link href="/" aria-label="NEX SPORTS">
+                    <Image src="/branding/nex-logo.avif" alt="NEX SPORTS" width={1200} height={430} className="h-10 w-auto object-contain" />
+                  </Link>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col p-6 space-y-1">
+                {subnavLinks.map((item) => (
+                  <SheetClose asChild key={item.name}>
+                    <Link href={item.href} className="px-3 py-3 rounded-lg text-base font-medium hover:bg-secondary/50 transition-colors">
+                      {item.name}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </nav>
+              <Separator className="mx-6" />
+              <div className="p-6 space-y-1">
+                <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Categorias</p>
+                {categoryDisplay.map((cat) => (
+                  <SheetClose asChild key={cat.slug}>
+                    <Link href={`/categoria/${cat.slug}`} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors group">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-foreground">{cat.theme}</span>
+                        <span className="text-[10px] text-primary font-semibold tracking-wider">{cat.nexLabel}</span>
+                      </div>
+                      <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  </SheetClose>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <Link href="/" className="shrink-0 inline-flex items-center" aria-label="NEX SPORTS">
             <Image
               src="/branding/nex-logo.avif"

@@ -3,9 +3,9 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Plus, Pencil, Copy, Trash2, Package } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, Package, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DataTable } from "@/components/admin/data-table";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatBRL } from "@/lib/utils/format";
-import { duplicateProduct, archiveProduct } from "./_actions";
+import { duplicateProduct, archiveProduct, bulkDeleteProducts } from "./_actions";
 import { toast } from "sonner";
 
 interface ProductRow {
@@ -43,16 +43,16 @@ interface ProductsTableProps {
 }
 
 export function ProductsTable({ products, categories }: ProductsTableProps) {
-  const router = useRouter();
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmAction, setConfirmAction] = useState<{
-    type: "duplicate" | "delete";
-    id: string;
+    type: "duplicate" | "delete" | "bulk-delete";
+    id?: string;
     title: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -63,25 +63,59 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
     });
   }, [products, search, catFilter, statusFilter]);
 
+  const filteredIds = useMemo(() => filtered.map((p) => p.id), [filtered]);
+  const allSelected = filteredIds.length > 0 && filteredIds.every((id) => selected.has(id));
+  const someSelected = filteredIds.some((id) => selected.has(id));
+
+  function toggleSelectAll() {
+    if (allSelected) {
+      // Deselect only visible
+      const next = new Set(selected);
+      for (const id of filteredIds) next.delete(id);
+      setSelected(next);
+    } else {
+      setSelected(new Set([...selected, ...filteredIds]));
+    }
+  }
+
+  function toggleSelect(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
   async function handleConfirm() {
     if (!confirmAction) return;
     setLoading(true);
 
     try {
       if (confirmAction.type === "duplicate") {
-        const res = await duplicateProduct(confirmAction.id);
+        const res = await duplicateProduct(confirmAction.id!);
         if (res.error) {
           toast.error(res.error);
         } else {
           toast.success("Produto duplicado");
           window.location.reload();
         }
-      } else {
-        const res = await archiveProduct(confirmAction.id);
+      } else if (confirmAction.type === "delete") {
+        const res = await archiveProduct(confirmAction.id!);
         if (res.error) {
           toast.error(res.error);
         } else {
           toast.success("Produto excluído");
+          window.location.reload();
+        }
+      } else if (confirmAction.type === "bulk-delete") {
+        const ids = Array.from(selected);
+        const res = await bulkDeleteProducts(ids);
+        if (res.error) {
+          toast.error(res.error);
+        } else {
+          toast.success(`${res.deleted} produto${res.deleted !== 1 ? "s" : ""} excluído${res.deleted !== 1 ? "s" : ""}`);
+          setSelected(new Set());
           window.location.reload();
         }
       }
@@ -94,6 +128,26 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
   }
 
   const columns = [
+    {
+      key: "select",
+      header: "",
+      headerRender: () => (
+        <Checkbox
+          checked={allSelected ? true : someSelected ? "indeterminate" : false}
+          onCheckedChange={toggleSelectAll}
+          aria-label="Selecionar todos"
+        />
+      ),
+      className: "w-10",
+      render: (row: ProductRow) => (
+        <Checkbox
+          checked={selected.has(row.id)}
+          onCheckedChange={() => toggleSelect(row.id)}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={`Selecionar ${row.title}`}
+        />
+      ),
+    },
     {
       key: "thumb",
       header: "",
@@ -187,6 +241,36 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
 
   return (
     <>
+      {/* Bulk actions toolbar */}
+      {selected.size > 0 && (
+        <div className="flex items-center gap-3 rounded-xl bg-secondary/50 border border-border px-4 py-2.5 mb-4">
+          <span className="text-sm font-medium text-foreground">
+            {selected.size} produto{selected.size !== 1 ? "s" : ""} selecionado{selected.size !== 1 ? "s" : ""}
+          </span>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() =>
+              setConfirmAction({
+                type: "bulk-delete",
+                title: `${selected.size} produto${selected.size !== 1 ? "s" : ""}`,
+              })
+            }
+          >
+            <Trash2 className="h-4 w-4 mr-1.5" />
+            Excluir selecionados
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSelected(new Set())}
+          >
+            <X className="h-4 w-4 mr-1.5" />
+            Limpar seleção
+          </Button>
+        </div>
+      )}
+
       <DataTable
         columns={columns as never}
         data={filtered as unknown as Record<string, unknown>[]}
@@ -238,15 +322,23 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         title={
           confirmAction?.type === "duplicate"
             ? "Duplicar produto"
-            : "Excluir produto"
+            : confirmAction?.type === "bulk-delete"
+              ? `Excluir ${confirmAction.title}`
+              : "Excluir produto"
         }
         description={
           confirmAction?.type === "duplicate"
             ? `Deseja criar uma cópia de "${confirmAction?.title}"?`
-            : `Excluir "${confirmAction?.title}" permanentemente? Esta ação não pode ser desfeita.`
+            : confirmAction?.type === "bulk-delete"
+              ? `Excluir ${confirmAction.title} permanentemente? Esta ação não pode ser desfeita.`
+              : `Excluir "${confirmAction?.title}" permanentemente? Esta ação não pode ser desfeita.`
         }
-        confirmLabel={confirmAction?.type === "duplicate" ? "Duplicar" : "Excluir"}
-        destructive={confirmAction?.type === "delete"}
+        confirmLabel={
+          confirmAction?.type === "duplicate"
+            ? "Duplicar"
+            : "Excluir"
+        }
+        destructive={confirmAction?.type === "delete" || confirmAction?.type === "bulk-delete"}
         onConfirm={handleConfirm}
         loading={loading}
       />
