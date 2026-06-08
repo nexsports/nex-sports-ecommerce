@@ -6,7 +6,7 @@ const ADMIN_HOSTS = new Set([
   "admin.localhost:3000",
 ]);
 
-async function requireAdmin(request: NextRequest, loginPath: string) {
+async function requireAdmin(request: NextRequest, response: NextResponse) {
   const { createServerClient } = await import("@supabase/ssr");
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,7 +14,11 @@ async function requireAdmin(request: NextRequest, loginPath: string) {
     {
       cookies: {
         getAll: () => request.cookies.getAll(),
-        setAll: () => {},
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
       },
     }
   );
@@ -34,7 +38,6 @@ export async function middleware(request: NextRequest) {
 
   // Host-based routing: admin.* subdomain serves the admin panel
   if (ADMIN_HOSTS.has(host)) {
-    // Normalize the target admin path
     let targetPath = pathname;
     if (pathname === "/" || pathname === "") {
       targetPath = "/admin/dashboard";
@@ -42,9 +45,18 @@ export async function middleware(request: NextRequest) {
       targetPath = "/admin" + pathname;
     }
 
-    // Auth guard for everything except the login page itself
+    // Build the response upfront so the supabase client can attach refreshed cookies to it.
+    const baseResponse =
+      targetPath !== pathname
+        ? (() => {
+            const url = request.nextUrl.clone();
+            url.pathname = targetPath;
+            return NextResponse.rewrite(url);
+          })()
+        : NextResponse.next({ request });
+
     if (targetPath !== "/admin/login") {
-      const user = await requireAdmin(request, "/admin/login");
+      const user = await requireAdmin(request, baseResponse);
       if (!user) {
         const url = request.nextUrl.clone();
         url.pathname = "/admin/login";
@@ -53,23 +65,19 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    if (targetPath !== pathname) {
-      const url = request.nextUrl.clone();
-      url.pathname = targetPath;
-      return NextResponse.rewrite(url);
-    }
-    return NextResponse.next({ request });
+    return baseResponse;
   }
 
   // Main host: only protect /admin/* (rare — admin usually via subdomain)
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const user = await requireAdmin(request, "/admin/login");
+    const passResponse = NextResponse.next({ request });
+    const user = await requireAdmin(request, passResponse);
     if (!user) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(loginUrl);
     }
-    return NextResponse.next({ request });
+    return passResponse;
   }
 
   return updateSession(request);
