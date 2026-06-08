@@ -74,7 +74,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
           toast.error(res.error);
         } else {
           toast.success("Produto duplicado");
-          router.refresh();
+          window.location.reload();
         }
       } else {
         const res = await archiveProduct(confirmAction.id);
@@ -82,7 +82,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
           toast.error(res.error);
         } else {
           toast.success("Produto excluído");
-          router.refresh();
+          window.location.reload();
         }
       }
     } catch {
