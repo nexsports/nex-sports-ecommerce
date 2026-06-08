@@ -1,91 +1,48 @@
 import { notFound } from "next/navigation";
-import { supabaseAdmin } from "@/lib/supabase/admin-client";
+import { createClient } from "@supabase/supabase-js";
 import { ProductForm } from "../product-form";
 
-export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
 export const metadata = { title: "Editar Produto — NEX Admin" };
+export const dynamic = "force-dynamic";
 
-async function getProduct(id: string) {
-  const { data: product } = await supabaseAdmin
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (!product) return null;
-
-  const { data: images } = await supabaseAdmin
-    .from("product_images")
-    .select("id, url, alt, position")
-    .eq("product_id", id)
-    .order("position");
-
-  const { data: variants } = await supabaseAdmin
-    .from("product_variants")
-    .select("id, size, color, stock, sku")
-    .eq("product_id", id);
-
-  const { data: categories } = await supabaseAdmin
-    .from("categories")
-    .select("id, name")
-    .order("position");
-
-  return {
-    product,
-    images: (images ?? []).map((img) => ({
-      id: img.id,
-      url: img.url,
-      alt: img.alt ?? "",
-      position: img.position,
-    })),
-    variants: (variants ?? []).map((v) => ({
-      id: v.id,
-      size: v.size,
-      color: v.color,
-      stock: v.stock,
-      sku: v.sku,
-    })),
-    categories: categories ?? [],
-  };
+function sb() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
 }
 
-export default async function EditarProdutoPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const result = await getProduct(id);
+  const c = sb();
 
-  if (!result) {
-    notFound();
-  }
+  const [{ data: prod, error: pErr }, { data: cats }] = await Promise.all([
+    c.from("products")
+      .select("id, title, slug, brand, description, category_id, status, base_price, sale_price")
+      .eq("id", id)
+      .maybeSingle(),
+    c.from("categories").select("id, name").order("position"),
+  ]);
+  if (pErr) { console.error("[edit] product err", pErr); }
+  if (!prod) notFound();
 
-  const { product, images, variants, categories } = result;
+  const { data: img } = await c.from("product_images").select("url").eq("product_id", id).order("position").limit(1).maybeSingle();
+  const { data: variants } = await c.from("product_variants").select("stock").eq("product_id", id);
+  const totalStock = (variants ?? []).reduce((s, v) => s + (v.stock ?? 0), 0);
 
-  return (
-    <ProductForm
-      mode="edit"
-      categories={categories}
-      productId={product.id}
-      initialData={{
-        title: product.title,
-        slug: product.slug,
-        brand: product.brand ?? "",
-        description: product.description ?? "",
-        categoryId: product.category_id,
-        status: product.status,
-        basePrice: product.base_price,
-        salePrice: product.sale_price,
-        skuRoot: product.sku_root ?? "",
-        seoTitle: product.seo_title ?? "",
-        seoDescription: product.seo_description ?? "",
-        gender: product.gender ?? "",
-        badge: product.badge ?? "",
-        images,
-        variants,
-      }}
-    />
-  );
+  const initialData = {
+    id: prod.id,
+    title: prod.title,
+    slug: prod.slug,
+    brand: prod.brand,
+    description: prod.description,
+    categoryId: prod.category_id,
+    status: (prod.status ?? "active") as "draft" | "active" | "archived",
+    basePriceCents: prod.base_price ?? 0,
+    salePriceCents: prod.sale_price ?? null,
+    imageUrl: img?.url ?? null,
+    stock: totalStock,
+  };
+  return <ProductForm mode="edit" categories={cats ?? []} initialData={initialData} />;
 }

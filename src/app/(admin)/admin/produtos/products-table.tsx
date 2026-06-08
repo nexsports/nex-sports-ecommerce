@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Plus, Pencil, Copy, Trash2, Package, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTable } from "@/components/admin/data-table";
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatBRL } from "@/lib/utils/format";
-import { duplicateProduct, archiveProduct, bulkDeleteProducts } from "./_actions";
+import { deleteProduct, bulkDeleteProducts } from "./_actions";
 import { toast } from "sonner";
 
 interface ProductRow {
@@ -47,7 +47,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
   const [catFilter, setCatFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmAction, setConfirmAction] = useState<{
-    type: "duplicate" | "delete" | "bulk-delete";
+    type: "delete" | "bulk-delete";
     id?: string;
     title: string;
   } | null>(null);
@@ -69,7 +69,6 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
 
   function toggleSelectAll() {
     if (allSelected) {
-      // Deselect only visible
       const next = new Set(selected);
       for (const id of filteredIds) next.delete(id);
       setSelected(next);
@@ -92,16 +91,8 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
     setLoading(true);
 
     try {
-      if (confirmAction.type === "duplicate") {
-        const res = await duplicateProduct(confirmAction.id!);
-        if (res.error) {
-          toast.error(res.error);
-        } else {
-          toast.success("Produto duplicado");
-          window.location.reload();
-        }
-      } else if (confirmAction.type === "delete") {
-        const res = await archiveProduct(confirmAction.id!);
+      if (confirmAction.type === "delete") {
+        const res = await deleteProduct(confirmAction.id!);
         if (res.error) {
           toast.error(res.error);
         } else {
@@ -114,7 +105,9 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         if (res.error) {
           toast.error(res.error);
         } else {
-          toast.success(`${res.deleted} produto${res.deleted !== 1 ? "s" : ""} excluído${res.deleted !== 1 ? "s" : ""}`);
+          toast.success(
+            `${res.deleted} produto${res.deleted !== 1 ? "s" : ""} excluído${res.deleted !== 1 ? "s" : ""}`,
+          );
           setSelected(new Set());
           window.location.reload();
         }
@@ -204,24 +197,13 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
     {
       key: "actions",
       header: "",
-      className: "w-28",
+      className: "w-20",
       render: (row: ProductRow) => (
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
             <Link href={`/admin/produtos/${row.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation();
-              setConfirmAction({ type: "duplicate", id: row.id, title: row.title });
-            }}
-          >
-            <Copy className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
@@ -245,7 +227,8 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
       {selected.size > 0 && (
         <div className="flex items-center gap-3 rounded-xl bg-secondary/50 border border-border px-4 py-2.5 mb-4">
           <span className="text-sm font-medium text-foreground">
-            {selected.size} produto{selected.size !== 1 ? "s" : ""} selecionado{selected.size !== 1 ? "s" : ""}
+            {selected.size} produto{selected.size !== 1 ? "s" : ""} selecionado
+            {selected.size !== 1 ? "s" : ""}
           </span>
           <Button
             variant="destructive"
@@ -260,11 +243,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
             <Trash2 className="h-4 w-4 mr-1.5" />
             Excluir selecionados
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelected(new Set())}
-          >
+          <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())}>
             <X className="h-4 w-4 mr-1.5" />
             Limpar seleção
           </Button>
@@ -320,25 +299,17 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         open={!!confirmAction}
         onOpenChange={(open) => !open && setConfirmAction(null)}
         title={
-          confirmAction?.type === "duplicate"
-            ? "Duplicar produto"
-            : confirmAction?.type === "bulk-delete"
-              ? `Excluir ${confirmAction.title}`
-              : "Excluir produto"
+          confirmAction?.type === "bulk-delete"
+            ? `Excluir ${confirmAction.title}`
+            : "Excluir produto"
         }
         description={
-          confirmAction?.type === "duplicate"
-            ? `Deseja criar uma cópia de "${confirmAction?.title}"?`
-            : confirmAction?.type === "bulk-delete"
-              ? `Excluir ${confirmAction.title} permanentemente? Esta ação não pode ser desfeita.`
-              : `Excluir "${confirmAction?.title}" permanentemente? Esta ação não pode ser desfeita.`
+          confirmAction?.type === "bulk-delete"
+            ? `Excluir ${confirmAction.title} permanentemente? Esta ação não pode ser desfeita.`
+            : `Excluir "${confirmAction?.title}" permanentemente? Esta ação não pode ser desfeita.`
         }
-        confirmLabel={
-          confirmAction?.type === "duplicate"
-            ? "Duplicar"
-            : "Excluir"
-        }
-        destructive={confirmAction?.type === "delete" || confirmAction?.type === "bulk-delete"}
+        confirmLabel="Excluir"
+        destructive
         onConfirm={handleConfirm}
         loading={loading}
       />
