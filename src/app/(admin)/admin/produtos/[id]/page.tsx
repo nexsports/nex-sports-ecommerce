@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/admin-client";
 import { ProductForm } from "../product-form";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const metadata = { title: "Editar Produto — NEX Admin" };
 
 async function getProduct(id: string) {

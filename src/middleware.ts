@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
         const url = request.nextUrl.clone();
         url.pathname = "/admin/login";
         url.searchParams.set("next", targetPath);
-        return NextResponse.rewrite(url);
+        return NextResponse.redirect(url);
       }
     }
 

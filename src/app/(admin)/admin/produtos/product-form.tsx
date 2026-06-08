@@ -339,7 +339,19 @@ export function ProductForm({ mode, categories, initialData, productId }: Produc
               <CardTitle className="text-sm font-medium">Imagens do produto</CardTitle>
             </CardHeader>
             <CardContent>
-              <ProductImageUploader images={images} onChange={setImages} />
+              <ProductImageUploader
+                images={images}
+                onChange={setImages}
+                onUpload={async (file) => {
+                  const fd = new FormData();
+                  fd.append("file", file);
+                  fd.append("bucket", "products");
+                  const r = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                  if (!r.ok) throw new Error("Upload falhou");
+                  const json = await r.json();
+                  return json.url;
+                }}
+              />
             </CardContent>
           </Card>
         </TabsContent>

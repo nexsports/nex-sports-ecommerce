@@ -8,7 +8,7 @@ export function isAdmin(user: User): boolean {
   return role === "admin";
 }
 
-export async function requireAdmin(redirectTo = "/admin/login") {
+export async function requireAdmin(redirectTo = "/admin/login"): Promise<User> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -18,5 +18,15 @@ export async function requireAdmin(redirectTo = "/admin/login") {
     redirect(redirectTo);
   }
 
+  return user;
+}
+
+/** Returns admin user or null — no redirect, safe for server actions. */
+export async function getAdminUser(): Promise<User | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || !isAdmin(user)) return null;
   return user;
 }

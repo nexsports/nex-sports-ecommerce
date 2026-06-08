@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 interface Column<T> {
   key: string;
   header: string;
+  headerRender?: () => ReactNode;
   render?: (row: T) => ReactNode;
   className?: string;
 }
@@ -63,7 +64,7 @@ export function DataTable<T extends Record<string, unknown>>({
                   key={col.key}
                   className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wide"
                 >
-                  {col.header}
+                  {col.headerRender ? col.headerRender() : col.header}
                 </th>
               ))}
             </tr>

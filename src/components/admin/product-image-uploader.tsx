@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Upload, X, GripVertical } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -31,6 +32,8 @@ export function ProductImageUploader({ images, onChange, onUpload }: ProductImag
       const url = await onUpload(file);
       const newImages = [...images, { url, alt: "", position: images.length }];
       onChange(newImages);
+    } catch {
+      toast.error("Falha no upload da imagem");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";

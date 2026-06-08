@@ -7,11 +7,15 @@ export async function auditLog(params: {
   entityId?: string;
   diff?: Record<string, unknown>;
 }) {
-  await supabaseAdmin.from("admin_audit").insert({
-    user_id: params.userId ?? null,
-    action: params.action,
-    entity: params.entity,
-    entity_id: params.entityId ?? null,
-    diff: params.diff ?? null,
-  });
+  try {
+    await supabaseAdmin.from("admin_audit").insert({
+      user_id: params.userId ?? null,
+      action: params.action,
+      entity: params.entity,
+      entity_id: params.entityId ?? null,
+      diff: params.diff ?? null,
+    });
+  } catch (e) {
+    console.error("[auditLog] failed:", e);
+  }
 }
