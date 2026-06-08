@@ -19,7 +19,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const [{ data: prod, error: pErr }, { data: cats }, imgRes, attrRes, varRes] = await Promise.all([
     c.from("products")
-      .select("id, title, slug, brand, description, category_id, status, base_price, sale_price, gender")
+      .select("id, title, slug, brand, description, category_id, status, base_price, sale_price, gender, installments")
       .eq("id", id)
       .maybeSingle(),
     c.from("categories").select("id, name").order("position"),
@@ -44,6 +44,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     basePriceCents: prod.base_price ?? 0,
     salePriceCents: prod.sale_price ?? null,
     stock: totalStock,
+    installments: prod.installments ?? 6,
     images: (imgRes.data ?? []).map((i) => ({ url: i.url, alt: i.alt ?? "" })),
     attributes: (attrRes.data ?? []).map((a) => ({ name: a.name, value: a.value })),
   };

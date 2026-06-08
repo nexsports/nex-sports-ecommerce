@@ -10,13 +10,14 @@ import { useCart } from "@/lib/cart/cart-context"
 import type { Product } from "@/lib/mocks/types"
 import { showCartAddedToast } from "./cart-added-toast"
 
-const INSTALLMENTS = 6
+const DEFAULT_INSTALLMENTS = 6
 
 export function ProductCard({ product, className }: { product: Product; className?: string }) {
   const cart = useCart()
 
   const price = product.salePriceCents ?? product.priceCents
-  const installmentCents = Math.ceil(price / INSTALLMENTS)
+  const installments = product.installments && product.installments > 0 ? product.installments : DEFAULT_INSTALLMENTS
+  const installmentCents = Math.ceil(price / installments)
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -128,7 +129,7 @@ export function ProductCard({ product, className }: { product: Product; classNam
               </span>
             )}
             <p className="text-[10px] text-muted-foreground/70 mt-1 tabular-nums">
-              ou {INSTALLMENTS}x de {formatBRL(installmentCents)} sem juros
+              ou {installments}x de {formatBRL(installmentCents)} sem juros
             </p>
           </div>
 

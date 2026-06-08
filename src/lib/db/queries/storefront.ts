@@ -14,10 +14,12 @@ type ProductRow = {
   brand: string | null
   base_price: number
   sale_price: number | null
+  installments: number | null
   rating_avg: string | null
   rating_count: number
   sales_count: number
   status: string
+  gender: string | null
   categories: { slug: string; name: string } | null
   product_images: { url: string; position: number }[]
   product_variants: { size: string | null; color: string | null; stock: number }[]
@@ -39,13 +41,9 @@ function rowToProduct(row: ProductRow): Product {
       ? colorNames.map((c) => ({ name: c, hex: "#334155" }))
       : [{ name: "Padrão", hex: "#334155" }]
 
-  const imgs = images.length >= 3
-    ? (images.slice(0, 3) as [string, string, string])
-    : ([
-      images[0] ?? "/no-image.svg",
-      images[1] ?? images[0] ?? "/no-image.svg",
-      images[2] ?? images[0] ?? "/no-image.svg",
-    ] as [string, string, string])
+  const imgs = images.length > 0
+    ? images
+    : ["/no-image.svg"]
 
   return {
     id: row.id,
@@ -62,11 +60,13 @@ function rowToProduct(row: ProductRow): Product {
     colors: colored,
     description: row.description ?? "",
     stock,
+    gender: (row.gender ?? "unissex") as "masculino" | "feminino" | "unissex",
+    installments: row.installments ?? 6,
   }
 }
 
 const PRODUCT_SELECT =
-  "id, slug, title, description, brand, base_price, sale_price, rating_avg, rating_count, sales_count, status, categories(slug, name), product_images(url, position), product_variants(size, color, stock)"
+  "id, slug, title, description, brand, base_price, sale_price, installments, rating_avg, rating_count, sales_count, status, gender, categories(slug, name), product_images(url, position), product_variants(size, color, stock)"
 
 /* ------------------------------------------------------------------ */
 /* Categories                                                         */

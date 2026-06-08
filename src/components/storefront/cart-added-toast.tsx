@@ -1,9 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { CheckCircle2, X } from "lucide-react"
 import { toast } from "sonner"
+import { useCart } from "@/lib/cart/cart-context"
 import { formatBRL } from "@/lib/utils"
 
 interface ToastProps {
@@ -17,8 +17,9 @@ interface ToastProps {
 }
 
 function CartAddedCard({ id, image, title, priceCents, qty, cartCount, cartTotal }: ToastProps) {
+  const cart = useCart()
   return (
-    <div className="relative w-[340px] rounded-xl border border-border bg-card shadow-2xl shadow-black/40 overflow-hidden">
+    <div className="relative w-[92vw] max-w-[360px] rounded-xl border border-border bg-card shadow-2xl shadow-black/40 overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0048D8] to-[#0063FA] text-white">
         <CheckCircle2 className="h-4 w-4 shrink-0" />
         <span className="text-sm font-semibold flex-1">Adicionado ao carrinho!</span>
@@ -46,13 +47,13 @@ function CartAddedCard({ id, image, title, priceCents, qty, cartCount, cartTotal
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total ({cartCount} {cartCount === 1 ? "produto" : "produtos"})</p>
           <p className="text-base font-bold text-foreground tabular-nums">{formatBRL(cartTotal)}</p>
         </div>
-        <Link
-          href="/carrinho"
-          onClick={() => toast.dismiss(id)}
+        <button
+          type="button"
+          onClick={() => { toast.dismiss(id); cart.open() }}
           className="rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
         >
           Ver carrinho
-        </Link>
+        </button>
       </div>
     </div>
   )

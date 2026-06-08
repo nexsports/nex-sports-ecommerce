@@ -24,6 +24,7 @@ export interface Product {
   description: string
   stock: number
   gender?: 'masculino' | 'feminino' | 'unissex'
+  installments?: number
 }
 
 export interface Partner {

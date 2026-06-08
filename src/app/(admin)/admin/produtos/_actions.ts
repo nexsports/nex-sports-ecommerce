@@ -22,6 +22,7 @@ const productSchema = z.object({
   basePriceCents: z.number().int().min(1, "Preço deve ser positivo"),
   salePriceCents: z.number().int().min(0).nullable().optional(),
   stock: z.number().int().min(0).default(0),
+  installments: z.number().int().min(1).max(24).default(6),
   images: z
     .array(
       z.object({
@@ -74,6 +75,7 @@ export async function createProduct(
         gender: v.gender,
         base_price: v.basePriceCents,
         sale_price: v.salePriceCents ?? null,
+        installments: v.installments,
       })
       .select("id")
       .single();
@@ -165,6 +167,7 @@ export async function updateProduct(
         gender: v.gender,
         base_price: v.basePriceCents,
         sale_price: v.salePriceCents ?? null,
+        installments: v.installments,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id);

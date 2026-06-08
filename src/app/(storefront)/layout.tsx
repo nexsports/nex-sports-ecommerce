@@ -27,7 +27,12 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <main className="flex-1">{children}</main>
       <SiteFooter />
       <CartDrawer />
-      <Toaster position="top-right" richColors />
+      <Toaster
+        position="top-right"
+        richColors
+        offset={{ top: "168px", right: "16px" }}
+        mobileOffset={{ top: "120px", right: "8px" }}
+      />
     </CartProvider>
   )
 }

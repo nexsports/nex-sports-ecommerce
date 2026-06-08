@@ -63,6 +63,7 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
     initialData?.salePriceCents ? (initialData.salePriceCents / 100).toFixed(2) : ""
   );
   const [stock, setStock] = useState(String(initialData?.stock ?? 0));
+  const [installments, setInstallments] = useState(String(initialData?.installments ?? 6));
 
   // Images
   const [images, setImages] = useState<{ url: string; alt?: string | null }[]>(
@@ -148,6 +149,7 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
       basePriceCents: parseCents(basePrice),
       salePriceCents: salePrice ? parseCents(salePrice) : null,
       stock: parseInt(stock, 10) || 0,
+      installments: Math.max(1, Math.min(24, parseInt(installments, 10) || 6)),
       images: images.filter((i) => i.url),
       attributes: attributes.filter((a) => a.name && a.value),
     };
@@ -375,6 +377,18 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
                   placeholder="79,90"
                 />
                 <p className="text-[10px] text-muted-foreground">Opcional. Deixe vazio se não há desconto.</p>
+              </div>
+              <div className="space-y-2">
+                <Label>Parcelas sem juros (máx)</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  max={24}
+                  value={installments}
+                  onChange={(e) => setInstallments(e.target.value)}
+                  placeholder="6"
+                />
+                <p className="text-[10px] text-muted-foreground">Quantas vezes sem juros aparecerá no card. Padrão 6.</p>
               </div>
             </CardContent>
           </Card>
