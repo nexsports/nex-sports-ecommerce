@@ -359,20 +359,22 @@ export function ProductForm({ mode, categories, initialData }: ProductFormProps)
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Preço (R$) *</Label>
+                <Label>Preço cheio / antigo (R$) *</Label>
                 <Input
                   value={basePrice}
                   onChange={(e) => setBasePrice(e.target.value)}
                   placeholder="99,00"
                 />
+                <p className="text-[10px] text-muted-foreground">Aparece riscado se houver preço promocional.</p>
               </div>
               <div className="space-y-2">
-                <Label>Preço promo (R$)</Label>
+                <Label>Preço promocional / atual (R$)</Label>
                 <Input
                   value={salePrice}
                   onChange={(e) => setSalePrice(e.target.value)}
                   placeholder="79,90"
                 />
+                <p className="text-[10px] text-muted-foreground">Opcional. Deixe vazio se não há desconto.</p>
               </div>
             </CardContent>
           </Card>

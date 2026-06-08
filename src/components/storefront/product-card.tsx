@@ -11,14 +11,12 @@ import type { Product } from "@/lib/mocks/types"
 import { showCartAddedToast } from "./cart-added-toast"
 
 const INSTALLMENTS = 6
-const MIN_INSTALLMENT_CENTS = 1500 // hide installment hint when value below R$ 15
 
 export function ProductCard({ product, className }: { product: Product; className?: string }) {
   const cart = useCart()
 
   const price = product.salePriceCents ?? product.priceCents
   const installmentCents = Math.ceil(price / INSTALLMENTS)
-  const showInstallment = installmentCents >= MIN_INSTALLMENT_CENTS
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -129,11 +127,9 @@ export function ProductCard({ product, className }: { product: Product; classNam
                 {formatBRL(price)}
               </span>
             )}
-            {showInstallment && (
-              <p className="text-[10px] text-muted-foreground/70 mt-1 tabular-nums">
-                ou {INSTALLMENTS}x de {formatBRL(installmentCents)} sem juros
-              </p>
-            )}
+            <p className="text-[10px] text-muted-foreground/70 mt-1 tabular-nums">
+              ou {INSTALLMENTS}x de {formatBRL(installmentCents)} sem juros
+            </p>
           </div>
 
           <Button
